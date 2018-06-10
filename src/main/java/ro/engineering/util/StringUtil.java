@@ -1,4 +1,4 @@
-package ro.engineering.comparators;
+package ro.engineering.util;
 
 public class StringUtil {
 
