@@ -1,12 +1,11 @@
 package ro.engineering.comparator.matcher;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class JsonTextMatcher extends JsonMatcher {
+public class JsonTextMatcher extends AbstractJsonMatcher {
 
     public JsonTextMatcher(JsonNode expected, JsonNode actual) {
         super(expected, actual);
@@ -15,16 +14,18 @@ public class JsonTextMatcher extends JsonMatcher {
     @Override
     public void matches() throws MatcherException {
         UseCase useCase = getUseCase(expected.asText());
+        matchNullType(useCase);
         Pattern pattern = Pattern.compile(sanitize(expected.asText()));
         Matcher matcher = pattern.matcher(actual.asText());
         if (matcher.matches() != useCase.equals(UseCase.FIND)) {
-            throw new MatcherException("Expected [" + expected + "]  but found [" + actual + "]");
+            throw new MatcherException("Expected [" + expected + "] but found [" + actual + "]");
         }
     }
 
-    public static boolean isJsonText(JsonNode jsonNode) {
-        JsonNodeType type = jsonNode.getNodeType();
-        return type.equals(JsonNodeType.STRING) || type.equals(JsonNodeType.NUMBER) ||
-                type.equals(JsonNodeType.BOOLEAN) || type.equals(JsonNodeType.NULL);
+    private void matchNullType(UseCase useCase) throws MatcherException {
+        if (useCase.equals(UseCase.FIND) && actual.getNodeType().equals(JsonNodeType.NULL)
+                && !expected.getNodeType().equals(JsonNodeType.NULL)) {
+            throw new MatcherException("Expected [" + expected + "] but found [" + actual + "]");
+        }
     }
 }
