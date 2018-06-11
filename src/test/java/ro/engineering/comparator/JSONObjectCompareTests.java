@@ -46,5 +46,23 @@ public class JSONObjectCompareTests {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
+    @Test
+    public void compareJsonInDepth() {
+        String expected =
+                "{\"b\":{\"x\":\"val1\",\"y\":\"val2\"},\"a\":{\"t\":\"val3\",\"z\":\"val4\"}}";
+        String actual =
+                "{\"a\":{\"t\":\"val3\",\"z\":\"val4\"},\"b\":{\"x\":\"val1\",\"y\":\"val2\"}}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareJsonInDepth_negative() {
+        String expected =
+                "{\"b\":{\"x\":\"val1\",\"y\":\"val2\"},\"a\":{\"t\":\"val3\",\"z\":\"val3\"}}";
+        String actual =
+                "{\"a\":{\"t\":\"val3\",\"z\":\"val4\"},\"b\":{\"x\":\"val1\",\"y\":\"val2\"}}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
 
 }
