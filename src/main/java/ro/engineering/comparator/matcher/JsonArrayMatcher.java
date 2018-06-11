@@ -18,23 +18,41 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
     public void matches() throws MatcherException {
         for (int i = 0; i < expected.size(); i++) {
             JsonNode element = expected.get(i);
+            UseCase useCase = getUseCase(element.asText());
             boolean found = false;
             for (int j = 0; j < actual.size(); j++) {
-                if (matchedPositions.contains(j)) {
-                    continue;
+                if (useCase.equals(UseCase.FIND)) {
+                    if (matchedPositions.contains(j)) {
+                        continue;
+                    }
+                    JsonNode actElement = actual.get(j);
+                    try {
+                        new JsonMatcher(element, actElement).matches();
+                    } catch (MatcherException e) {
+                        continue;
+                    }
+                    found = true;
+                    matchedPositions.add(j);
+                    break;
+                } else {
+                    if (matchedPositions.contains(j)) {
+                        continue;
+                    }
+                    JsonNode actElement = actual.get(j);
+                    try {
+                        new JsonMatcher(element, actElement).matches();
+                    } catch (MatcherException e) {
+                        found = true;
+                        break;
+                    }
                 }
-                JsonNode actElement = actual.get(j);
-                try {
-                    new JsonMatcher(element, actElement).matches();
-                } catch (MatcherException e) {
-                    continue;
-                }
-                found = true;
-                matchedPositions.add(j);
-                break;
             }
-            if (!found) {
+            if (!found && useCase.equals(UseCase.FIND)) {
                 throw new MatcherException("Element NOT found:\n"
+                        + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
+            }
+            if (found && useCase.equals(UseCase.DO_NOT_FIND)) {
+                throw new MatcherException("Element found:\n"
                         + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }
         }
