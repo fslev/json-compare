@@ -12,8 +12,12 @@ public class JsonMatcher extends AbstractJsonMatcher {
     public void matches() throws MatcherException {
         if (isJsonObject(expected) && isJsonObject(actual)) {
             new JsonObjectMatcher(expected, actual).matches();
+        } else if (isJsonArray(expected) && isJsonArray(actual)) {
+            new JsonArrayMatcher(expected, actual).matches();
         } else if (isJsonText(expected) && isJsonText(actual)) {
             new JsonTextMatcher(expected, actual).matches();
+        } else {
+            throw new MatcherException("Different JSON types");
         }
     }
 }

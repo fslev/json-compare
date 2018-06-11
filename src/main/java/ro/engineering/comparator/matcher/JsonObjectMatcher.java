@@ -17,6 +17,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
         super(expected, actual);
     }
 
+    @Override
     public void matches() throws MatcherException {
         Iterator<Map.Entry<String, JsonNode>> it = expected.fields();
         while (it.hasNext()) {

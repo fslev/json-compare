@@ -1,10 +1,6 @@
 package ro.engineering.comparator.matcher;
 
-import ro.engineering.util.StringUtil;
-import java.io.IOException;
-import static org.junit.Assert.fail;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 public abstract class AbstractJsonMatcher {
@@ -37,6 +33,13 @@ public abstract class AbstractJsonMatcher {
             return false;
         }
         return jsonNode.getNodeType().equals(JsonNodeType.OBJECT);
+    }
+
+    protected static boolean isJsonArray(JsonNode jsonNode) {
+        if (jsonNode == null) {
+            return false;
+        }
+        return jsonNode.getNodeType().equals(JsonNodeType.ARRAY);
     }
 
     protected static boolean isJsonText(JsonNode jsonNode) {
