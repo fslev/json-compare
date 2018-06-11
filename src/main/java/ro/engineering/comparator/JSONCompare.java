@@ -4,8 +4,6 @@ import ro.engineering.comparator.matcher.JsonMatcher;
 import ro.engineering.comparator.matcher.MatcherException;
 import ro.engineering.util.StringUtil;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import static org.junit.Assert.fail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,12 +20,7 @@ public class JSONCompare {
     public static void assertNotEquals(String expectedJson, String actualJson) {
         JsonNode expected = getJson(expectedJson);
         JsonNode actual = getJson(actualJson);
-        try {
-            assertEquals(expected, actual);
-        } catch (AssertionError e) {
-            return;
-        }
-        fail("JSONs are equal");
+        assertNotEquals(expected, actual);
     }
 
     public static void assertEquals(JsonNode expectedJson, JsonNode actualJson) {
@@ -37,6 +30,15 @@ public class JSONCompare {
             fail(e.getMessage() + "\nExpected:\n" + StringUtil.cropLarge(prettyPrint(expectedJson))
                     + "\nBut got:\n" + StringUtil.cropLarge(prettyPrint(actualJson)));
         }
+    }
+
+    public static void assertNotEquals(JsonNode expectedJson, JsonNode actualJson) {
+        try {
+            new JsonMatcher(expectedJson, actualJson).matches();
+        } catch (MatcherException e) {
+            return;
+        }
+        fail("JSONs are equal");
     }
 
     private static JsonNode getJson(String json) {
