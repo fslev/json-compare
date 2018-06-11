@@ -52,4 +52,46 @@ public class JSONNullCompareTests {
         String actual = "{\"a\":null}";
         JSONCompare.assertNotEquals(expected, actual);
     }
+
+    @Test
+    public void compareArrays() {
+        String expected = "[null]";
+        String actual = "[null]";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareArrays_negative() {
+        String expected = "[null]";
+        String actual = "[2]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareArraysWithExpectedNullAsString() {
+        String expected = "[\"null\"]";
+        String actual = "[\"null\"]";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareArraysWithExpectedNullAsString_negative() {
+        String expected = "[\"null\"]";
+        String actual = "[null]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareArraysWithActualNullAsString_negative() {
+        String expected = "[null]";
+        String actual = "[\"null\"]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareArraysWithExpectedDoNotFindNull() {
+        String expected = "[\"!null\"]";
+        String actual = "[null]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
 }
