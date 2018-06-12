@@ -9,21 +9,21 @@ Write tests that compare two JSON objects and check the differences between them
 
 With JSONCompare you assert by default that the expected JSON is included within the actual JSON
 
-```python
+```javascript
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
 You can use regular expressions on values:
-```python
+```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 , or on JSON object fields
 
-```python
+```javascript
 String expected = "{\".*oba.*\":\"some value\"}";
 String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertEquals(expected, actual);
@@ -31,7 +31,7 @@ JSONCompare.assertEquals(expected, actual);
 
 You can also use the "!" DO NOT FIND option, in order to negate the comparison between JSON values
 
-```python
+```javascript
 String expected = "{\"a\":\"!test\"}";
 String actual = "{\"a\":\"testing\"}";
 JSONCompare.assertEquals(expected, actual);
