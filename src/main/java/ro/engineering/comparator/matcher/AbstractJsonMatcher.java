@@ -32,7 +32,7 @@ public abstract class AbstractJsonMatcher {
         if (value == null) {
             return value;
         }
-        if (value.matches("^(\\\\*)!.*")) {
+        if (value.matches("^(\\\\*)!.*$")) {
             return value.replaceFirst("\\\\\\\\\\\\", "");
         }
         return value;
