@@ -26,22 +26,24 @@ public class JsonTextMatcher extends AbstractJsonMatcher {
     }
 
     private void matchNullType(UseCase useCase) throws MatcherException {
-        if (actual.getNodeType().equals(JsonNodeType.NULL) && useCase.equals(UseCase.MATCH)
-                && !expected.getNodeType().equals(JsonNodeType.NULL)) {
+        if ((expected.getNodeType().equals(JsonNodeType.NULL)
+                && !actual.getNodeType().equals(JsonNodeType.NULL))
+                || actual.getNodeType().equals(JsonNodeType.NULL) && useCase.equals(UseCase.MATCH)
+                        && !expected.getNodeType().equals(JsonNodeType.NULL)) {
             throw new MatcherException("Expected [" + expected + "] but found [" + actual + "]");
         }
     }
 
     private void matchNumberType() throws MatcherException {
         if (expected.getNodeType().equals(JsonNodeType.NUMBER)
-                && !expected.getNodeType().equals(JsonNodeType.NUMBER)) {
+                && !actual.getNodeType().equals(JsonNodeType.NUMBER)) {
             throw new MatcherException("Expected [" + expected + "] but found [" + actual + "]");
         }
     }
 
     private void matchBooleanType() throws MatcherException {
         if (expected.getNodeType().equals(JsonNodeType.BOOLEAN)
-                && !expected.getNodeType().equals(JsonNodeType.BOOLEAN)) {
+                && !actual.getNodeType().equals(JsonNodeType.BOOLEAN)) {
             throw new MatcherException("Expected [" + expected + "] but found [" + actual + "]");
         }
     }
