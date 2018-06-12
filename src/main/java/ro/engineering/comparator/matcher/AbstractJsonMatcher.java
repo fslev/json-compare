@@ -25,6 +25,16 @@ public abstract class AbstractJsonMatcher {
         if (getUseCase(value).equals(UseCase.DO_NOT_FIND)) {
             return value.substring(1, value.length());
         }
+        return removeEscapedUseCase(value);
+    }
+
+    private static String removeEscapedUseCase(String value) {
+        if (value == null) {
+            return value;
+        }
+        if (value.matches("^(\\\\*)!.*")) {
+            return value.replaceFirst("\\\\\\\\\\\\", "");
+        }
         return value;
     }
 
