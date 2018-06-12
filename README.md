@@ -35,6 +35,8 @@ String expected = "{\"b\":{\"x\":\"val1\",\"y\":\"val2\"},\"a\":{\"t\":\"val3\",
 String actual = "{\"a\":{\"t\":\"val3\",\"z\":\"val4\"},\"b\":{\"x\":\"val1\",\"y\":\"val2\"}}";
 JSONCompare.assertEquals(expected, actual);
 
+Output:
+
 java.lang.AssertionError: Expected ["val1"] but found ["val4"] <- field "z" <- field "a"
 Expected:
 {
