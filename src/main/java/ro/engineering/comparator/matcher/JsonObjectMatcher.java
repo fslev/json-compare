@@ -42,8 +42,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             try {
                 new JsonMatcher(value, candidateValue).matches();
             } catch (MatcherException e) {
-                throw new MatcherException(e.getMessage() + "\nwhile comparing values at field \""
-                        + sanitizedField + "\"\n");
+                throw new MatcherException(e.getMessage() + " <- field \"" + sanitizedField + "\"");
             }
             matchedFieldNames.add(candidateField);
         }
