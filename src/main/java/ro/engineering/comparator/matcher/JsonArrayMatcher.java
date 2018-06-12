@@ -48,12 +48,12 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                 }
             }
             if (!found && useCase.equals(UseCase.FIND)) {
-                throw new MatcherException("Element NOT found:\n"
+                throw new MatcherException("Expected element at position " + i + " NOT FOUND:\n"
                         + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }
             if (found && useCase.equals(UseCase.DO_NOT_FIND)) {
-                throw new MatcherException("Element found:\n"
-                        + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
+                throw new MatcherException("Expected element found at position " + i
+                        + " was FOUND:\n" + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }
         }
     }
