@@ -15,7 +15,7 @@ String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-You can use regular expressions on values:
+You can use regular expressions on values
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
