@@ -55,8 +55,8 @@ public class JSONObjectCompareTests {
 
     @Test
     public void compareWithSpecialCharacters() {
-        String expected = "{\"b\":\"\\\\Qso!@!$#@%$#^&^%*)(*&\\\\Eme \\n\\t text\"}";
-        String actual = "{\"b\":\"so!@!$#@%$#^&^%*)(*&me \\n\\t text\"}";
+        String expected = "{\"b\":\"\\\\Qso!@!$#@%$#^&^%*)(*&\\\\Eme \\n\\t te\\\\\\\\'xt\"}";
+        String actual = "{\"b\":\"so!@!$#@%$#^&^%*)(*&me \\n\\t te\\\\'xt\"}";
         JSONCompare.assertEquals(expected, actual);
     }
 
