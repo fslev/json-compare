@@ -5,6 +5,20 @@ import org.junit.Test;
 public class JSONRegexCompareTests {
 
     @Test
+    public void compareWithSimpleRegex() {
+        String expected = "{\"a\":\".*me.*\"}";
+        String actual = "{\"a\":\"some text\"}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithSimpleRegex_negative() {
+        String expected = "{\"a\":\".*me.*\"}";
+        String actual = "{\"a\":\"som text\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
     public void compareWithEmptyValue() {
         String expected = "{\"a\":\".*\"}";
         String actual = "{\"a\":\"\"}";
