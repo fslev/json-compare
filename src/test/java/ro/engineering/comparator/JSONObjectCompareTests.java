@@ -64,5 +64,31 @@ public class JSONObjectCompareTests {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
+    @Test
+    public void compareForExtraFields() {
+        String expected = "{\"b\":\"val1\",\"a\":\"val2\",\".*\":\".*\"}";
+        String actual = "{\"a\":\"val2\",\"b\":\"val1\",\"c\":\"val3\",\"d\":\"val4\"}";
+        JSONCompare.assertEquals(expected, actual);
+    }
 
+    @Test
+    public void compareForExtraFields_negative() {
+        String expected = "{\"b\":\"val1\",\"a\":\"val2\",\".*\":\".*\"}";
+        String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareForNoExtraFields() {
+        String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";
+        String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareForNoExtraFields_negative() {
+        String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";
+        String actual = "{\"a\":\"val2\",\"b\":\"val1\",\"c\":\"val3\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
 }
