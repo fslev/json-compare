@@ -13,7 +13,14 @@ public class JSONEmptyValuesCompareTests {
 
     @Test
     public void compareWithEmptyValue_negative() {
-        String expected = "{\"a\":\"sometext\"}";
+        String expected = "{\"a\":\"not empty\"}";
+        String actual = "{\"a\":\"\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareEmptyWithEmptyValue_negative() {
+        String expected = "{\"a\":\"!\"}";
         String actual = "{\"a\":\"\"}";
         JSONCompare.assertNotEquals(expected, actual);
     }

@@ -47,7 +47,7 @@ public class JSONObjectCompareTests {
     }
 
     @Test
-    public void compareJsonInDepth() {
+    public void deepCompareJson() {
         String expected =
                 "{\"b\":{\"x\":\"val1\",\"y\":\"val2\"},\"a\":{\"t\":\"val3\",\"z\":\"val4\"}}";
         String actual =
@@ -56,11 +56,11 @@ public class JSONObjectCompareTests {
     }
 
     @Test
-    public void compareJsonInDepth_negative() {
+    public void deepCompareJson_negative() {
         String expected =
                 "{\"b\":{\"x\":\"val1\",\"y\":\"val2\"},\"a\":{\"t\":\"val3\",\"z\":\"val3\"}}";
         String actual =
-                "{\"a\":{\"t\":\"val3\",\"z\":\"val4\"},\"b\":{\"x\":\"val1\",\"y\":\"val2\"}}";
+                "{\"a\":{\"t\":\"val3\",\"z\":\"notval3\"},\"b\":{\"x\":\"val1\",\"y\":\"val2\"}}";
         JSONCompare.assertNotEquals(expected, actual);
     }
 

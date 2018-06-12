@@ -73,4 +73,18 @@ public class JSONArrayCompareTests {
         String actual = "[4,1,\"test\"]";
         JSONCompare.assertNotEquals(expected, actual);
     }
+
+    @Test
+    public void deepCompareJsonArray() {
+        String expected = "[\"val1\",\"val2\",[10,[\"val3\"],10,false]]";
+        String actual = "[\"val2\",\"val1\",[10,10,false,[\"val3\"]]]";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void deepCompareJsonArray_negative() {
+        String expected = "[\"val1\",\"val2\",[10,10,false,[\"val3\"]]]";
+        String actual = "[\"val2\",\"val1\",[10,10,false,[\"notval3\"]]]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
 }
