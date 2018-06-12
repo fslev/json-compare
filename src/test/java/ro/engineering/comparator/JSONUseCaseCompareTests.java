@@ -34,8 +34,8 @@ public class JSONUseCaseCompareTests {
 
     @Test
     public void compareLiteral() {
-        String expected = "{\"a\":\"\\\\!some \\\\\\\\!text\"}";
-        String actual = "{\"a\":\"!some \\\\!text\"}";
+        String expected = "{\"a\":\"\\\\!some \\\\\\\\text\"}";
+        String actual = "{\"a\":\"!some \\\\text\"}";
         JSONCompare.assertEquals(expected, actual);
     }
 
