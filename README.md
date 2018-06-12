@@ -63,7 +63,7 @@ But got:
 ```
 
 ## More examples
-You can also use the "!" DO NOT FIND option, in order to negate the comparison between JSON values
+You can also use the "!" DO NOT MATCH option, in order to negate the comparison between JSON values
 
 ```javascript
 String expected = "{\"a\":\"!test\"}";

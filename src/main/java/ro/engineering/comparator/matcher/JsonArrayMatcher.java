@@ -21,7 +21,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
             UseCase useCase = getUseCase(element.asText());
             boolean found = false;
             for (int j = 0; j < actual.size(); j++) {
-                if (useCase.equals(UseCase.FIND)) {
+                if (useCase.equals(UseCase.MATCH)) {
                     if (matchedPositions.contains(j)) {
                         continue;
                     }
@@ -47,11 +47,11 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                     }
                 }
             }
-            if (!found && useCase.equals(UseCase.FIND)) {
+            if (!found && useCase.equals(UseCase.MATCH)) {
                 throw new MatcherException("Expected element at position " + i + " NOT FOUND:\n"
                         + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }
-            if (found && useCase.equals(UseCase.DO_NOT_FIND)) {
+            if (found && useCase.equals(UseCase.DO_NOT_MATCH)) {
                 throw new MatcherException("Expected element found at position " + i
                         + " was FOUND:\n" + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }

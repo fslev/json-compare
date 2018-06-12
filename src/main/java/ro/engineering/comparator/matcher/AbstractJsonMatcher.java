@@ -16,13 +16,13 @@ public abstract class AbstractJsonMatcher {
 
     protected static UseCase getUseCase(String value) {
         if (value == null || value.length() == 0 || !value.substring(0, 1).equals("!")) {
-            return UseCase.FIND;
+            return UseCase.MATCH;
         }
-        return UseCase.DO_NOT_FIND;
+        return UseCase.DO_NOT_MATCH;
     }
 
     protected static String sanitize(String value) {
-        if (getUseCase(value).equals(UseCase.DO_NOT_FIND)) {
+        if (getUseCase(value).equals(UseCase.DO_NOT_MATCH)) {
             return value.substring(1, value.length());
         }
         return removeEscapedUseCase(value);
@@ -59,6 +59,6 @@ public abstract class AbstractJsonMatcher {
     }
 
     public enum UseCase {
-        FIND, DO_NOT_FIND
+        MATCH, DO_NOT_MATCH
     }
 }

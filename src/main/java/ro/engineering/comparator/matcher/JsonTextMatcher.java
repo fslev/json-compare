@@ -20,13 +20,13 @@ public class JsonTextMatcher extends AbstractJsonMatcher {
         matchNullType(useCase);
         Pattern pattern = Pattern.compile(sanitize(expected.asText()));
         Matcher matcher = pattern.matcher(actual.asText());
-        if (matcher.matches() != useCase.equals(UseCase.FIND)) {
+        if (matcher.matches() != useCase.equals(UseCase.MATCH)) {
             throw new MatcherException("Expected [" + expected + "] but found [" + actual + "]");
         }
     }
 
     private void matchNullType(UseCase useCase) throws MatcherException {
-        if (actual.getNodeType().equals(JsonNodeType.NULL) && useCase.equals(UseCase.FIND)
+        if (actual.getNodeType().equals(JsonNodeType.NULL) && useCase.equals(UseCase.MATCH)
                 && !expected.getNodeType().equals(JsonNodeType.NULL)) {
             throw new MatcherException("Expected [" + expected + "] but found [" + actual + "]");
         }

@@ -28,13 +28,13 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             String sanitizedField = sanitize(field);
             Map.Entry<String, JsonNode> candidateEntry =
                     searchCandidateEntryByField(sanitizedField, actual);
-            if (useCase.equals(UseCase.DO_NOT_FIND) && candidateEntry == null) {
+            if (useCase.equals(UseCase.DO_NOT_MATCH) && candidateEntry == null) {
                 continue;
             }
-            if (useCase.equals(UseCase.DO_NOT_FIND) && candidateEntry != null) {
+            if (useCase.equals(UseCase.DO_NOT_MATCH) && candidateEntry != null) {
                 throw new MatcherException("Field " + field + " was found");
             }
-            if (useCase.equals(UseCase.FIND) && candidateEntry == null) {
+            if (useCase.equals(UseCase.MATCH) && candidateEntry == null) {
                 throw new MatcherException("Field " + field + " was not found");
             }
             String candidateField = candidateEntry.getKey();
