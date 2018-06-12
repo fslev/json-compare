@@ -40,6 +40,34 @@ public class JSONObjectCompareTests {
     }
 
     @Test
+    public void compareWithFloatNumbers() {
+        String expected = "{\"b\":-10.54325,\"a\":10.429318549148632}";
+        String actual = "{\"a\":10.429318549148632,\"b\":-10.54325}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithFloatNumbers_negative() {
+        String expected = "{\"b\":-10.54325,\"a\":10.429318549148632}";
+        String actual = "{\"a\":10.429318549148632,\"b\":-10.5432}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithSpecialCharacters() {
+        String expected = "{\"b\":\"\\\\Qso!@!$#@%$#^&^%*)(*&\\\\Eme \\n\\t text\"}";
+        String actual = "{\"b\":\"so!@!$#@%$#^&^%*)(*&me \\n\\t text\"}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithSpecialCharacters_negative() {
+        String expected = "{\"b\":\"some \\n\\t text\"}";
+        String actual = "{\"b\":\"some \\\\n\\\\t text\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
     public void compareWithActualStringRepresentedNumbers_negative() {
         String expected = "{\"b\":1,\"a\":2}";
         String actual = "{\"a\":\"2\",\"b\":1}";
