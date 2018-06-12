@@ -21,10 +21,26 @@ String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
-, or on JSON Object fields
+, or on JSON object fields
 
 ```python
 String expected = "{\".*oba.*\":\"some value\"}";
 String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
+
+You can also use the "!" DO NOT FIND option, in order to negate the comparison between JSON values
+
+```python
+String expected = "{\"a\":\"!test\"}";
+String actual = "{\"a\":\"testing\"}";
+JSONCompare.assertEquals(expected, actual);
+```
+or, between JSON object fields
+```javascript
+String expected = "{\"!a\":\"value does not matter\"}";
+String actual = "{\"ab\":\"value does not matter\"}";
+JSONCompare.assertEquals(expected, actual);
+```
+
+         
