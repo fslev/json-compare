@@ -1,1 +1,10 @@
 theme: jekyll-theme-architect
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+title: "JSON Compare"
+description: "Java library for comparing JSON objects"
+author: "Florin Slevoaca"
+url: "https://fslev.github.io/json-compare"
+permalink: pretty
