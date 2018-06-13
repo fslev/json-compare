@@ -22,19 +22,19 @@ public class JSONNullCompareTests {
     public void compareWithNullTextValue_negative() {
         String expected = "{\"a\":\"null\"}";
         String actual = "{\"a\":null}";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertEquals(expected, actual);
     }
 
     @Test
     public void compareWithRegex() {
-        String expected = "{\"a\":\".*\"}";
-        String actual = "{\"a\":\"null\"}";
+        String expected = "{\"a\":\"null|text\"}";
+        String actual = "{\"a\":null}";
         JSONCompare.assertEquals(expected, actual);
     }
 
     @Test
     public void compareWithRegex_negative() {
-        String expected = "{\"a\":\".*\"}";
+        String expected = "{\"a\":\"false|text\"}";
         String actual = "{\"a\":null}";
         JSONCompare.assertNotEquals(expected, actual);
     }
@@ -78,7 +78,7 @@ public class JSONNullCompareTests {
     public void compareArraysWithExpectedNullAsString_negative() {
         String expected = "[\"null\"]";
         String actual = "[null]";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertEquals(expected, actual);
     }
 
     @Test
