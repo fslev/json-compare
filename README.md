@@ -20,7 +20,7 @@ String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-But you can use the special comparators: JSON_OBJECT_NON_EXTENSIBLE , JSON_ARRAY_NON_EXTENSIBLE for exact match
+But you can use the special comparators: JSON_OBJECT_NON_EXTENSIBLE or JSON_ARRAY_NON_EXTENSIBLE for exact match
 
 ```javascript
 String expected = "{\"b\":\"val1\"}";
