@@ -1,6 +1,6 @@
-package ro.engineering.comparator.matcher;
+package com.github.fslev.comparator.matcher;
 
-import ro.engineering.comparator.CompareMode;
+import com.github.fslev.comparator.CompareMode;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

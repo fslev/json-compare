@@ -1,4 +1,4 @@
-package ro.engineering.util;
+package com.github.fslev.util;
 
 public class StringUtil {
 

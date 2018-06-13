@@ -1,8 +1,8 @@
-package ro.engineering.comparator;
+package com.github.fslev.comparator;
 
-import ro.engineering.comparator.matcher.JsonMatcher;
-import ro.engineering.comparator.matcher.MatcherException;
-import ro.engineering.util.StringUtil;
+import com.github.fslev.comparator.matcher.JsonMatcher;
+import com.github.fslev.comparator.matcher.MatcherException;
+import com.github.fslev.util.StringUtil;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;

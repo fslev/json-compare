@@ -1,4 +1,4 @@
-package ro.engineering.comparator;
+package com.github.fslev.comparator;
 
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
-package ro.engineering.comparator.matcher;
+package com.github.fslev.comparator.matcher;
 
-import ro.engineering.comparator.CompareMode;
+import com.github.fslev.comparator.CompareMode;
 import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;

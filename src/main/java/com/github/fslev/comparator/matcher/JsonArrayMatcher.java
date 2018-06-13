@@ -1,8 +1,8 @@
-package ro.engineering.comparator.matcher;
+package com.github.fslev.comparator.matcher;
 
-import ro.engineering.comparator.CompareMode;
-import ro.engineering.comparator.JSONCompare;
-import ro.engineering.util.StringUtil;
+import com.github.fslev.comparator.CompareMode;
+import com.github.fslev.comparator.JSONCompare;
+import com.github.fslev.util.StringUtil;
 import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
