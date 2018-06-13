@@ -147,4 +147,18 @@ public class JSONCompareModeTests {
         JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER,
                 CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
     }
+
+    @Test
+    public void compareWithJsonArrayStrictOrderModeAndDoNotFindUseCase() {
+        String expected = "[1,2,\"!4\"]";
+        String actual = "[1,2,3,4]";
+        JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+    }
+
+    @Test
+    public void compareWithJsonArrayStrictOrderModeAndDoNotFindUseCase_negative() {
+        String expected = "[1,2,\"!3\"]";
+        String actual = "[1,2,3,4]";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+    }
 }
