@@ -1,9 +1,9 @@
 # JSONCompare
 
-A Java library for comparing JSON objects
+A Java library for comparing JSONs
 
 ## Summary
-Write tests that compare two JSON objects and check the differences between them.
+Write tests that compare two JSONs and check the differences between them.
 
 ## Dependencies
 
