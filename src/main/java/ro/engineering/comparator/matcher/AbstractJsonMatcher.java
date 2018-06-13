@@ -1,15 +1,19 @@
 package ro.engineering.comparator.matcher;
 
+import ro.engineering.comparator.CompareMode;
+import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 public abstract class AbstractJsonMatcher {
     protected JsonNode expected;
     protected JsonNode actual;
+    protected Set<CompareMode> compareModes;
 
-    public AbstractJsonMatcher(JsonNode expected, JsonNode actual) {
+    public AbstractJsonMatcher(JsonNode expected, JsonNode actual, Set<CompareMode> compareModes) {
         this.expected = expected;
         this.actual = actual;
+        this.compareModes = compareModes;
     }
 
     public abstract void matches() throws MatcherException;

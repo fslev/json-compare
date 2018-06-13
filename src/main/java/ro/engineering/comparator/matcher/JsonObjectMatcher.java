@@ -1,5 +1,6 @@
 package ro.engineering.comparator.matcher;
 
+import ro.engineering.comparator.CompareMode;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,8 +14,8 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
     // The names within an object SHOULD be unique.
     private Set<String> matchedFieldNames = new HashSet<String>();
 
-    public JsonObjectMatcher(JsonNode expected, JsonNode actual) {
-        super(expected, actual);
+    public JsonObjectMatcher(JsonNode expected, JsonNode actual, Set<CompareMode> compareModes) {
+        super(expected, actual, compareModes);
     }
 
     @Override
@@ -32,19 +33,24 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
                 continue;
             }
             if (useCase.equals(UseCase.DO_NOT_MATCH) && candidateEntry != null) {
-                throw new MatcherException("Field " + field + " was found");
+                throw new MatcherException(String.format("Field %s was found", field));
             }
             if (useCase.equals(UseCase.MATCH) && candidateEntry == null) {
-                throw new MatcherException("Field " + field + " was not found");
+                throw new MatcherException(String.format("Field %s was not found", field));
             }
             String candidateField = candidateEntry.getKey();
             JsonNode candidateValue = candidateEntry.getValue();
             try {
-                new JsonMatcher(value, candidateValue).matches();
+                new JsonMatcher(value, candidateValue, compareModes).matches();
             } catch (MatcherException e) {
-                throw new MatcherException(e.getMessage() + " <- field \"" + sanitizedField + "\"");
+                throw new MatcherException(
+                        String.format("%s <- field \"%s\"", e.getMessage(), sanitizedField));
             }
             matchedFieldNames.add(candidateField);
+        }
+        if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)
+                && expected.size() < actual.size()) {
+            throw new MatcherException("Actual JSON OBJECT has extra fields");
         }
     }
 
@@ -57,10 +63,14 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             if (matchedFieldNames.contains(key)) {
                 continue;
             }
-            Pattern pattern = Pattern.compile(fieldName);
-            Matcher matcher = pattern.matcher(key);
-            if (matcher.matches()) {
+            if (compareModes.contains(CompareMode.DO_NOT_USE_REGEX) && fieldName.equals(key)) {
                 return entry;
+            } else if (!compareModes.contains(CompareMode.DO_NOT_USE_REGEX)) {
+                Pattern pattern = Pattern.compile(fieldName);
+                Matcher matcher = pattern.matcher(key);
+                if (matcher.matches()) {
+                    return entry;
+                }
             }
         }
         return null;
