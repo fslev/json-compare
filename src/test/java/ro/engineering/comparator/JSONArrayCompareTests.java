@@ -19,6 +19,20 @@ public class JSONArrayCompareTests {
     }
 
     @Test
+    public void compareArraysWithDuplicatedElements() {
+        String expected = "[2,2,4,4,4]";
+        String actual = "[4,4,4,4,2,2]";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareArraysWithDuplicatedElements_negative() {
+        String expected = "[2,2,2,4,4,4]";
+        String actual = "[4,4,4,4,2,2]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
     public void compareSimple() {
         String expected = "[\"val1\",\"val2\"]";
         String actual = "[\"val2\",\"val1\"]";

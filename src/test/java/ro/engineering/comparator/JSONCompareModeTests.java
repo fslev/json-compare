@@ -189,4 +189,32 @@ public class JSONCompareModeTests {
         String actual = "[1,2,3,4]";
         JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
     }
+
+    @Test
+    public void compareArraysWithDuplicatedElementsAndStrictOrderMode() {
+        String expected = "[2,2,4,4,4]";
+        String actual = "[2,2,4,4,4,4]";
+        JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+    }
+
+    @Test
+    public void compareArraysWithDuplicatedElementsAndStrictOrderMode_negative() {
+        String expected = "[2,4,4,4,4]";
+        String actual = "[2,2,4,4,4,4]";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+    }
+
+    @Test
+    public void compareArraysWithDuplicatedElementsAndNonExtensibleMode() {
+        String expected = "[2,2,4,4,2]";
+        String actual = "[2,2,2,4,4]";
+        JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
+    }
+
+    @Test
+    public void compareArraysWithDuplicatedElementsAndNonExtensibleMode_negative() {
+        String expected = "[2,2,4,4]";
+        String actual = "[2,2,2,4,4]";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
+    }
 }
