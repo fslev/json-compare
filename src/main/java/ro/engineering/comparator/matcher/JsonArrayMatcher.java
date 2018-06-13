@@ -22,15 +22,18 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
             UseCase useCase = getUseCase(element.asText());
             boolean found = false;
             for (int j = 0; j < actual.size(); j++) {
+                if (matchedPositions.contains(j)) {
+                    continue;
+                }
+                if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) && j != i) {
+                    continue;
+                }
                 if (useCase.equals(UseCase.MATCH)) {
-                    if (matchedPositions.contains(j)) {
-                        continue;
-                    }
                     JsonNode actElement = actual.get(j);
                     try {
                         new JsonMatcher(element, actElement, compareModes).matches();
                     } catch (MatcherException e) {
-                        if (i == j && compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
+                        if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
                             throw new MatcherException(String
                                     .format("JSON ARRAY elements differ at position %s", i + 1));
                         }
@@ -40,28 +43,22 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                     matchedPositions.add(j);
                     break;
                 } else {
-                    if (matchedPositions.contains(j)) {
-                        continue;
-                    }
                     JsonNode actElement = actual.get(j);
                     try {
                         new JsonMatcher(element, actElement, compareModes).matches();
                     } catch (MatcherException e) {
-                        if (i == j && compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
-                            throw new MatcherException(String
-                                    .format("JSON ARRAY elements differ at position %s", i + 1));
-                        }
                         found = true;
                         break;
                     }
                 }
             }
             if (!found && useCase.equals(UseCase.MATCH)) {
-                throw new MatcherException("Expected element at position " + (i + 1)
-                        + " NOT FOUND:\n" + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
+                throw new MatcherException(
+                        "Expected element from position " + (i + 1) + " was NOT FOUND:\n"
+                                + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }
             if (found && useCase.equals(UseCase.DO_NOT_MATCH)) {
-                throw new MatcherException("Expected element found at position " + (i + 1)
+                throw new MatcherException("Expected element from position " + (i + 1)
                         + " was FOUND:\n" + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }
 
