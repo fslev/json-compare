@@ -51,7 +51,7 @@ You can ignore regular expression compare
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
-JSONCompare.assertNotEquals(expected, actual, DO_NOT_USE_REGEX);
+JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
 ```
 
 ## Error messages
