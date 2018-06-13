@@ -1,4 +1,4 @@
-package com.github.fslev.comparator.matcher;
+package ro.engineering.comparator.matcher;
 
 public class MatcherException extends Exception {
 

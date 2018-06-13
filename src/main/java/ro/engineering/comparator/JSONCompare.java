@@ -1,8 +1,8 @@
-package com.github.fslev.comparator;
+package ro.engineering.comparator;
 
-import com.github.fslev.comparator.matcher.JsonMatcher;
-import com.github.fslev.comparator.matcher.MatcherException;
-import com.github.fslev.util.StringUtil;
+import ro.engineering.comparator.matcher.JsonMatcher;
+import ro.engineering.comparator.matcher.MatcherException;
+import ro.engineering.util.StringUtil;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,6 +10,10 @@ import static org.junit.Assert.fail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * @author fslev
+ */
 
 public class JSONCompare {
 
@@ -42,8 +46,8 @@ public class JSONCompare {
             new JsonMatcher(expected, actual, new HashSet<CompareMode>(Arrays.asList(compareModes)))
                     .matches();
         } catch (MatcherException e) {
-            fail(message == null ? String.format("%s\nExpected:\n%s\nBut got:\n%s ",
-                    e.getMessage(), StringUtil.cropLarge(prettyPrint(expected)),
+            fail(message == null ? String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
+                    StringUtil.cropLarge(prettyPrint(expected)),
                     StringUtil.cropLarge(prettyPrint(actual))) : message);
         }
     }

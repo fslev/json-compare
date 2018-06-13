@@ -1,6 +1,6 @@
-package com.github.fslev.comparator.matcher;
+package ro.engineering.comparator.matcher;
 
-import com.github.fslev.comparator.CompareMode;
+import ro.engineering.comparator.CompareMode;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;

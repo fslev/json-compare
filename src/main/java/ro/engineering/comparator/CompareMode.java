@@ -1,4 +1,4 @@
-package com.github.fslev.comparator;
+package ro.engineering.comparator;
 
 public enum CompareMode {
     JSON_OBJECT_NON_EXTENSIBLE,
