@@ -15,6 +15,14 @@ String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
+But you can use the special comparators: JSON_OBJECT_NON_EXTENSIBLE , JSON_ARRAY_NON_EXTENSIBLE for exact match
+
+```javascript
+String expected = "{\"b\":\"val1\"}";
+String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
+JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
+```
+
 You can use regular expressions on values
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
@@ -27,6 +35,13 @@ JSONCompare.assertEquals(expected, actual);
 String expected = "{\".*oba.*\":\"some value\"}";
 String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertEquals(expected, actual);
+```
+
+You can ignore regular expression compare
+```javascript
+String expected = "{\"a\":\".*me.*\"}";
+String actual = "{\"a\":\"some text\"}";
+JSONCompare.assertNotEquals(expected, actual, DO_NOT_USE_REGEX);
 ```
 
 ## Error messages
@@ -90,6 +105,14 @@ JSONCompare.assertEquals(expected, actual);
 String expected = "[1,\"test\",4,\".*\"]";
 String actual = "[4,1,\"test\"]";
 JSONCompare.assertNotEquals(expected, actual);    
+        
+```
+
+Use the JSON_ARRAY_STRICT_ORDER:
+```
+String expected = "[1,\"test\",4]";
+String actual = "[4,1,\"test\"]";
+JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);    
         
 ```
 
