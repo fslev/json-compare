@@ -20,7 +20,11 @@ String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-But you can use the special comparators: JSON_OBJECT_NON_EXTENSIBLE or JSON_ARRAY_NON_EXTENSIBLE for exact match
+But you can use the special comparators:
+* JSON_OBJECT_NON_EXTENSIBLE
+* JSON_ARRAY_NON_EXTENSIBLE
+* JSON_ARRAY_STRICT_ORDER
+* DO_NOT_USE_REGEX
 
 ```javascript
 String expected = "{\"b\":\"val1\"}";
@@ -83,7 +87,7 @@ But got:
 ```
 
 ## More examples
-You can also use the "!" DO NOT MATCH option, in order to negate the comparison between JSON values
+You can also use the "!" `DO NOT MATCH` option, in order to negate the comparison between JSON values
 
 ```javascript
 String expected = "{\"a\":\"!test\"}";
@@ -113,7 +117,7 @@ JSONCompare.assertNotEquals(expected, actual);
         
 ```
 
-Use the JSON_ARRAY_STRICT_ORDER:
+Use the `JSON_ARRAY_STRICT_ORDER`:
 ```
 String expected = "[1,\"test\",4]";
 String actual = "[4,1,\"test\"]";
