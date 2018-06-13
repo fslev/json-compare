@@ -114,16 +114,14 @@ JSONCompare.assertEquals(expected, actual);
 
 String expected = "[1,\"test\",4,\".*\"]";
 String actual = "[4,1,\"test\"]";
-JSONCompare.assertNotEquals(expected, actual);    
-        
+JSONCompare.assertNotEquals(expected, actual);
 ```
 
 Use the `JSON_ARRAY_STRICT_ORDER`:
 ```
 String expected = "[1,\"test\",4]";
 String actual = "[4,1,\"test\"]";
-JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);    
-        
+JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
 ```
 
       
