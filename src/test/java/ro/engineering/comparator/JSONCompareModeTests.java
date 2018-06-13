@@ -47,6 +47,34 @@ public class JSONCompareModeTests {
     }
 
     @Test
+    public void compareEmptyJSONArrayViaStrictOrder() {
+        String expected = "[]";
+        String actual = "[1,2]";
+        JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+    }
+
+    @Test
+    public void compareEmptyJSONArrayViaStrictOrder_negative() {
+        String expected = "[2]";
+        String actual = "[]";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+    }
+
+    @Test
+    public void compareEmptyJSONArrayViaJSONArrayNonExtensible() {
+        String expected = "[]";
+        String actual = "[]";
+        JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
+    }
+
+    @Test
+    public void compareEmptyJSONArrayViaJSONArrayNonExtensible_negative() {
+        String expected = "[]";
+        String actual = "[1,2]";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
+    }
+
+    @Test
     public void compareJSONObjectViaJSONArrayNonExtensibleMode() {
         String expected = "{\"a\":true,\"b\":[2,4,5,6]}";
         String actual = "{\"a\":true,\"c\":\"text\",\"b\":[6,5,2,4]}";
