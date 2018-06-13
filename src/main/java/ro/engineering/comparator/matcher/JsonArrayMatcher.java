@@ -61,11 +61,10 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                 throw new MatcherException("Expected element from position " + (i + 1)
                         + " was FOUND:\n" + StringUtil.cropSmall(JSONCompare.prettyPrint(element)));
             }
-
-            if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
-                    && expected.size() < actual.size()) {
-                throw new MatcherException("Actual JSON ARRAY has extra elements");
-            }
+        }
+        if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
+                && expected.size() < actual.size()) {
+            throw new MatcherException("Actual JSON ARRAY has extra elements");
         }
     }
 }
