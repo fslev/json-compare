@@ -29,7 +29,8 @@ But you can use the special comparators:
 ```javascript
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
-JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
+JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE,
+                            CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
 ```
 
 You can use regular expressions on values
