@@ -5,6 +5,11 @@ A Java library for comparing JSON objects
 ## Summary
 Write tests that compare two JSON objects and check the differences between them.
 
+## Dependencies
+
+1. JUnit
+2. Jackson
+
 ## Examples
 
 With JSONCompare you assert by default that the expected JSON is included within the actual JSON
