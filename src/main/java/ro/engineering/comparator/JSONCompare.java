@@ -47,8 +47,8 @@ public class JSONCompare {
                     .matches();
         } catch (MatcherException e) {
             fail(message == null ? String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
-                    StringUtil.cropLarge(prettyPrint(expected)),
-                    StringUtil.cropLarge(prettyPrint(actual))) : message);
+                    StringUtil.cropXL(prettyPrint(expected)),
+                    StringUtil.cropXL(prettyPrint(actual))) : message);
         }
     }
 
@@ -69,7 +69,7 @@ public class JSONCompare {
         try {
             jsonNode = mapper.readTree(json);
         } catch (IOException e) {
-            fail(String.format("Not a JSON:\n%s", StringUtil.cropMedium(json)));
+            fail(String.format("Not a JSON:\n%s", StringUtil.cropM(json)));
         }
         return jsonNode;
     }
