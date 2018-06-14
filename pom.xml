@@ -129,6 +129,14 @@
         </plugins>
     </build>
 
+    <developers>
+        <developer>
+            <name>Florin Slevoaca</name>
+            <email>slevoaca.florin@gmail.com</email>
+            <timezone>EEST</timezone>
+        </developer>
+    </developers>
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
