@@ -1,8 +1,8 @@
-package ro.engineering.comparator.matcher;
+package ro.skyah.comparator.matcher;
 
-import ro.engineering.comparator.CompareMode;
-import ro.engineering.comparator.JSONCompare;
-import ro.engineering.util.MessageUtil;
+import ro.skyah.comparator.CompareMode;
+import ro.skyah.comparator.JSONCompare;
+import ro.skyah.util.MessageUtil;
 import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;

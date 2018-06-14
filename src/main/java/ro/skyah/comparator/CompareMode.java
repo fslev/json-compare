@@ -1,4 +1,4 @@
-package ro.engineering.comparator;
+package ro.skyah.comparator;
 
 public enum CompareMode {
     JSON_OBJECT_NON_EXTENSIBLE,

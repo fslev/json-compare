@@ -1,4 +1,4 @@
-package ro.engineering.util;
+package ro.skyah.util;
 
 public class MessageUtil {
 

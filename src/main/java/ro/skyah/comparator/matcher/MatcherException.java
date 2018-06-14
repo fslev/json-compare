@@ -1,4 +1,4 @@
-package ro.engineering.comparator.matcher;
+package ro.skyah.comparator.matcher;
 
 public class MatcherException extends Exception {
 

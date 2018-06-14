@@ -1,6 +1,6 @@
-package ro.engineering.comparator.matcher;
+package ro.skyah.comparator.matcher;
 
-import ro.engineering.comparator.CompareMode;
+import ro.skyah.comparator.CompareMode;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

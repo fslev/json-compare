@@ -1,8 +1,8 @@
-package ro.engineering.comparator;
+package ro.skyah.comparator;
 
-import ro.engineering.comparator.matcher.JsonMatcher;
-import ro.engineering.comparator.matcher.MatcherException;
-import ro.engineering.util.MessageUtil;
+import ro.skyah.comparator.matcher.JsonMatcher;
+import ro.skyah.comparator.matcher.MatcherException;
+import ro.skyah.util.MessageUtil;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;

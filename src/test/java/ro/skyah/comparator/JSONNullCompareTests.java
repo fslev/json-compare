@@ -1,4 +1,4 @@
-package ro.engineering.comparator;
+package ro.skyah.comparator;
 
 import org.junit.Test;
 
