@@ -2,7 +2,7 @@ package ro.engineering.comparator.matcher;
 
 import ro.engineering.comparator.CompareMode;
 import ro.engineering.comparator.JSONCompare;
-import ro.engineering.util.StringUtil;
+import ro.engineering.util.MessageUtil;
 import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -55,11 +55,11 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
             if (!found && useCase.equals(UseCase.MATCH)) {
                 throw new MatcherException(
                         "Expected element from position " + (i + 1) + " was NOT FOUND:\n"
-                                + StringUtil.cropS(JSONCompare.prettyPrint(element)));
+                                + MessageUtil.cropS(JSONCompare.prettyPrint(element)));
             }
             if (found && useCase.equals(UseCase.DO_NOT_MATCH)) {
                 throw new MatcherException("Expected element from position " + (i + 1)
-                        + " was FOUND:\n" + StringUtil.cropS(JSONCompare.prettyPrint(element)));
+                        + " was FOUND:\n" + MessageUtil.cropS(JSONCompare.prettyPrint(element)));
             }
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)

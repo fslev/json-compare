@@ -2,7 +2,7 @@ package ro.engineering.comparator;
 
 import ro.engineering.comparator.matcher.JsonMatcher;
 import ro.engineering.comparator.matcher.MatcherException;
-import ro.engineering.util.StringUtil;
+import ro.engineering.util.MessageUtil;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -47,8 +47,8 @@ public class JSONCompare {
                     .matches();
         } catch (MatcherException e) {
             fail(message == null ? String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
-                    StringUtil.cropXL(prettyPrint(expected)),
-                    StringUtil.cropXL(prettyPrint(actual))) : message);
+                    MessageUtil.cropXL(prettyPrint(expected)),
+                    MessageUtil.cropXL(prettyPrint(actual))) : message);
         }
     }
 
@@ -69,7 +69,7 @@ public class JSONCompare {
         try {
             jsonNode = mapper.readTree(json);
         } catch (IOException e) {
-            fail(String.format("Not a JSON:\n%s", StringUtil.cropM(json)));
+            fail(String.format("Not a JSON:\n%s", MessageUtil.cropM(json)));
         }
         return jsonNode;
     }

@@ -1,6 +1,6 @@
 package ro.engineering.util;
 
-public class StringUtil {
+public class MessageUtil {
 
     private static final int CROPPED_LENGTH_S = 32;
     private static final int CROPPED_LENGTH_M = 256;
