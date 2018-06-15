@@ -113,7 +113,7 @@ String actual = "{\"ab\":\"value does not matter\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-With JSONCompare you can check for extra JSON values or fields
+With JSONCompare you can check for extra JSON values or fields by using the power of regex and DO NOT FIND use case
 ```javascript
 String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
