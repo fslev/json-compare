@@ -119,6 +119,20 @@ public class JSONCompareModeTests {
     }
 
     @Test
+    public void compareBooleanStringViaDoNotUseRegexMode() {
+        String expected = "{\"a\":\"true\"}";
+        String actual = "{\"a\":\"true\"}";
+        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+    }
+
+    @Test
+    public void compareBooleanStringViaDoNotUseRegexMode_negative() {
+        String expected = "{\"a\":\"true\"}";
+        String actual = "{\"a\":true}";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+    }
+
+    @Test
     public void compareViaDoNotUseRegexModeOnJsonFields() {
         String expected = "{\"\\\\d+\":\"text\"}";
         String actual = "{\"\\\\d+\":\"text\"}";
@@ -216,5 +230,33 @@ public class JSONCompareModeTests {
         String expected = "[2,2,4,4]";
         String actual = "[2,2,2,4,4]";
         JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
+    }
+
+    @Test
+    public void compareFieldsViaCaseInsensitiveMode() {
+        String expected = "{\"firstname\":\"text to match\"}";
+        String actual = "{\"firstName\":\"text to match\"}";
+        JSONCompare.assertEquals(expected, actual, CompareMode.CASE_INSENSITIVE);
+    }
+
+    @Test
+    public void compareFieldsViaCaseInsensitiveMode_negative() {
+        String expected = "{\"firstname\":\"text to match\"}";
+        String actual = "{\"firstName\":\"text to match\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareValuesViaCaseInsensitiveMode() {
+        String expected = "{\"a\":\"Text To Match\",\"b\":[\"Some Text\"]}";
+        String actual = "{\"a\":\"text to match\",\"b\":[\"some text\"]}";
+        JSONCompare.assertEquals(expected, actual, CompareMode.CASE_INSENSITIVE);
+    }
+
+    @Test
+    public void compareValuesViaCaseInsensitiveMode_negative() {
+        String expected = "{\"a\":\"Text To Match\",\"b\":[\"Some Text\"]}";
+        String actual = "{\"a\":\"Text To Match\",\"b\":[\"some text\"]}";
+        JSONCompare.assertNotEquals(expected, actual);
     }
 }
