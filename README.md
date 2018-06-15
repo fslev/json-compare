@@ -12,12 +12,17 @@ Write tests that compare two JSONs and check the differences between them.
 
 ## Central Repository
 
+#### Apache Maven
 ```
 <dependency>
     <groupId>com.github.fslev</groupId>
     <artifactId>json-compare</artifactId>
     <version>1.1.0</version>
 </dependency>
+```
+#### Gradle/Grails
+```
+compile 'com.github.fslev:json-compare:1.1.0'
 ```
 
 ## Examples
