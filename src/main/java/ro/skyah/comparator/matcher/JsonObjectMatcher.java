@@ -26,7 +26,9 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             String field = entry.getKey();
             JsonNode value = entry.getValue();
             UseCase useCase = getUseCase(field);
-            String sanitizedField = sanitize(field);
+            String sanitizedField = compareModes.contains(CompareMode.CASE_INSENSITIVE)
+                    ? sanitize(field).toLowerCase()
+                    : sanitize(field);
             Map.Entry<String, JsonNode> candidateEntry =
                     searchCandidateEntryByField(sanitizedField, actual);
             if (useCase.equals(UseCase.DO_NOT_MATCH) && candidateEntry == null) {
@@ -59,7 +61,9 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
         Iterator<Map.Entry<String, JsonNode>> it = target.fields();
         while (it.hasNext()) {
             Map.Entry<String, JsonNode> entry = it.next();
-            String key = entry.getKey();
+            String key = compareModes.contains(CompareMode.CASE_INSENSITIVE)
+                    ? entry.getKey().toLowerCase()
+                    : entry.getKey();
             if (matchedFieldNames.contains(key)) {
                 continue;
             }

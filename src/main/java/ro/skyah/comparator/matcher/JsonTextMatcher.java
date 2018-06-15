@@ -20,8 +20,12 @@ public class JsonTextMatcher extends AbstractJsonMatcher {
         matchNumberType();
         matchBooleanType();
         matchNullType();
-        String expectedText = sanitize(expected.asText());
-        String actualText = actual.asText();
+        String expectedText = compareModes.contains(CompareMode.CASE_INSENSITIVE)
+                ? sanitize(expected.asText()).toLowerCase()
+                : sanitize(expected.asText());
+        String actualText =
+                compareModes.contains(CompareMode.CASE_INSENSITIVE) ? actual.asText().toLowerCase()
+                        : actual.asText();
         Pattern pattern = Pattern.compile(expectedText);
         Matcher matcher = pattern.matcher(actualText);
         if ((!compareModes.contains(CompareMode.DO_NOT_USE_REGEX)
@@ -35,7 +39,10 @@ public class JsonTextMatcher extends AbstractJsonMatcher {
 
     private void matchNullType() throws MatcherException {
         if ((expected.getNodeType().equals(JsonNodeType.NULL)
-                && !actual.getNodeType().equals(JsonNodeType.NULL))) {
+                && !actual.getNodeType().equals(JsonNodeType.NULL))
+                || (compareModes.contains(CompareMode.DO_NOT_USE_REGEX)
+                        && actual.getNodeType().equals(JsonNodeType.NULL)
+                        && (!expected.getNodeType().equals(JsonNodeType.NULL)))) {
             throw new MatcherException(
                     String.format("Expected value: %s  But found: %s ", expected, actual));
         }
@@ -43,7 +50,10 @@ public class JsonTextMatcher extends AbstractJsonMatcher {
 
     private void matchNumberType() throws MatcherException {
         if (expected.getNodeType().equals(JsonNodeType.NUMBER)
-                && !actual.getNodeType().equals(JsonNodeType.NUMBER)) {
+                && !actual.getNodeType().equals(JsonNodeType.NUMBER)
+                || (compareModes.contains(CompareMode.DO_NOT_USE_REGEX)
+                        && actual.getNodeType().equals(JsonNodeType.NUMBER)
+                        && (!expected.getNodeType().equals(JsonNodeType.NUMBER)))) {
             throw new MatcherException(
                     String.format("Expected value: %s  But found: %s ", expected, actual));
         }
@@ -51,7 +61,10 @@ public class JsonTextMatcher extends AbstractJsonMatcher {
 
     private void matchBooleanType() throws MatcherException {
         if (expected.getNodeType().equals(JsonNodeType.BOOLEAN)
-                && !actual.getNodeType().equals(JsonNodeType.BOOLEAN)) {
+                && !actual.getNodeType().equals(JsonNodeType.BOOLEAN)
+                || (compareModes.contains(CompareMode.DO_NOT_USE_REGEX)
+                        && actual.getNodeType().equals(JsonNodeType.BOOLEAN)
+                        && (!expected.getNodeType().equals(JsonNodeType.BOOLEAN)))) {
             throw new MatcherException(
                     String.format("Expected value: %s  But found: %s ", expected, actual));
         }
