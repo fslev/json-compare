@@ -10,6 +10,16 @@ Write tests that compare two JSONs and check the differences between them.
 1. JUnit
 2. Jackson
 
+## Central Repository
+
+```
+<dependency>
+    <groupId>com.github.fslev</groupId>
+    <artifactId>json-compare</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
+
 ## Examples
 
 With JSONCompare you assert by default that the expected JSON is included within the actual JSON
@@ -20,11 +30,12 @@ String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-But you can use the special comparators:
+But you can use the special compare modes:
 * JSON_OBJECT_NON_EXTENSIBLE
 * JSON_ARRAY_NON_EXTENSIBLE
 * JSON_ARRAY_STRICT_ORDER
 * DO_NOT_USE_REGEX
+* CASE_INSENSITIVE
 
 ```javascript
 String expected = "{\"b\":\"val1\"}";
