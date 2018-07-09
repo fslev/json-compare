@@ -259,4 +259,18 @@ public class JSONCompareModeTests {
         String actual = "{\"a\":\"Text To Match\",\"b\":[\"some text\"]}";
         JSONCompare.assertNotEquals(expected, actual);
     }
+
+    @Test
+    public void compareValuesViaDoNotUseRegexModeAndInvalidRegexPatternsInsideValues() {
+        String expected = "{\"a\":\"text to (match\"}";
+        String actual = "{\"a\":\"text to (match\"}";
+        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+    }
+
+    @Test
+    public void compareValuesViaDoNotUseRegexModeAndInvalidRegexPatternsInsideValues_negative() {
+        String expected = "{\"a\":\"!text to (match\"}";
+        String actual = "{\"a\":\"text to (match\"}";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+    }
 }

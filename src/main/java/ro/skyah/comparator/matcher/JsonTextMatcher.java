@@ -4,6 +4,7 @@ import ro.skyah.comparator.CompareMode;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 
@@ -26,14 +27,23 @@ public class JsonTextMatcher extends AbstractJsonMatcher {
         String actualText =
                 compareModes.contains(CompareMode.CASE_INSENSITIVE) ? actual.asText().toLowerCase()
                         : actual.asText();
-        Pattern pattern = Pattern.compile(expectedText);
-        Matcher matcher = pattern.matcher(actualText);
-        if ((!compareModes.contains(CompareMode.DO_NOT_USE_REGEX)
-                && matcher.matches() != useCase.equals(UseCase.MATCH))
-                || ((compareModes.contains(CompareMode.DO_NOT_USE_REGEX)
-                        && !expectedText.equals(actualText)))) {
-            throw new MatcherException(
-                    String.format("Expected value: %s  But found: %s ", expected, actual));
+        if (!compareModes.contains(CompareMode.DO_NOT_USE_REGEX)) {
+            Pattern pattern;
+            try {
+                pattern = Pattern.compile(expectedText);
+            } catch (PatternSyntaxException e) {
+                throw new MatcherException(e.getMessage());
+            }
+            Matcher matcher = pattern.matcher(actualText);
+            if (matcher.matches() != useCase.equals(UseCase.MATCH)) {
+                throw new MatcherException(
+                        String.format("Expected value: %s  But found: %s ", expected, actual));
+            }
+        } else {
+            if (expectedText.equals(actualText) != useCase.equals(UseCase.MATCH)) {
+                throw new MatcherException(
+                        String.format("Expected value: %s  But found: %s ", expected, actual));
+            }
         }
     }
 

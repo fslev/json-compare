@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class JsonObjectMatcher extends AbstractJsonMatcher {
@@ -70,10 +71,14 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             if (compareModes.contains(CompareMode.DO_NOT_USE_REGEX) && fieldName.equals(key)) {
                 return entry;
             } else if (!compareModes.contains(CompareMode.DO_NOT_USE_REGEX)) {
-                Pattern pattern = Pattern.compile(fieldName);
-                Matcher matcher = pattern.matcher(key);
-                if (matcher.matches()) {
-                    return entry;
+                try {
+                    Pattern pattern = Pattern.compile(fieldName);
+                    Matcher matcher = pattern.matcher(key);
+                    if (matcher.matches()) {
+                        return entry;
+                    }
+                } catch (PatternSyntaxException e) {
+                    return null;
                 }
             }
         }

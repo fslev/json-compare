@@ -33,4 +33,18 @@ public class Issue1Test {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
+    @Test
+    public void isolateIssueWithInvalidRegexPattern() {
+        String expected = "{\"field\":\"new line.\\n\\n1. (wa\"}";
+        String actual = "{\"field\":\"new line.\\n\\n1. (wa\"}";
+        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+    }
+
+    @Test
+    public void isolateIssueWithInvalidRegexpattern_negative() {
+        String expected = "{\"field\":\"Snew line.\\n\\n1. (wa\"}";
+        String actual = "{\"field\":\"new line.\\n\\n1. (wa\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
 }
