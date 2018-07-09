@@ -33,6 +33,18 @@ public class JSONCompare {
         assertEquals(message, expectedJson, actualJson, compareModes);
     }
 
+    public static void assertEquals(String message, String expected, JsonNode actual,
+            CompareMode... compareModes) {
+        JsonNode expectedJson = getJson(expected);
+        assertEquals(message, expectedJson, actual, compareModes);
+    }
+
+    public static void assertNotEquals(String message, String expected, JsonNode actual,
+            CompareMode... compareModes) {
+        JsonNode expectedJson = getJson(expected);
+        assertNotEquals(message, expectedJson, actual, compareModes);
+    }
+
     public static void assertNotEquals(String message, String expected, String actual,
             CompareMode... compareModes) {
         JsonNode expectedJson = getJson(expected);
