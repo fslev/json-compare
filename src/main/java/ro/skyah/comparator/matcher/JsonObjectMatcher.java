@@ -1,22 +1,21 @@
 package ro.skyah.comparator.matcher;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ro.skyah.comparator.CompareMode;
+import ro.skyah.comparator.JsonComparator;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class JsonObjectMatcher extends AbstractJsonMatcher {
 
     // The names within an object SHOULD be unique.
     private Set<String> matchedFieldNames = new HashSet<String>();
 
-    public JsonObjectMatcher(JsonNode expected, JsonNode actual, Set<CompareMode> compareModes) {
-        super(expected, actual, compareModes);
+    public JsonObjectMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
+        super(expected, actual, comparator, compareModes);
     }
 
     @Override
@@ -27,9 +26,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             String field = entry.getKey();
             JsonNode value = entry.getValue();
             UseCase useCase = getUseCase(field);
-            String sanitizedField = compareModes.contains(CompareMode.CASE_INSENSITIVE)
-                    ? sanitize(field).toLowerCase()
-                    : sanitize(field);
+            String sanitizedField = sanitize(field);
             Map.Entry<String, JsonNode> candidateEntry =
                     searchCandidateEntryByField(sanitizedField, actual);
             if (useCase.equals(UseCase.DO_NOT_MATCH) && candidateEntry == null) {
@@ -44,7 +41,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             String candidateField = candidateEntry.getKey();
             JsonNode candidateValue = candidateEntry.getValue();
             try {
-                new JsonMatcher(value, candidateValue, compareModes).matches();
+                new JsonMatcher(value, candidateValue, comparator, compareModes).matches();
             } catch (MatcherException e) {
                 throw new MatcherException(
                         String.format("%s <- field \"%s\"", e.getMessage(), sanitizedField));
@@ -58,28 +55,16 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
     }
 
     private Map.Entry<String, JsonNode> searchCandidateEntryByField(String fieldName,
-            JsonNode target) {
+                                                                    JsonNode target) {
         Iterator<Map.Entry<String, JsonNode>> it = target.fields();
         while (it.hasNext()) {
             Map.Entry<String, JsonNode> entry = it.next();
-            String key = compareModes.contains(CompareMode.CASE_INSENSITIVE)
-                    ? entry.getKey().toLowerCase()
-                    : entry.getKey();
+            String key = entry.getKey();
             if (matchedFieldNames.contains(key)) {
                 continue;
             }
-            if (compareModes.contains(CompareMode.DO_NOT_USE_REGEX) && fieldName.equals(key)) {
+            if (comparator.compareFields(fieldName, key)) {
                 return entry;
-            } else if (!compareModes.contains(CompareMode.DO_NOT_USE_REGEX)) {
-                try {
-                    Pattern pattern = Pattern.compile(fieldName);
-                    Matcher matcher = pattern.matcher(key);
-                    if (matcher.matches()) {
-                        return entry;
-                    }
-                } catch (PatternSyntaxException e) {
-                    return null;
-                }
             }
         }
         return null;

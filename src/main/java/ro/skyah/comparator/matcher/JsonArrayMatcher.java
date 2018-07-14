@@ -1,18 +1,20 @@
 package ro.skyah.comparator.matcher;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.JSONCompare;
+import ro.skyah.comparator.JsonComparator;
 import ro.skyah.util.MessageUtil;
+
 import java.util.HashSet;
 import java.util.Set;
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class JsonArrayMatcher extends AbstractJsonMatcher {
 
     private Set<Integer> matchedPositions = new HashSet<Integer>();
 
-    public JsonArrayMatcher(JsonNode expected, JsonNode actual, Set<CompareMode> compareModes) {
-        super(expected, actual, compareModes);
+    public JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
+        super(expected, actual, comparator, compareModes);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                 if (useCase.equals(UseCase.MATCH)) {
                     JsonNode actElement = actual.get(j);
                     try {
-                        new JsonMatcher(element, actElement, compareModes).matches();
+                        new JsonMatcher(element, actElement, comparator, compareModes).matches();
                     } catch (MatcherException e) {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
                             throw new MatcherException(String
@@ -45,7 +47,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                 } else {
                     JsonNode actElement = actual.get(j);
                     try {
-                        new JsonMatcher(element, actElement, compareModes).matches();
+                        new JsonMatcher(element, actElement, comparator, compareModes).matches();
                     } catch (MatcherException e) {
                         found = true;
                         break;
