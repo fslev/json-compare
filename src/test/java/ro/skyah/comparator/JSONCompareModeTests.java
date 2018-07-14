@@ -2,6 +2,9 @@ package ro.skyah.comparator;
 
 import org.junit.Test;
 
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 public class JSONCompareModeTests {
 
     @Test
@@ -108,56 +111,131 @@ public class JSONCompareModeTests {
     public void compareViaDoNotUseRegexMode() {
         String expected = "{\"a\":\"\\\\d+\"}";
         String actual = "{\"a\":\"\\\\d+\"}";
-        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 
     @Test
     public void compareViaDoNotUseRegexMode_negative() {
         String expected = "{\"a\":\"\\\\d+\"}";
         String actual = "{\"a\":\"2\"}";
-        JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertNotEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 
     @Test
     public void compareBooleanStringViaDoNotUseRegexMode() {
         String expected = "{\"a\":\"true\"}";
         String actual = "{\"a\":\"true\"}";
-        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 
     @Test
     public void compareBooleanStringViaDoNotUseRegexMode_negative() {
         String expected = "{\"a\":\"true\"}";
         String actual = "{\"a\":true}";
-        JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertNotEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return false;
+            }
+        });
     }
 
     @Test
     public void compareViaDoNotUseRegexModeOnJsonFields() {
-        String expected = "{\"\\\\d+\":\"text\"}";
+        String expected = "{\"\\\\d+\":\".*\"}";
         String actual = "{\"\\\\d+\":\"text\"}";
-        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                try {
+                    Pattern pattern = Pattern.compile(expected.toString());
+                    return pattern.matcher(actual.toString()).matches();
+                } catch (PatternSyntaxException e) {
+                    return expected.equals(actual);
+                }
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 
     @Test
     public void compareViaDoNotUseRegexModeOnJsonFields_negative() {
-        String expected = "{\"\\\\d+\":\"text\"}";
+        String expected = "{\"\\\\d+\":\".*\"}";
         String actual = "{\"2\":\"text\"}";
-        JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertNotEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                try {
+                    Pattern pattern = Pattern.compile(expected.toString());
+                    return pattern.matcher(actual.toString()).matches();
+                } catch (PatternSyntaxException e) {
+                    return expected.equals(actual);
+                }
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
+
 
     @Test
     public void compareViaDoNotUseRegexModeAndDoNotFindUseCase() {
         String expected = "{\"!\\\\d+\":\"text\"}";
         String actual = "{\"10\":\"text\"}";
-        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 
     @Test
     public void compareViaDoNotUseRegexModeAndDoNotFindUseCase_negative() {
         String expected = "{\"!\\\\d+\":\"text\"}";
         String actual = "{\"\\\\d+\":\"text\"}";
-        JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertNotEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 
     @Test
@@ -236,41 +314,43 @@ public class JSONCompareModeTests {
     public void compareFieldsViaCaseInsensitiveMode() {
         String expected = "{\"firstname\":\"text to match\"}";
         String actual = "{\"firstName\":\"text to match\"}";
-        JSONCompare.assertEquals(expected, actual, CompareMode.CASE_INSENSITIVE);
-    }
-
-    @Test
-    public void compareFieldsViaCaseInsensitiveMode_negative() {
-        String expected = "{\"firstname\":\"text to match\"}";
-        String actual = "{\"firstName\":\"text to match\"}";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertEquals(expected, actual);
     }
 
     @Test
     public void compareValuesViaCaseInsensitiveMode() {
         String expected = "{\"a\":\"Text To Match\",\"b\":[\"Some Text\"]}";
         String actual = "{\"a\":\"text to match\",\"b\":[\"some text\"]}";
-        JSONCompare.assertEquals(expected, actual, CompareMode.CASE_INSENSITIVE);
-    }
-
-    @Test
-    public void compareValuesViaCaseInsensitiveMode_negative() {
-        String expected = "{\"a\":\"Text To Match\",\"b\":[\"Some Text\"]}";
-        String actual = "{\"a\":\"Text To Match\",\"b\":[\"some text\"]}";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertEquals(expected, actual);
     }
 
     @Test
     public void compareValuesViaDoNotUseRegexModeAndInvalidRegexPatternsInsideValues() {
         String expected = "{\"a\":\"text to (match\"}";
         String actual = "{\"a\":\"text to (match\"}";
-        JSONCompare.assertEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 
     @Test
     public void compareValuesViaDoNotUseRegexModeAndInvalidRegexPatternsInsideValues_negative() {
         String expected = "{\"a\":\"!text to (match\"}";
         String actual = "{\"a\":\"text to (match\"}";
-        JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+        JSONCompare.assertNotEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 }
