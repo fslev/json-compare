@@ -39,8 +39,7 @@ But you can use the special compare modes:
 * JSON_OBJECT_NON_EXTENSIBLE
 * JSON_ARRAY_NON_EXTENSIBLE
 * JSON_ARRAY_STRICT_ORDER
-* DO_NOT_USE_REGEX
-* CASE_INSENSITIVE
+
 
 ```javascript
 String expected = "{\"b\":\"val1\"}";
@@ -63,11 +62,19 @@ String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-You can ignore the regular expression compare mode
+You can ignore the regular expression compare mode, by using a custom comparator
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
-JSONCompare.assertNotEquals(expected, actual, CompareMode.DO_NOT_USE_REGEX);
+JSONCompare.assertEquals(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
 ```
 
 ## Error messages
