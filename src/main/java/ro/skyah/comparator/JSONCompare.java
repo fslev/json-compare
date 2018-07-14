@@ -92,19 +92,19 @@ public class JSONCompare {
     public static void assertEquals(String message, JsonNode expected, JsonNode actual, JsonComparator comparator,
                                     CompareMode... compareModes) {
         try {
-            new JsonMatcher(expected, actual, comparator != null ? new DefaultJsonComparator() : comparator, new HashSet<CompareMode>(Arrays.asList(compareModes)))
+            new JsonMatcher(expected, actual, comparator == null ? new DefaultJsonComparator() : comparator, new HashSet<CompareMode>(Arrays.asList(compareModes)))
                     .matches();
         } catch (MatcherException e) {
             fail(message == null ? String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
-                    MessageUtil.cropXL(prettyPrint(expected)),
-                    MessageUtil.cropXL(prettyPrint(actual))) : message);
+                    prettyPrint(expected),
+                    prettyPrint(actual)) : message);
         }
     }
 
     public static void assertNotEquals(String message, JsonNode expectedJson, JsonNode actualJson, JsonComparator comparator,
                                        CompareMode... compareModes) {
         try {
-            new JsonMatcher(expectedJson, actualJson, comparator != null ? new DefaultJsonComparator() : comparator,
+            new JsonMatcher(expectedJson, actualJson, comparator == null ? new DefaultJsonComparator() : comparator,
                     new HashSet<CompareMode>(Arrays.asList(compareModes))).matches();
         } catch (MatcherException e) {
             return;
