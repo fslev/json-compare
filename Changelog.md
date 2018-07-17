@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2
+Add more methods to compare JSONs
+
 ## 2.0.1
 Optimization
 
