@@ -6,8 +6,8 @@ public class JSONObjectCompareTests {
 
     @Test
     public void compareSimple() {
-        String expected = "{\"b\":\"val1\",\"a\":\"val2\"}";
-        String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
+        String expected = "{\"b\":\"\\\\Q(⌐■_■)\\\\E\",\"a\":\"val2\"}";
+        String actual = "{\"a\":\"val2\",\"b\":\"(⌐■_■)\"}";
         JSONCompare.assertEquals(expected, actual);
     }
 
