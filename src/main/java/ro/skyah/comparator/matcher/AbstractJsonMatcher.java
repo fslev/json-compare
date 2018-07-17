@@ -1,23 +1,30 @@
 package ro.skyah.comparator.matcher;
 
+import ro.skyah.comparator.CompareMode;
+import ro.skyah.comparator.DefaultJsonComparator;
+import ro.skyah.comparator.JsonComparator;
+import java.util.HashSet;
+import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
-import ro.skyah.comparator.CompareMode;
-import ro.skyah.comparator.JsonComparator;
-
-import java.util.Set;
 
 public abstract class AbstractJsonMatcher {
+    protected static Set<CompareMode> compareModes = new HashSet<CompareMode>();
+    protected static JsonComparator comparator = new DefaultJsonComparator();
     protected JsonNode expected;
     protected JsonNode actual;
-    protected Set<CompareMode> compareModes;
-    protected JsonComparator comparator;
 
-    public AbstractJsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
+
+    public AbstractJsonMatcher(JsonNode expected, JsonNode actual) {
         this.expected = expected;
         this.actual = actual;
-        this.compareModes = compareModes;
-        this.comparator = comparator;
+    }
+
+    public AbstractJsonMatcher(JsonNode expected, JsonNode actual, JsonComparator jsonComparator,
+            Set<CompareMode> jsonCompareModes) {
+        this(expected, actual);
+        compareModes = jsonCompareModes;
+        comparator = jsonComparator;
     }
 
     public abstract void matches() throws MatcherException;

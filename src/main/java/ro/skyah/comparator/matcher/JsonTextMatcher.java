@@ -2,15 +2,11 @@ package ro.skyah.comparator.matcher;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
-import ro.skyah.comparator.CompareMode;
-import ro.skyah.comparator.JsonComparator;
-
-import java.util.Set;
 
 public class JsonTextMatcher extends AbstractJsonMatcher {
 
-    public JsonTextMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
-        super(expected, actual, comparator, compareModes);
+    public JsonTextMatcher(JsonNode expected, JsonNode actual) {
+        super(expected, actual);
     }
 
     @Override

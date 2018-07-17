@@ -1,21 +1,19 @@
 package ro.skyah.comparator.matcher;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import ro.skyah.comparator.CompareMode;
-import ro.skyah.comparator.JsonComparator;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class JsonObjectMatcher extends AbstractJsonMatcher {
 
     // The names within an object SHOULD be unique.
     private Set<String> matchedFieldNames = new HashSet<String>();
 
-    public JsonObjectMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
-        super(expected, actual, comparator, compareModes);
+    public JsonObjectMatcher(JsonNode expected, JsonNode actual) {
+        super(expected, actual);
     }
 
     @Override
@@ -41,7 +39,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             String candidateField = candidateEntry.getKey();
             JsonNode candidateValue = candidateEntry.getValue();
             try {
-                new JsonMatcher(value, candidateValue, comparator, compareModes).matches();
+                new JsonMatcher(value, candidateValue).matches();
             } catch (MatcherException e) {
                 throw new MatcherException(
                         String.format("%s <- field \"%s\"", e.getMessage(), sanitizedField));
@@ -55,7 +53,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
     }
 
     private Map.Entry<String, JsonNode> searchCandidateEntryByField(String fieldName,
-                                                                    JsonNode target) {
+            JsonNode target) {
         Iterator<Map.Entry<String, JsonNode>> it = target.fields();
         while (it.hasNext()) {
             Map.Entry<String, JsonNode> entry = it.next();

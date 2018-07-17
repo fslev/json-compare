@@ -1,17 +1,15 @@
 package ro.skyah.comparator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ro.skyah.comparator.matcher.JsonMatcher;
 import ro.skyah.comparator.matcher.MatcherException;
 import ro.skyah.util.MessageUtil;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
-
 import static org.junit.Assert.fail;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author fslev
