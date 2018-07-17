@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+Optimization
+
 ## 2.0.0
 Add custom comparator :)
 Remove DO_NOT_USE_REGEX and CASE_INSENSITIVE compare modes
