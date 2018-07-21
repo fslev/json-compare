@@ -17,4 +17,11 @@ public class JSONofDifferentTypesCompareTests {
         String actual = "{\"a\":\"!test\"}";
         JSONCompare.assertNotEquals(expected, actual);
     }
+
+    @Test(expected = AssertionError.class)
+    public void compareStrangeValues() {
+        String expected = "\"1\"Fds\"\"";
+        String actual = "1";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
 }
