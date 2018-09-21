@@ -62,7 +62,7 @@ String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-You can ignore the regular expression compare mode, by using a custom comparator
+You can ignore the regular expression compare mode, by using a ***custom comparator***
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
