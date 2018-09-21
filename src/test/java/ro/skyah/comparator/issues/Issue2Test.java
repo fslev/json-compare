@@ -12,9 +12,9 @@ public class Issue2Test {
     @Test
     public void testIssue() {
         String expected =
-                "{\"field\":\"value wi(th parentheses\"}";
+                "{\"field\":[\"value wi(th parentheses\", 4, 3]}";
         String actual =
-                "{\"field\":\"value wi(th parentheses\"}";
+                "{\"field\":[3, 4, \"value wi(th parentheses\"]}";
         JSONCompare.assertEquals(expected, actual);
     }
 }
