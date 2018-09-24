@@ -17,7 +17,7 @@ Write tests that compare two JSONs and check the differences between them.
 <dependency>
     <groupId>com.github.fslev</groupId>
     <artifactId>json-compare</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.3</version>
 </dependency>
 ```
 #### Gradle/Grails
