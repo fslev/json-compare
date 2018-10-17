@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.4
+Log improvement
+
 ## 2.0.3
 Bug fixing
 

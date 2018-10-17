@@ -55,11 +55,11 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
             if (!found && useCase.equals(UseCase.MATCH)) {
                 throw new MatcherException(
                         "Expected element from position " + (i + 1) + " was NOT FOUND:\n"
-                                + MessageUtil.cropS(JSONCompare.prettyPrint(element)));
+                                + MessageUtil.cropM(JSONCompare.prettyPrint(element)));
             }
             if (found && useCase.equals(UseCase.DO_NOT_MATCH)) {
                 throw new MatcherException("Expected element from position " + (i + 1)
-                        + " was FOUND:\n" + MessageUtil.cropS(JSONCompare.prettyPrint(element)));
+                        + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(element)));
             }
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
