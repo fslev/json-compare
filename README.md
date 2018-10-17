@@ -17,12 +17,12 @@ Write tests that compare two JSONs and check the differences between them.
 <dependency>
     <groupId>com.github.fslev</groupId>
     <artifactId>json-compare</artifactId>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
 </dependency>
 ```
 #### Gradle/Grails
 ```
-compile 'com.github.fslev:json-compare:2.0.3'
+compile 'com.github.fslev:json-compare:2.0.4'
 ```
 
 ## Examples
