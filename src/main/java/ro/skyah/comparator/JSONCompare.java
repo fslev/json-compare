@@ -1,17 +1,14 @@
 package ro.skyah.comparator;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import ro.skyah.comparator.matcher.JsonMatcher;
 import ro.skyah.comparator.matcher.MatcherException;
 import ro.skyah.util.MessageUtil;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
-
 import static org.junit.Assert.fail;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -119,8 +116,9 @@ public class JSONCompare {
                     comparator == null ? new DefaultJsonComparator() : comparator,
                     new HashSet<CompareMode>(Arrays.asList(compareModes))).matches();
         } catch (MatcherException e) {
-            fail(message == null ? String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
-                    prettyPrint(expected), prettyPrint(actual)) : message);
+            String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
+                    prettyPrint(expected), prettyPrint(actual));
+            fail(message == null ? defaultMessage : message + "\n" + defaultMessage);
         }
     }
 
@@ -133,7 +131,8 @@ public class JSONCompare {
         } catch (MatcherException e) {
             return;
         }
-        fail(message == null ? "JSONs are equal" : message);
+        String defaultMessage = "JSONs are equal";
+        fail(message == null ? defaultMessage : message + "\n" + defaultMessage);
     }
 
     private static JsonNode getJson(String json) {
