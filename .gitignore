@@ -21,6 +21,7 @@ tomcat
 *.ear
 *.sar
 *.class
+.attach_*
 
 # Maven
 target/

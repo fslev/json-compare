@@ -1,4 +1,8 @@
 # Changelog
+## 2.0.6
+Bug fix  
+Internal refactoring   
+
 ## 2.0.5
 Correct usage of custom message 
 

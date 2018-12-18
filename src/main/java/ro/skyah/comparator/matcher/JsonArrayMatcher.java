@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class JsonArrayMatcher extends AbstractJsonMatcher {
 
-    private Set<Integer> matchedPositions = new HashSet<Integer>();
+    private Set<Integer> matchedPositions = new HashSet<>();
 
     public JsonArrayMatcher(JsonNode expected, JsonNode actual) {
         super(expected, actual);
@@ -19,7 +19,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
     public void matches() throws MatcherException {
         for (int i = 0; i < expected.size(); i++) {
             JsonNode element = expected.get(i);
-            UseCase useCase = getUseCase(element.asText());
+            UseCase useCase = getUseCase(element);
             boolean found = false;
             for (int j = 0; j < actual.size(); j++) {
                 if (matchedPositions.contains(j)) {

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class JsonObjectMatcher extends AbstractJsonMatcher {
 
     // The names within an object SHOULD be unique.
-    private Set<String> matchedFieldNames = new HashSet<String>();
+    private Set<String> matchedFieldNames = new HashSet<>();
 
     public JsonObjectMatcher(JsonNode expected, JsonNode actual) {
         super(expected, actual);
@@ -53,7 +53,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
     }
 
     private Map.Entry<String, JsonNode> searchCandidateEntryByField(String fieldName,
-            JsonNode target) {
+                                                                    JsonNode target) {
         Iterator<Map.Entry<String, JsonNode>> it = target.fields();
         while (it.hasNext()) {
             Map.Entry<String, JsonNode> entry = it.next();
