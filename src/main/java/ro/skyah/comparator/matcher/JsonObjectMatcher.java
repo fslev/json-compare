@@ -1,8 +1,11 @@
 package ro.skyah.comparator.matcher;
 
 import ro.skyah.comparator.CompareMode;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,29 +25,37 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
         while (it.hasNext()) {
             Map.Entry<String, JsonNode> entry = it.next();
             String field = entry.getKey();
-            JsonNode value = entry.getValue();
-            UseCase useCase = getUseCase(field);
+            JsonNode expectedValue = entry.getValue();
+            UseCase fieldUseCase = getUseCase(field);
             String sanitizedField = sanitize(field);
-            Map.Entry<String, JsonNode> candidateEntry =
-                    searchCandidateEntryByField(sanitizedField, actual);
-            if (useCase.equals(UseCase.DO_NOT_MATCH) && candidateEntry == null) {
+            List<Map.Entry<String, JsonNode>> candidateEntries =
+                    searchCandidateEntriesByField(sanitizedField, actual);
+            if (fieldUseCase.equals(UseCase.DO_NOT_MATCH) && candidateEntries.isEmpty()) {
                 continue;
             }
-            if (useCase.equals(UseCase.DO_NOT_MATCH) && candidateEntry != null) {
+            if (fieldUseCase.equals(UseCase.DO_NOT_MATCH) && !candidateEntries.isEmpty()) {
                 throw new MatcherException(String.format("Field %s was found", field));
             }
-            if (useCase.equals(UseCase.MATCH) && candidateEntry == null) {
+            if (fieldUseCase.equals(UseCase.MATCH) && candidateEntries.isEmpty()) {
                 throw new MatcherException(String.format("Field %s was not found", field));
             }
-            String candidateField = candidateEntry.getKey();
-            JsonNode candidateValue = candidateEntry.getValue();
-            try {
-                new JsonMatcher(value, candidateValue).matches();
-            } catch (MatcherException e) {
-                throw new MatcherException(
-                        String.format("%s <- field \"%s\"", e.getMessage(), sanitizedField));
+            for (ListIterator<Map.Entry<String, JsonNode>> it1 = candidateEntries.listIterator(); it1.hasNext(); ) {
+                Map.Entry<String, JsonNode> candidateEntry = it1.next();
+                String candidateField = candidateEntry.getKey();
+                JsonNode candidateValue = candidateEntry.getValue();
+                try {
+                    new JsonMatcher(expectedValue, candidateValue).matches();
+                } catch (MatcherException e) {
+                    if (it1.hasNext()) {
+                        continue;
+                    } else {
+                        throw new MatcherException(
+                                String.format("%s <- field \"%s\"", e.getMessage(), sanitizedField));
+                    }
+                }
+                matchedFieldNames.add(candidateField);
+                break;
             }
-            matchedFieldNames.add(candidateField);
         }
         if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)
                 && expected.size() < actual.size()) {
@@ -52,8 +63,9 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
         }
     }
 
-    private Map.Entry<String, JsonNode> searchCandidateEntryByField(String fieldName,
-                                                                    JsonNode target) {
+    private List<Map.Entry<String, JsonNode>> searchCandidateEntriesByField(String fieldName,
+                                                                            JsonNode target) {
+        List<Map.Entry<String, JsonNode>> candidatesList = new ArrayList<>();
         Iterator<Map.Entry<String, JsonNode>> it = target.fields();
         while (it.hasNext()) {
             Map.Entry<String, JsonNode> entry = it.next();
@@ -62,9 +74,9 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
                 continue;
             }
             if (comparator.compareFields(fieldName, key)) {
-                return entry;
+                candidatesList.add(entry);
             }
         }
-        return null;
+        return candidatesList;
     }
 }

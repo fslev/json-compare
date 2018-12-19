@@ -1,4 +1,7 @@
 # Changelog
+## 2.0.7
+Bug fix    
+
 ## 2.0.6
 Bug fix  
 Internal refactoring   
