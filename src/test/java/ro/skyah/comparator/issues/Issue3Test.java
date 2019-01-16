@@ -1,7 +1,6 @@
 package ro.skyah.comparator.issues;
 
 import ro.skyah.comparator.JSONCompare;
-import ro.skyah.comparator.matcher.MatcherException;
 import org.junit.Test;
 
 public class Issue3Test {

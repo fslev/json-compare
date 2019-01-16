@@ -39,8 +39,8 @@ public abstract class AbstractJsonMatcher {
         } else if (node.isArray()) {
             ArrayNode arrayNode = (ArrayNode) node;
             for (int i = 0; i < arrayNode.size(); i++) {
-                if (getUseCase(arrayNode.get(i)).equals(UseCase.DO_NOT_MATCH)) {
-                    return UseCase.DO_NOT_MATCH;
+                if (getUseCase(arrayNode.get(i)).equals(UseCase.MATCH)) {
+                    return UseCase.MATCH;
                 }
             }
         } else if (node.isObject()) {
@@ -48,13 +48,13 @@ public abstract class AbstractJsonMatcher {
             Iterator<Map.Entry<String, JsonNode>> it = objectNode.fields();
             while (it.hasNext()) {
                 Map.Entry<String, JsonNode> entry = it.next();
-                if (getUseCase(entry.getKey()).equals(UseCase.DO_NOT_MATCH)
-                        || getUseCase(entry.getValue()).equals(UseCase.DO_NOT_MATCH)) {
-                    return UseCase.DO_NOT_MATCH;
+                if (getUseCase(entry.getKey()).equals(UseCase.MATCH)
+                        && getUseCase(entry.getValue()).equals(UseCase.MATCH)) {
+                    return UseCase.MATCH;
                 }
             }
         }
-        return UseCase.MATCH;
+        return UseCase.DO_NOT_MATCH;
     }
 
     protected UseCase getUseCase(String value) {
