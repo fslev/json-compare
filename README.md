@@ -22,7 +22,7 @@ Write tests that compare two JSONs and check the differences between them.
 ```
 #### Gradle/Grails
 ```
-compile 'com.github.fslev:json-compare:2.0.7'
+compile 'com.github.fslev:json-compare:2.0.8'
 ```
 
 ## Examples
