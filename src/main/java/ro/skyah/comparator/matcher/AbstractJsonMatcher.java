@@ -1,16 +1,17 @@
 package ro.skyah.comparator.matcher;
 
-import ro.skyah.comparator.CompareMode;
-import ro.skyah.comparator.DefaultJsonComparator;
-import ro.skyah.comparator.JsonComparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import ro.skyah.comparator.CompareMode;
+import ro.skyah.comparator.DefaultJsonComparator;
+import ro.skyah.comparator.JsonComparator;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class AbstractJsonMatcher {
     protected static Set<CompareMode> compareModes = new HashSet<CompareMode>();
@@ -33,7 +34,7 @@ public abstract class AbstractJsonMatcher {
 
     public abstract void matches() throws MatcherException;
 
-    protected UseCase getUseCase(JsonNode node) {
+    protected static UseCase getUseCase(JsonNode node) {
         if (node.isValueNode()) {
             return getUseCase(node.asText());
         } else if (node.isArray()) {
@@ -57,14 +58,14 @@ public abstract class AbstractJsonMatcher {
         return UseCase.DO_NOT_MATCH;
     }
 
-    protected UseCase getUseCase(String value) {
+    protected static UseCase getUseCase(String value) {
         if (value == null || value.length() == 0 || !value.substring(0, 1).equals("!")) {
             return UseCase.MATCH;
         }
         return UseCase.DO_NOT_MATCH;
     }
 
-    protected String sanitize(String value) {
+    protected static String sanitize(String value) {
         if (getUseCase(value).equals(UseCase.DO_NOT_MATCH)) {
             return value.substring(1);
         }
