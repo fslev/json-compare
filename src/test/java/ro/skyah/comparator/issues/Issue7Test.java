@@ -42,9 +42,66 @@ public class Issue7Test {
     }
 
     @Test(expected = AssertionError.class)
+    public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue_negative1() {
+        String expected = "{\"records\": [{\"!.*\": \".*\"}]}";
+        String actual = "{\"records\": [\"a\", [true]]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue2() {
+        String expected = "{\"records\": [{\"!.*\": \".*\"}]}";
+        String actual = "{\"records\": [{}]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue3() {
+        String expected = "{\"records\": [{\"a\": \"!b\"}]}";
+        String actual = "{\"records\": [{\"a\": \"c\"}]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue3_negative() {
+        String expected = "{\"records\": [{\"a\": \"!b\"}]}";
+        String actual = "{\"records\": [{\"a\": \"b\"}]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void checkJsonArrayHasNoTextElementThatMatchesTheExpectedTextValue1() {
+        String expected = "{\"records\": [\"!b\"]}";
+        String actual = "{\"records\": [{\"a\": 0}, \"c\"]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test(expected = AssertionError.class)
     public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue_negative() {
         String expected = "{\"records\": [\"!b\"]}";
         String actual = "{\"records\": [{\"a\": 0}, \"b\"]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void checkJsonArrayHasNoElementThatMatchesTheExpectedJsonObject() {
+        String expected = "{\"records\": [ {\"!a\": 0} ]}";
+        String actual = "{\"records\": [ \"b\" ]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void checkJsonArrayHasNoElementThatMatchesTheExpectedJsonObject_negative() {
+        String expected = "{\"records\": [ {\"!a\": 0} ]}";
+        String actual = "{\"records\": [ \"b\", {\"a\": 0} ]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void checkJsonArrayHasNoElementThatMatchesTheExpectedJsonArray() {
+        String expected = "{\"records\": [ [\"!a\"] ]}";
+        String actual = "{\"records\": [ \"b\" ]}";
         JSONCompare.assertEquals(expected, actual);
     }
 
