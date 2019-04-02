@@ -1,11 +1,12 @@
 package ro.skyah.comparator.matcher;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.JSONCompare;
 import ro.skyah.util.MessageUtil;
+
 import java.util.HashSet;
 import java.util.Set;
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class JsonArrayMatcher extends AbstractJsonMatcher {
 
