@@ -6,6 +6,23 @@ import ro.skyah.comparator.JSONCompare;
 public class Issue7Test {
 
     @Test
+    public void matchUseCaseLiterals() {
+        String expected = "{\"records\": [\".*\"]}";
+        String actual = "{\"records\": [\".*\" ]}";
+        JSONCompare.assertEquals(expected, actual);
+        expected = "{\"records\": [\"\\!.*\"]}";
+        actual = "{\"records\": [\"!.*\" ]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void matchUseCaseLiterals_negative() {
+        String expected = "{\"records\": [\"!.*\"]}";
+        String actual = "{\"records\": [\"!.*\" ]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
     public void checkJsonArrayHasNoExtraElements() {
         String expected = "{\"records\": [\"!.*\"]}";
         String actual = "{\"records\": []}";
@@ -35,7 +52,7 @@ public class Issue7Test {
     }
 
     @Test
-    public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue() {
+    public void checkJsonArrayHasJsonObjectElementThatMatchesTheExpectedTextValue() {
         String expected = "{\"records\": [{\".*\": \".*\"}]}";
         String actual = "{\"records\": [{\"a\": 0}]}";
         JSONCompare.assertEquals(expected, actual);
