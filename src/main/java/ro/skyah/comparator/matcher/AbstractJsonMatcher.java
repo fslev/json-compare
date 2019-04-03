@@ -40,7 +40,7 @@ public abstract class AbstractJsonMatcher {
         } else if (node.isArray()) {
             ArrayNode arrayNode = (ArrayNode) node;
             for (int i = 0; i < arrayNode.size(); i++) {
-                if (getUseCase(arrayNode.get(i)).equals(UseCase.MATCH)) {
+                if (getUseCase(arrayNode.get(i)) == UseCase.MATCH) {
                     return UseCase.MATCH;
                 }
             }
@@ -49,8 +49,8 @@ public abstract class AbstractJsonMatcher {
             Iterator<Map.Entry<String, JsonNode>> it = objectNode.fields();
             while (it.hasNext()) {
                 Map.Entry<String, JsonNode> entry = it.next();
-                if (getUseCase(entry.getKey()).equals(UseCase.MATCH)
-                        && getUseCase(entry.getValue()).equals(UseCase.MATCH)) {
+                if (getUseCase(entry.getKey()) == UseCase.MATCH
+                        && getUseCase(entry.getValue()) == UseCase.MATCH) {
                     return UseCase.MATCH;
                 }
             }
@@ -61,10 +61,6 @@ public abstract class AbstractJsonMatcher {
     protected static UseCase getUseCase(String value) {
         if (value == null || value.isEmpty()) {
             return UseCase.MATCH;
-        } else if (value.equals(UseCase.MATCH_ANY)) {
-            return UseCase.MATCH_ANY;
-        } else if (value.equals(UseCase.DO_NOT_MATCH_ANY)) {
-            return UseCase.DO_NOT_MATCH_ANY;
         } else if (value.startsWith(UseCase.DO_NOT_MATCH.getValue())) {
             return UseCase.DO_NOT_MATCH;
         } else return UseCase.MATCH;
@@ -81,7 +77,7 @@ public abstract class AbstractJsonMatcher {
         if (value == null) {
             return value;
         }
-        if (value.matches("^(\\\\*)!.*$")) {
+        if (value.matches("^(\\\\*)" + UseCase.DO_NOT_MATCH + ".*$")) {
             return value.replaceFirst("\\\\\\\\\\\\", "");
         }
         return value;
@@ -107,8 +103,14 @@ public abstract class AbstractJsonMatcher {
                 || type.equals(JsonNodeType.BOOLEAN) || type.equals(JsonNodeType.NULL);
     }
 
+    protected static boolean areOfSameType(JsonNode expNode, JsonNode actNode) {
+        return (isJsonText(expNode) & isJsonText(actNode))
+                || (isJsonObject(expNode) & isJsonObject(actNode))
+                || (isJsonArray(expNode) & isJsonArray(actNode));
+    }
+
     public enum UseCase {
-        MATCH, DO_NOT_MATCH("!"), MATCH_ANY(".*"), DO_NOT_MATCH_ANY("!.*");
+        MATCH, DO_NOT_MATCH("!");
         private String value;
 
         UseCase() {

@@ -19,8 +19,8 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
     @Override
     public void matches() throws MatcherException {
         for (int i = 0; i < expected.size(); i++) {
-            JsonNode element = expected.get(i);
-            UseCase useCase = getUseCase(element);
+            JsonNode expElement = expected.get(i);
+            UseCase useCase = getUseCase(expElement);
             boolean found = false;
             for (int j = 0; j < actual.size(); j++) {
                 if (matchedPositions.contains(j)) {
@@ -32,7 +32,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                 if (useCase.equals(UseCase.MATCH)) {
                     JsonNode actElement = actual.get(j);
                     try {
-                        new JsonMatcher(element, actElement).matches();
+                        new JsonMatcher(expElement, actElement).matches();
                     } catch (MatcherException e) {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
                             throw new MatcherException(String
@@ -45,8 +45,11 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                     break;
                 } else {
                     JsonNode actElement = actual.get(j);
+                    if (!areOfSameType(expElement, actElement)) {
+                        continue;
+                    }
                     try {
-                        new JsonMatcher(element, actElement).matches();
+                        new JsonMatcher(expElement, actElement).matches();
                     } catch (MatcherException e) {
                         found = true;
                         break;
@@ -56,11 +59,11 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
             if (!found && useCase.equals(UseCase.MATCH)) {
                 throw new MatcherException(
                         "Expected element from position " + (i + 1) + " was NOT FOUND:\n"
-                                + MessageUtil.cropM(JSONCompare.prettyPrint(element)));
+                                + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
             }
             if (found && useCase.equals(UseCase.DO_NOT_MATCH)) {
                 throw new MatcherException("Expected element from position " + (i + 1)
-                        + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(element)));
+                        + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
             }
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
