@@ -83,8 +83,8 @@ public class Issue7Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test
-    public void checkJsonArrayHasNoElementThatMatchesTheExpectedJsonObject() {
+    @Test(expected = AssertionError.class)
+    public void checkJsonArrayHasNoElementThatMatchesTheExpectedJsonObject1_negative() {
         String expected = "{\"records\": [ {\"!a\": 0} ]}";
         String actual = "{\"records\": [ \"b\" ]}";
         JSONCompare.assertEquals(expected, actual);

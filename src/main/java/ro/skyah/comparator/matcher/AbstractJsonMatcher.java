@@ -66,7 +66,7 @@ public abstract class AbstractJsonMatcher {
     }
 
     protected static String sanitize(String value) {
-        if (getUseCase(value).equals(UseCase.DO_NOT_MATCH)) {
+        if (getUseCase(value) == UseCase.DO_NOT_MATCH) {
             return value.substring(1);
         }
         return removeEscapedUseCase(value);
