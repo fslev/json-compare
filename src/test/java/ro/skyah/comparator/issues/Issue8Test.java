@@ -81,4 +81,19 @@ public class Issue8Test {
         String actual = "{\"\\\\!records\":0}";
         JSONCompare.assertEquals(expected, actual);
     }
+
+    @Test
+    public void testDoNotMatchAnyUseCase() {
+        String expected = "{\"records\":[  \"!.*\" ]}";
+        String actual = "{\"records\":[  ]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDoNotMatchAnyUseCase_negative() {
+        String expected = "{\"records\":[  \"!.*\" ]}";
+        String actual = "{\"records\":{}}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
 }

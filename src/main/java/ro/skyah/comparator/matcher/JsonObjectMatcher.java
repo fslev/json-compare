@@ -25,9 +25,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             String sanitizedField = sanitize(field);
             List<Map.Entry<String, JsonNode>> candidateEntries =
                     searchCandidateEntriesByField(sanitizedField, actual);
-            if (fieldUseCase.equals(UseCase.DO_NOT_MATCH) && candidateEntries.isEmpty()) {
-                continue;
-            }
+
             if (fieldUseCase.equals(UseCase.DO_NOT_MATCH) && !candidateEntries.isEmpty()) {
                 throw new MatcherException(String.format("Field %s was found", field));
             }

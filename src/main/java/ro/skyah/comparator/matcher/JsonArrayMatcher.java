@@ -45,9 +45,6 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                     break;
                 } else {
                     JsonNode actElement = actual.get(j);
-                    if (!areOfSameType(expElement, actElement)) {
-                        continue;
-                    }
                     try {
                         new JsonMatcher(expElement, actElement).matches();
                     } catch (MatcherException e) {

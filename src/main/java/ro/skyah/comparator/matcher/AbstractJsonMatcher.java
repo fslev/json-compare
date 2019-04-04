@@ -1,16 +1,12 @@
 package ro.skyah.comparator.matcher;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.DefaultJsonComparator;
 import ro.skyah.comparator.JsonComparator;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractJsonMatcher {
@@ -37,25 +33,8 @@ public abstract class AbstractJsonMatcher {
     protected static UseCase getUseCase(JsonNode node) {
         if (node.isValueNode()) {
             return getUseCase(node.asText());
-        } else if (node.isArray()) {
-            ArrayNode arrayNode = (ArrayNode) node;
-            for (int i = 0; i < arrayNode.size(); i++) {
-                if (getUseCase(arrayNode.get(i)) == UseCase.MATCH) {
-                    return UseCase.MATCH;
-                }
-            }
-        } else if (node.isObject()) {
-            ObjectNode objectNode = (ObjectNode) node;
-            Iterator<Map.Entry<String, JsonNode>> it = objectNode.fields();
-            while (it.hasNext()) {
-                Map.Entry<String, JsonNode> entry = it.next();
-                if (getUseCase(entry.getKey()) == UseCase.MATCH
-                        && getUseCase(entry.getValue()) == UseCase.MATCH) {
-                    return UseCase.MATCH;
-                }
-            }
         }
-        return UseCase.DO_NOT_MATCH;
+        return UseCase.MATCH;
     }
 
     protected static UseCase getUseCase(String value) {
