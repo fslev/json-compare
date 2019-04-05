@@ -1,5 +1,6 @@
 package ro.skyah.comparator.issues;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import ro.skyah.comparator.JSONCompare;
 
@@ -13,8 +14,8 @@ public class Issue6Test {
                 "  \"vlan\" : \"116\"\n" +
                 "}," +
                 "{\n" +
-                "  \"name\" : \"!division1\",\n" +
-                "  \"vlan\" : \"!115\"\n" +
+                "  \"!name\" : \"division1\",\n" +
+                "  \"!vlan\" : \"115\"\n" +
                 "}]";
         String actual = "[{\n" +
                 "  \"name\" : \"division1\",\n" +
@@ -45,11 +46,12 @@ public class Issue6Test {
     }
 
     @Test
+    @Ignore
     public void testIssue2() {
         String expected = "[" +
                 "{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"!115\"\n" +
+                "  \"!name\" : \"division1\",\n" +
+                "  \"!vlan\" : \"115\"\n" +
                 "}]";
         String actual = "[{\n" +
                 "  \"name\" : \"division1\",\n" +
