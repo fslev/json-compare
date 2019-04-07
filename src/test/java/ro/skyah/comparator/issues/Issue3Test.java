@@ -43,8 +43,6 @@ public class Issue3Test {
                         "    \"prio\" : 0,\n" +
                         "    \"rootName\" : \"test-apply-template-0d108962-d854-4ae0-a84e-d687dea1b69a.health\"\n" +
                         "  }, {\n" +
-                        "    \"content\" : \"!mx00.1and1.com\"\n" +
-                        "  }, {\n" +
                         "    \"name\" : \"test-apply-template-0d108962-d854-4ae0-a84e-d687dea1b69a.health\",\n" +
                         "    \"type\" : \"NS\",\n" +
                         "    \"content\" : \"ns1240.ui-dns.com\",\n" +
@@ -80,9 +78,7 @@ public class Issue3Test {
                         "    \"content\" : \"\\\"text-record\\\"\",\n" +
                         "    \"ttl\" : 3600,\n" +
                         "    \"rootName\" : \"test-apply-template-0d108962-d854-4ae0-a84e-d687dea1b69a.health\"\n" +
-                        "  }, {\n" +
-                        "    \"name\" : \"!sip.test-apply-template-0d108962-d854-4ae0-a84e-d687dea1b69a.health\"\n" +
-                        "  } ]\n" +
+                        "  }, \"!.*\" ]\n" +
                         "}";
         String actual =
                 "{\n" +

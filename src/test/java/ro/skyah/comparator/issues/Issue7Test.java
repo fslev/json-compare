@@ -45,7 +45,7 @@ public class Issue7Test {
 
     @Test
     public void checkJsonArrayHasExtraElements1() {
-        String expected = "{\"records\": [\".+\"]}";
+        String expected = "{\"records\": [\".*\"]}";
         String actual = "{\"records\": [{\"a\":0}]}";
         JSONCompare.assertEquals(expected, actual);
     }
@@ -53,7 +53,7 @@ public class Issue7Test {
     @Test
     public void checkJsonArrayHasExtraElements2() {
         String expected =
-                "{\"records\":[\".+\"]}";
+                "{\"records\":[\".*\"]}";
         String actual = "{\"records\":[{\"a\":0}]}";
         JSONCompare.assertEquals(expected, actual);
     }
@@ -68,7 +68,7 @@ public class Issue7Test {
 
     @Test
     public void checkJsonArrayHasExtraElements4() {
-        String expected = "{\"records\": [[1], false, \".+\"]}";
+        String expected = "{\"records\": [[1], false, \".*\"]}";
         String actual = "{\"records\": [[1], {\"a\":0}, false]}";
         JSONCompare.assertEquals(expected, actual);
     }
@@ -117,9 +117,16 @@ public class Issue7Test {
     }
 
     @Test
-    public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue2() {
+    public void checkJsonArrayHasAJsonObjectElementThatMatchesTheExpectedJsonObjectValue() {
         String expected = "{\"records\": [{\"!.*\": \".*\"}]}";
         String actual = "{\"records\": [{\"a\":0}]}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void checkJsonArrayHasAJsonObjectElementThatMatchesTheExpectedJsonObjectValue1() {
+        String expected = "{\"records\": [{\"!.*\": \".*\"}]}";
+        String actual = "{\"records\": [\"test\"]}";
         JSONCompare.assertNotEquals(expected, actual);
     }
 
@@ -148,7 +155,7 @@ public class Issue7Test {
     public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue6() {
         String expected = "{\"records\": [{\"!a\": \"b\"}]}";
         String actual = "{\"records\": [{\"x\": \"c\"}]}";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertEquals(expected, actual);
     }
 
     @Test
@@ -162,7 +169,7 @@ public class Issue7Test {
     public void checkJsonObjectDoNotFindKeyHasValueMatch1() {
         String expected = "{\"!a\": \"b\"}";
         String actual = "{\"x\": \"c\"}";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertEquals(expected, actual);
     }
 
     @Test(expected = AssertionError.class)

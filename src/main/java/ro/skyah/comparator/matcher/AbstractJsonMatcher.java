@@ -50,18 +50,20 @@ public abstract class AbstractJsonMatcher {
     }
 
     protected static String sanitize(String value) {
-        if (getUseCase(value) == UseCase.DO_NOT_MATCH) {
+        if (getUseCase(value) == UseCase.DO_NOT_MATCH || getUseCase(value) == UseCase.DO_NOT_MATCH_ANY) {
             return value.substring(1);
         }
-        return removeEscapedDoNotMatchUseCase(value);
+        return removeEscapedUseCases(value);
     }
 
-    private static String removeEscapedDoNotMatchUseCase(String value) {
+    private static String removeEscapedUseCases(String value) {
         if (value == null) {
             return value;
         }
-        if (value.matches("^(\\\\*)" + UseCase.DO_NOT_MATCH + ".*$")) {
-            return value.replaceFirst("\\\\\\\\\\\\", "");
+        if (value.startsWith("\\" + UseCase.DO_NOT_MATCH.getValue()) ||
+                value.equals("\\" + UseCase.DO_NOT_MATCH_ANY.getValue()) ||
+                value.equals("\\" + UseCase.MATCH_ANY.getValue())) {
+            return value.replaceFirst("\\\\", "");
         }
         return value;
     }
@@ -93,7 +95,7 @@ public abstract class AbstractJsonMatcher {
     }
 
     public enum UseCase {
-        MATCH, DO_NOT_MATCH("!"), MATCH_ANY(".+"), DO_NOT_MATCH_ANY("!.*");
+        MATCH, DO_NOT_MATCH("!"), MATCH_ANY(".*"), DO_NOT_MATCH_ANY("!.*");
         private String value;
 
         UseCase() {

@@ -31,7 +31,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
     private void matchWithActualJsonArray(int expPosition, JsonNode expElement, JsonNode actual) throws MatcherException {
         UseCase useCase = getUseCase(expElement);
         boolean found = false;
-        loop:
+        actualElementsLoop:
         for (int j = 0; j < actual.size(); j++) {
             if (matchedPositions.contains(j)) {
                 continue;
@@ -49,24 +49,24 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                             throw new MatcherException(String
                                     .format("JSON ARRAY elements differ at position %s", expPosition + 1));
                         }
-                        continue loop;
+                        continue actualElementsLoop;
                     }
                     found = true;
                     matchedPositions.add(j);
-                    break loop;
+                    break actualElementsLoop;
                 case MATCH_ANY:
                     matchedPositions.add(j);
                     return;
                 case DO_NOT_MATCH:
                     actElement = actual.get(j);
                     if (!areOfSameType(expElement, actElement)) {
-                        continue loop;
+                        continue actualElementsLoop;
                     }
                     try {
                         new JsonMatcher(expElement, actElement).matches();
                     } catch (MatcherException e) {
                         found = true;
-                        break loop;
+                        break actualElementsLoop;
                     }
                     break;
                 case DO_NOT_MATCH_ANY:

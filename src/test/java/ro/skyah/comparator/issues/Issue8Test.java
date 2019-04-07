@@ -58,7 +58,7 @@ public class Issue8Test {
     public void testJsonArrayDoNotMatchUseCase1() {
         String expected = "{\"records\":[  [\"!c\"] ]}";
         String actual = "{\"records\":[  \"b\", {\"a\": 0}, true, 1 ]}";
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertNotEquals(expected, actual);
     }
 
     @Test(expected = AssertionError.class)
@@ -93,6 +93,13 @@ public class Issue8Test {
     public void testDoNotMatchAnyUseCase_negative() {
         String expected = "{\"records\":[  \"!.*\" ]}";
         String actual = "{\"records\":{}}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void testDoNotMatchAnyUseCase_negative_A() {
+        String expected = "{\"records\":[  \"!.*\" ]}";
+        String actual = "{\"records\": [true]}";
         JSONCompare.assertNotEquals(expected, actual);
     }
 
