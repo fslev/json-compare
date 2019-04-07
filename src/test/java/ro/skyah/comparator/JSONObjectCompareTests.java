@@ -100,6 +100,13 @@ public class JSONObjectCompareTests {
     }
 
     @Test
+    public void compareForExtraFields1() {
+        String expected = "{\"b\":\"val1\",\"a\":\"val2\",\".*\":\".*\"}";
+        String actual = "{\"a\":\"val2\",\"b\":\"val1\",\"c\":{\"a\":0}}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
     public void compareForExtraFields_negative() {
         String expected = "{\"b\":\"val1\",\"a\":\"val2\",\".*\":\".*\"}";
         String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";

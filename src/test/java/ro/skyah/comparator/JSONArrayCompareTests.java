@@ -75,6 +75,20 @@ public class JSONArrayCompareTests {
     }
 
     @Test
+    public void compareWithNoExtraElements_negative1() {
+        String expected = "[1,\"test\",4,\"!.*\"]";
+        String actual = "[4,1,\"test\", {\"a\":0}]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithNoExtraElements_negative2() {
+        String expected = "[1,\"test\",4,\"!.*\"]";
+        String actual = "[4,1,\"test\",true]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
     public void compareWithExtraElements() {
         String expected = "[1,\"test\",4,\".*\"]";
         String actual = "[4,1,\"test\",false]";

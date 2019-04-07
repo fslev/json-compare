@@ -1,18 +1,13 @@
 package ro.skyah.comparator.matcher;
 
-import ro.skyah.comparator.CompareMode;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
+import ro.skyah.comparator.CompareMode;
+
+import java.util.*;
 
 public class JsonObjectMatcher extends AbstractJsonMatcher {
 
-    // The names within an object SHOULD be unique.
+    // The key names within a JSON OBJECT SHOULD be unique.
     private Set<String> matchedFieldNames = new HashSet<>();
 
     public JsonObjectMatcher(JsonNode expected, JsonNode actual) {
@@ -30,31 +25,20 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             String sanitizedField = sanitize(field);
             List<Map.Entry<String, JsonNode>> candidateEntries =
                     searchCandidateEntriesByField(sanitizedField, actual);
-            if (fieldUseCase.equals(UseCase.DO_NOT_MATCH) && candidateEntries.isEmpty()) {
-                continue;
-            }
-            if (fieldUseCase.equals(UseCase.DO_NOT_MATCH) && !candidateEntries.isEmpty()) {
-                throw new MatcherException(String.format("Field %s was found", field));
-            }
-            if (fieldUseCase.equals(UseCase.MATCH) && candidateEntries.isEmpty()) {
-                throw new MatcherException(String.format("Field %s was not found", field));
-            }
-            for (ListIterator<Map.Entry<String, JsonNode>> it1 = candidateEntries.listIterator(); it1.hasNext(); ) {
-                Map.Entry<String, JsonNode> candidateEntry = it1.next();
-                String candidateField = candidateEntry.getKey();
-                JsonNode candidateValue = candidateEntry.getValue();
-                try {
-                    new JsonMatcher(expectedValue, candidateValue).matches();
-                } catch (MatcherException e) {
-                    if (it1.hasNext()) {
-                        continue;
-                    } else {
-                        throw new MatcherException(
-                                String.format("%s <- field \"%s\"", e.getMessage(), sanitizedField));
+            switch (fieldUseCase) {
+                case MATCH_ANY:
+                case MATCH:
+                    if (candidateEntries.isEmpty()) {
+                        throw new MatcherException(String.format("Field %s was not found", field));
                     }
-                }
-                matchedFieldNames.add(candidateField);
-                break;
+                    matchWithCandidateEntries(sanitizedField, expectedValue, candidateEntries);
+                    break;
+                case DO_NOT_MATCH_ANY:
+                case DO_NOT_MATCH:
+                    if (!candidateEntries.isEmpty()) {
+                        throw new MatcherException(String.format("Field %s was found", field));
+                    }
+                    break;
             }
         }
         if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)
@@ -63,8 +47,32 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
         }
     }
 
-    private List<Map.Entry<String, JsonNode>> searchCandidateEntriesByField(String fieldName,
-                                                                            JsonNode target) {
+    private void matchWithCandidateEntries(String expKey, JsonNode expValue, List<Map.Entry<String, JsonNode>> candidates) throws MatcherException {
+        UseCase expValueUseCase = getUseCase(expValue);
+        for (ListIterator<Map.Entry<String, JsonNode>> it1 = candidates.listIterator(); it1.hasNext(); ) {
+            Map.Entry<String, JsonNode> candidateEntry = it1.next();
+            String candidateField = candidateEntry.getKey();
+            if (expValueUseCase == UseCase.MATCH_ANY) {
+                matchedFieldNames.add(candidateField);
+                break;
+            }
+            JsonNode candidateValue = candidateEntry.getValue();
+            try {
+                new JsonMatcher(expValue, candidateValue).matches();
+            } catch (MatcherException e) {
+                if (it1.hasNext()) {
+                    continue;
+                } else {
+                    throw new MatcherException(
+                            String.format("%s <- field \"%s\"", e.getMessage(), expKey));
+                }
+            }
+            matchedFieldNames.add(candidateField);
+            break;
+        }
+    }
+
+    private List<Map.Entry<String, JsonNode>> searchCandidateEntriesByField(String fieldName, JsonNode target) {
         List<Map.Entry<String, JsonNode>> candidatesList = new ArrayList<>();
         Iterator<Map.Entry<String, JsonNode>> it = target.fields();
         while (it.hasNext()) {

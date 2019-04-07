@@ -20,8 +20,54 @@ public class Issue6Test {
         String actual = "[{\n" +
                 "  \"name\" : \"division1\",\n" +
                 "  \"vlan\" : \"116\"\n" +
+                "}, {" +
+                "  \"name\" : \"division2\",\n" +
+                "  \"vlan\" : \"117\"" +
                 "}]";
         JSONCompare.assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void testIssue1a() {
+        String expected = "[{\n" +
+                "  \"name\" : \"division1\",\n" +
+                "  \"vlan\" : \"116\"\n" +
+                "}," +
+                "{\n" +
+                "  \"!name\" : \"division1\",\n" +
+                "  \"!vlan\" : \"115\"\n" +
+                "}]";
+        String actual = "[{\n" +
+                "  \"name\" : \"division1\",\n" +
+                "  \"vlan\" : \"116\"\n" +
+                "}," +
+                "{\n" +
+                "  \"a\" : \"division2\",\n" +
+                "  \"b\" : \"114\"\n" +
+                "}]";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testIssue1a_negative() {
+        String expected = "[{\n" +
+                "  \"name\" : \"division1\",\n" +
+                "  \"vlan\" : \"116\"\n" +
+                "}," +
+                "{\n" +
+                "  \"!name\" : \"division1\",\n" +
+                "  \"!vlan\" : \"115\"\n" +
+                "}]";
+        String actual = "[{\n" +
+                "  \"name\" : \"division1\",\n" +
+                "  \"vlan\" : \"116\"\n" +
+                "}," +
+                "{\n" +
+                "  \"a\" : \"division2\",\n" +
+                "  \"vlan\" : \"114\"\n" +
+                "}]";
+        JSONCompare.assertNotEquals(expected, actual);
     }
 
     @Test(expected = AssertionError.class)
@@ -44,6 +90,7 @@ public class Issue6Test {
                 "}]";
         JSONCompare.assertEquals(expected, actual);
     }
+
 
     @Test
     @Ignore

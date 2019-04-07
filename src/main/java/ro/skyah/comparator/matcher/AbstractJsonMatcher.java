@@ -1,16 +1,13 @@
 package ro.skyah.comparator.matcher;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.DefaultJsonComparator;
 import ro.skyah.comparator.JsonComparator;
+
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public abstract class AbstractJsonMatcher {
     protected static Set<CompareMode> compareModes = new HashSet<CompareMode>();
@@ -33,50 +30,40 @@ public abstract class AbstractJsonMatcher {
 
     public abstract void matches() throws MatcherException;
 
-    protected UseCase getUseCase(JsonNode node) {
+    protected static UseCase getUseCase(JsonNode node) {
         if (node.isValueNode()) {
             return getUseCase(node.asText());
-        } else if (node.isArray()) {
-            ArrayNode arrayNode = (ArrayNode) node;
-            for (int i = 0; i < arrayNode.size(); i++) {
-                if (getUseCase(arrayNode.get(i)).equals(UseCase.MATCH)) {
-                    return UseCase.MATCH;
-                }
-            }
-        } else if (node.isObject()) {
-            ObjectNode objectNode = (ObjectNode) node;
-            Iterator<Map.Entry<String, JsonNode>> it = objectNode.fields();
-            while (it.hasNext()) {
-                Map.Entry<String, JsonNode> entry = it.next();
-                if (getUseCase(entry.getKey()).equals(UseCase.MATCH)
-                        && getUseCase(entry.getValue()).equals(UseCase.MATCH)) {
-                    return UseCase.MATCH;
-                }
-            }
         }
-        return UseCase.DO_NOT_MATCH;
+        return UseCase.MATCH;
     }
 
-    protected UseCase getUseCase(String value) {
-        if (value == null || value.length() == 0 || !value.substring(0, 1).equals("!")) {
+    protected static UseCase getUseCase(String value) {
+        if (value == null || value.isEmpty()) {
             return UseCase.MATCH;
-        }
-        return UseCase.DO_NOT_MATCH;
+        } else if (value.equals(UseCase.MATCH_ANY.getValue())) {
+            return UseCase.MATCH_ANY;
+        } else if (value.equals(UseCase.DO_NOT_MATCH_ANY.getValue())) {
+            return UseCase.DO_NOT_MATCH_ANY;
+        } else if (value.startsWith(UseCase.DO_NOT_MATCH.getValue())) {
+            return UseCase.DO_NOT_MATCH;
+        } else return UseCase.MATCH;
     }
 
-    protected String sanitize(String value) {
-        if (getUseCase(value).equals(UseCase.DO_NOT_MATCH)) {
+    protected static String sanitize(String value) {
+        if (getUseCase(value) == UseCase.DO_NOT_MATCH || getUseCase(value) == UseCase.DO_NOT_MATCH_ANY) {
             return value.substring(1);
         }
-        return removeEscapedUseCase(value);
+        return removeEscapedUseCases(value);
     }
 
-    private static String removeEscapedUseCase(String value) {
+    private static String removeEscapedUseCases(String value) {
         if (value == null) {
             return value;
         }
-        if (value.matches("^(\\\\*)!.*$")) {
-            return value.replaceFirst("\\\\\\\\\\\\", "");
+        if (value.startsWith("\\" + UseCase.DO_NOT_MATCH.getValue()) ||
+                value.equals("\\" + UseCase.DO_NOT_MATCH_ANY.getValue()) ||
+                value.equals("\\" + UseCase.MATCH_ANY.getValue())) {
+            return value.replaceFirst("\\\\", "");
         }
         return value;
     }
@@ -101,7 +88,25 @@ public abstract class AbstractJsonMatcher {
                 || type.equals(JsonNodeType.BOOLEAN) || type.equals(JsonNodeType.NULL);
     }
 
+    protected static boolean areOfSameType(JsonNode expNode, JsonNode actNode) {
+        return (isJsonText(expNode) & isJsonText(actNode))
+                || (isJsonObject(expNode) & isJsonObject(actNode))
+                || (isJsonArray(expNode) & isJsonArray(actNode));
+    }
+
     public enum UseCase {
-        MATCH, DO_NOT_MATCH
+        MATCH, DO_NOT_MATCH("!"), MATCH_ANY(".*"), DO_NOT_MATCH_ANY("!.*");
+        private String value;
+
+        UseCase() {
+        }
+
+        UseCase(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 }

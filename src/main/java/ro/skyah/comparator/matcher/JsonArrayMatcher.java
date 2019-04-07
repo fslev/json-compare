@@ -1,11 +1,12 @@
 package ro.skyah.comparator.matcher;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.JSONCompare;
 import ro.skyah.util.MessageUtil;
+
 import java.util.HashSet;
 import java.util.Set;
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class JsonArrayMatcher extends AbstractJsonMatcher {
 
@@ -18,53 +19,74 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
     @Override
     public void matches() throws MatcherException {
         for (int i = 0; i < expected.size(); i++) {
-            JsonNode element = expected.get(i);
-            UseCase useCase = getUseCase(element);
-            boolean found = false;
-            for (int j = 0; j < actual.size(); j++) {
-                if (matchedPositions.contains(j)) {
-                    continue;
-                }
-                if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) && j != i) {
-                    continue;
-                }
-                if (useCase.equals(UseCase.MATCH)) {
-                    JsonNode actElement = actual.get(j);
-                    try {
-                        new JsonMatcher(element, actElement).matches();
-                    } catch (MatcherException e) {
-                        if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
-                            throw new MatcherException(String
-                                    .format("JSON ARRAY elements differ at position %s", i + 1));
-                        }
-                        continue;
-                    }
-                    found = true;
-                    matchedPositions.add(j);
-                    break;
-                } else {
-                    JsonNode actElement = actual.get(j);
-                    try {
-                        new JsonMatcher(element, actElement).matches();
-                    } catch (MatcherException e) {
-                        found = true;
-                        break;
-                    }
-                }
-            }
-            if (!found && useCase.equals(UseCase.MATCH)) {
-                throw new MatcherException(
-                        "Expected element from position " + (i + 1) + " was NOT FOUND:\n"
-                                + MessageUtil.cropM(JSONCompare.prettyPrint(element)));
-            }
-            if (found && useCase.equals(UseCase.DO_NOT_MATCH)) {
-                throw new MatcherException("Expected element from position " + (i + 1)
-                        + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(element)));
-            }
+            JsonNode expElement = expected.get(i);
+            matchWithActualJsonArray(i, expElement, actual);
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
                 && expected.size() < actual.size()) {
             throw new MatcherException("Actual JSON ARRAY has extra elements");
+        }
+    }
+
+    private void matchWithActualJsonArray(int expPosition, JsonNode expElement, JsonNode actual) throws MatcherException {
+        UseCase useCase = getUseCase(expElement);
+        boolean found = false;
+        actualElementsLoop:
+        for (int j = 0; j < actual.size(); j++) {
+            if (matchedPositions.contains(j)) {
+                continue;
+            }
+            if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) && j != expPosition) {
+                continue;
+            }
+            switch (useCase) {
+                case MATCH:
+                    JsonNode actElement = actual.get(j);
+                    try {
+                        new JsonMatcher(expElement, actElement).matches();
+                    } catch (MatcherException e) {
+                        if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
+                            throw new MatcherException(String
+                                    .format("JSON ARRAY elements differ at position %s", expPosition + 1));
+                        }
+                        continue actualElementsLoop;
+                    }
+                    found = true;
+                    matchedPositions.add(j);
+                    break actualElementsLoop;
+                case MATCH_ANY:
+                    matchedPositions.add(j);
+                    return;
+                case DO_NOT_MATCH:
+                    actElement = actual.get(j);
+                    if (!areOfSameType(expElement, actElement)) {
+                        continue actualElementsLoop;
+                    }
+                    try {
+                        new JsonMatcher(expElement, actElement).matches();
+                    } catch (MatcherException e) {
+                        found = true;
+                        break actualElementsLoop;
+                    }
+                    break;
+                case DO_NOT_MATCH_ANY:
+                    throw new MatcherException("Expected element from position " + (expPosition + 1)
+                            + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
+            }
+        }
+        if (!found && useCase == UseCase.MATCH) {
+            throw new MatcherException(
+                    "Expected element from position " + (expPosition + 1) + " was NOT FOUND:\n"
+                            + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
+        }
+        if (found && useCase == UseCase.DO_NOT_MATCH) {
+            throw new MatcherException("Expected element from position " + (expPosition + 1)
+                    + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
+        }
+        if (useCase == UseCase.MATCH_ANY) {
+            throw new MatcherException(
+                    "Expected condition of type MATCH_ANY from position " + (expPosition + 1) + " was NOT MET. Actual Json Array has no extra elements:\n"
+                            + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
         }
     }
 }
