@@ -14,8 +14,8 @@ public class Issue6Test {
                 "  \"vlan\" : \"116\"\n" +
                 "}," +
                 "{\n" +
-                "  \"!name\" : \"division1\",\n" +
-                "  \"!vlan\" : \"115\"\n" +
+                "  \"name\" : \"!division1\",\n" +
+                "  \"vlan\" : \"!115\"\n" +
                 "}]";
         String actual = "[{\n" +
                 "  \"name\" : \"division1\",\n" +
