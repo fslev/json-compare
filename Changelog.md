@@ -1,4 +1,10 @@
 # Changelog
+## 2.11
+Java 8 compatible    
+
+## 2.10
+Bug fixes       
+
 ## 2.0.9
 Bug fixes   
 
