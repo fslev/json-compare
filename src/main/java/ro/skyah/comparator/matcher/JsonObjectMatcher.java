@@ -2,6 +2,7 @@ package ro.skyah.comparator.matcher;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import ro.skyah.comparator.CompareMode;
+import ro.skyah.comparator.JsonComparator;
 
 import java.util.*;
 
@@ -10,8 +11,9 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
     // The key names within a JSON OBJECT SHOULD be unique.
     private Set<String> matchedFieldNames = new HashSet<>();
 
-    public JsonObjectMatcher(JsonNode expected, JsonNode actual) {
-        super(expected, actual);
+    public JsonObjectMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
+                             Set<CompareMode> compareModes) {
+        super(expected, actual, comparator, compareModes);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
             }
             JsonNode candidateValue = candidateEntry.getValue();
             try {
-                new JsonMatcher(expValue, candidateValue).matches();
+                new JsonMatcher(expValue, candidateValue, comparator, compareModes).matches();
             } catch (MatcherException e) {
                 if (it1.hasNext()) {
                     continue;

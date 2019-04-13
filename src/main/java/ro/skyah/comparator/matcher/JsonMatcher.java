@@ -8,23 +8,19 @@ import java.util.Set;
 
 public class JsonMatcher extends AbstractJsonMatcher {
 
-    public JsonMatcher(JsonNode expected, JsonNode actual) {
-        super(expected, actual);
-    }
-
-    public JsonMatcher(JsonNode expected, JsonNode actual, JsonComparator jsonComparator,
-            Set<CompareMode> jsonCompareModes) {
-        super(expected, actual, jsonComparator, jsonCompareModes);
+    public JsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
+                       Set<CompareMode> compareModes) {
+        super(expected, actual, comparator, compareModes);
     }
 
     @Override
     public void matches() throws MatcherException {
         if (isJsonObject(expected) && isJsonObject(actual)) {
-            new JsonObjectMatcher(expected, actual).matches();
+            new JsonObjectMatcher(expected, actual, comparator, compareModes).matches();
         } else if (isJsonArray(expected) && isJsonArray(actual)) {
-            new JsonArrayMatcher(expected, actual).matches();
+            new JsonArrayMatcher(expected, actual, comparator, compareModes).matches();
         } else if (isJsonText(expected) && isJsonText(actual)) {
-            new JsonTextMatcher(expected, actual).matches();
+            new JsonTextMatcher(expected, actual, comparator, compareModes).matches();
         } else {
             throw new MatcherException("Different JSON types");
         }

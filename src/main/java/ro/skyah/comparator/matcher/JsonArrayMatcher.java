@@ -3,6 +3,7 @@ package ro.skyah.comparator.matcher;
 import com.fasterxml.jackson.databind.JsonNode;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.JSONCompare;
+import ro.skyah.comparator.JsonComparator;
 import ro.skyah.util.MessageUtil;
 
 import java.util.HashSet;
@@ -12,8 +13,9 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
 
     private Set<Integer> matchedPositions = new HashSet<>();
 
-    public JsonArrayMatcher(JsonNode expected, JsonNode actual) {
-        super(expected, actual);
+    public JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
+                            Set<CompareMode> compareModes) {
+        super(expected, actual, comparator, compareModes);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                 case MATCH:
                     JsonNode actElement = actual.get(j);
                     try {
-                        new JsonMatcher(expElement, actElement).matches();
+                        new JsonMatcher(expElement, actElement, comparator, compareModes).matches();
                     } catch (MatcherException e) {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
                             throw new MatcherException(String
@@ -63,7 +65,7 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                         continue actualElementsLoop;
                     }
                     try {
-                        new JsonMatcher(expElement, actElement).matches();
+                        new JsonMatcher(expElement, actElement, comparator, compareModes).matches();
                     } catch (MatcherException e) {
                         found = true;
                         break actualElementsLoop;

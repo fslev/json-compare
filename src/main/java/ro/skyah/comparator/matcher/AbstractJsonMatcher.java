@@ -10,22 +10,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractJsonMatcher {
-    protected static Set<CompareMode> compareModes = new HashSet<CompareMode>();
-    protected static JsonComparator comparator = new DefaultJsonComparator();
+    protected JsonComparator comparator;
+    protected Set<CompareMode> compareModes;
     protected JsonNode expected;
     protected JsonNode actual;
 
-
-    public AbstractJsonMatcher(JsonNode expected, JsonNode actual) {
+    public AbstractJsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
+                               Set<CompareMode> compareModes) {
         this.expected = expected;
         this.actual = actual;
-    }
-
-    public AbstractJsonMatcher(JsonNode expected, JsonNode actual, JsonComparator jsonComparator,
-                               Set<CompareMode> jsonCompareModes) {
-        this(expected, actual);
-        compareModes = jsonCompareModes;
-        comparator = jsonComparator;
+        this.comparator = comparator == null ? new DefaultJsonComparator() : comparator;
+        this.compareModes = compareModes == null ? new HashSet<>() : compareModes;
     }
 
     public abstract void matches() throws MatcherException;

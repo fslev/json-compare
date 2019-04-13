@@ -1,4 +1,7 @@
 # Changelog
+## 2.12  
+Fix thread safety bug      
+
 ## 2.11
 Java 8 compatible    
 
