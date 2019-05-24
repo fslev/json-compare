@@ -1,6 +1,9 @@
 # Changelog
+## 2.13  
+Update Jackson dependencies  
+
 ## 2.12  
-Fix thread safety bug      
+Fix thread safety bug        
 
 ## 2.11
 Java 8 compatible    
