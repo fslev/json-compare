@@ -71,7 +71,7 @@ JSONCompare.assertEquals(expected, actual);
 ```
 
 By quoting special characters, using \Q and \E, you disable the regex mechanism for that corresponding sequence.  
-From Java Pattern docs:  
+From Java _Pattern_ docs:  
 ```
 \Q	Nothing, but quotes all characters until \E
 \E	Nothing, but ends quoting started by \Q
