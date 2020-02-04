@@ -47,6 +47,20 @@ public class JSONRegexCompareTests {
     }
 
     @Test
+    public void compareWithEscapedRegex() {
+        String expected = "{\"a\":\"\\\\Q\\\\d+\\\\E\"}";
+        String actual = "{\"a\":\"\\\\d+\"}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithEscapedRegex_negative() {
+        String expected = "{\"a\":\"\\\\d+\"}";
+        String actual = "{\"a\":\"\\\\d+\"}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
     public void compareFields() {
         String expected = "{\".*oba.*\":\"some value\"}";
         String actual = "{\"foobar\":\"some value\"}";
@@ -103,6 +117,20 @@ public class JSONRegexCompareTests {
     public void compareArray_negative() {
         String expected = "[\"1\",true,\"!\\\\d+\",\"text\"]";
         String actual = "[\"text\",1,true,240]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithSpecialCharacters() {
+        String expected = "{\"\\\\Q@!#$%^&*()\\\\E\":\"@!#$%^&*()[]{};'<./?.,\"}";
+        String actual = "{\"@!#$%^&*()\":\"@!#$%^&*()[]{};'<./?.,\"}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareWithSpecialCharacters_negative() {
+        String expected = "{\"\\\\Q@!#$%^&*()\\\\E\":\"!@#$%^&*()[]{};'<./?.,\"}";
+        String actual = "{\"@!#$%^&*()a\":\"!@#$%^&*()[]{};'<./?.,\"}";
         JSONCompare.assertNotEquals(expected, actual);
     }
 }
