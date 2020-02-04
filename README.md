@@ -27,15 +27,14 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 
 ## Examples
 
-With JSONCompare you assert by default that the expected JSON is included within the actual JSON
+Assert by that the expected JSON is included within the actual JSON:
 
 ```javascript
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
-
-But you can use the special compare modes:
+JSON inclusion is checked by default, but you can use the special compare modes:
 * JSON_OBJECT_NON_EXTENSIBLE
 * JSON_ARRAY_NON_EXTENSIBLE
 * JSON_ARRAY_STRICT_ORDER
@@ -48,13 +47,13 @@ JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENS
                             CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
 ```
 
-You can use regular expressions on values
+You can use regular expressions on values:
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
-, or on JSON object fields
+, and also on JSON object fields:
 
 ```javascript
 String expected = "{\".*oba.*\":\"some value\"}";
@@ -62,7 +61,23 @@ String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertEquals(expected, actual);
 ```
 
-You can ignore the regular expression compare mode, by using a ***custom comparator***
+JSONCompare by default compares JSON fields and values by matching them using regular expressions.  
+If you have special regex characters inside either expected values or expected fields and you literally want to match them, then you can quote them:  
+
+```javascript
+String expected = "{\"a\":\"\\\\Q\\\\d+\\\\E\"}";
+String actual = "{\"a\":\"\\\\d+\"}";
+JSONCompare.assertEquals(expected, actual);
+```
+
+By quoting special characters, using \Q and \E, you disable the regex mechanism for that corresponding sequence.  
+From Java docs:  
+```
+\Q	Nothing, but quotes all characters until \E
+\E	Nothing, but ends quoting started by \Q
+```
+
+You can ignore the default regular expression compare mode, by using a ***custom comparator***
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
