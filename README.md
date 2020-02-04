@@ -27,7 +27,7 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 
 ## Examples
 
-Assert by that the expected JSON is included within the actual JSON:
+Assert that expected JSON is included within the actual JSON:
 
 ```javascript
 String expected = "{\"b\":\"val1\"}";
