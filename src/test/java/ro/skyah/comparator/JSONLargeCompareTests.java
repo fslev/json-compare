@@ -2287,14 +2287,14 @@ public class JSONLargeCompareTests {
 
     @Test
     public void testVeryLargeJsonCompare() throws IOException {
-        JSONCompare.assertEquals(readFromRelativePath("expectedLargeJson.json"),
-                readFromRelativePath("actualLargeJson.json"));
+        JSONCompare.assertEquals(readFromRelativePath("bigJsons/expectedLargeJson.json"),
+                readFromRelativePath("bigJsons/actualLargeJson.json"));
     }
 
     @Test
     public void testVeryLargeJsonCompare_negative() throws IOException {
-        JSONCompare.assertNotEquals(readFromRelativePath("expectedWrongLargeJson.json"),
-                readFromRelativePath("actualLargeJson.json"));
+        JSONCompare.assertNotEquals(readFromRelativePath("bigJsons/expectedWrongLargeJson.json"),
+                readFromRelativePath("bigJsons/actualLargeJson.json"));
 
     }
 
