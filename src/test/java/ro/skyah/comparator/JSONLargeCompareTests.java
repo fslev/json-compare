@@ -2,6 +2,11 @@ package ro.skyah.comparator;
 
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 public class JSONLargeCompareTests {
 
     @Test
@@ -2279,4 +2284,32 @@ public class JSONLargeCompareTests {
                 "";
         JSONCompare.assertNotEquals(expected, actual);
     }
+
+    @Test
+    public void testVeryLargeJsonCompare() throws IOException {
+        JSONCompare.assertEquals(readFromRelativePath("expectedLargeJson.json"),
+                readFromRelativePath("actualLargeJson.json"));
+    }
+
+    @Test
+    public void testVeryLargeJsonCompare_negative() throws IOException {
+        JSONCompare.assertNotEquals(readFromRelativePath("expectedWrongLargeJson.json"),
+                readFromRelativePath("actualLargeJson.json"));
+    }
+
+    private static String readFromRelativePath(String relativeFilePath) throws IOException {
+        try (InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(relativeFilePath);
+             ByteArrayOutputStream result = new ByteArrayOutputStream()) {
+            if (is == null) {
+                throw new IOException("File " + relativeFilePath + " not found");
+            }
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) != -1) {
+                result.write(buffer, 0, length);
+            }
+            return result.toString(StandardCharsets.UTF_8.name());
+        }
+    }
+
 }

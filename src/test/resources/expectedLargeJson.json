@@ -1,0 +1,30 @@
+{
+  "status": 200,
+  "body": {
+    "events": [
+      {
+        "payload": {
+          "type": "TEMPLATE_DONE",
+          "context": {
+            "name": "bigtest.com",
+            "data": {
+              "provid": "orgs.com",
+              "srvid": "testWsProxyAndPermanentRedirect",
+              "params": {
+                "redit_tar": "http://permanent-target-158202273047525371.org",
+                "proxy_hostname": "somehost.com",
+                "proxy_ip": ".*",
+                "redirect_ipv4": ".*",
+                "proof_own_token": ".*"
+              },
+              "host": "h1-158202273047258785",
+              "fqdn": "h1-158202273047258785.bigtest.com",
+              "tenid": "org"
+            }
+          }
+        },
+        "properties": {}
+      }
+    ]
+  }
+}
