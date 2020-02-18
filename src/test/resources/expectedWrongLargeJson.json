@@ -12,18 +12,18 @@
               "srvid": "testWsProxyAndPermanentRedirect",
               "params": {
                 "redir_tar": "http://permanent-target-158202273047525371.org",
-                "proxy_hostname": "somehost.com",
+                "proxy_subname": "somesub.com",
                 "proxy_ip": ".*",
                 "redirect_ipv4": ".*",
                 "proof_own_token": ".*"
               },
-              "host": "h1-158202273047258785a",
-              "fqdn": "h1-158202273047258785.bigtest.com",
+              "sub": "h1-158202273047258785a",
+              "long": "h1-158202273047258785.bigtest.com",
               "tenid": "org"
             }
           }
         },
-        "properties": {}
+        "props": {}
       }
     ]
   }

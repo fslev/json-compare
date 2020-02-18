@@ -2295,6 +2295,7 @@ public class JSONLargeCompareTests {
     public void testVeryLargeJsonCompare_negative() throws IOException {
         JSONCompare.assertNotEquals(readFromRelativePath("expectedWrongLargeJson.json"),
                 readFromRelativePath("actualLargeJson.json"));
+
     }
 
     private static String readFromRelativePath(String relativeFilePath) throws IOException {
