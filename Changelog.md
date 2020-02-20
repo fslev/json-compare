@@ -1,7 +1,8 @@
 # Changelog
 
 ## 2.14      
-Enhance error message      
+Enhance error message  
+Update Jackson dependencies  
 
 ## 2.13  
 Update Jackson dependencies  
