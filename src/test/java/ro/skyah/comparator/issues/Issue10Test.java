@@ -14,9 +14,16 @@ public class Issue10Test {
 
     @Test
     public void testFieldNameDoesntExist() {
-        String expected = "{\"(?!autoRenew)\":true}";
+        String expected = "{\"(?!autoRenew).*\":true}";
         String actual = "{\"autoRene\": true}";
         JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testFieldNameDoesntExist_negative() {
+        String expected = "{\"(?!autoRenew).*\":true}";
+        String actual = "{\"autoRenew\": true}";
+        JSONCompare.assertNotEquals(expected, actual);
     }
 
     @Test
