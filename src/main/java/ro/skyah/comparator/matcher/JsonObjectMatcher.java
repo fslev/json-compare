@@ -31,7 +31,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
                 case MATCH_ANY:
                 case MATCH:
                     if (candidateEntries.isEmpty()) {
-                        throw new MatcherException(String.format("Field %s was not found", field));
+                        throw new MatcherException(String.format("Field %s was not found or cannot be matched", field));
                     }
                     matchWithCandidateEntries(sanitizedField, expectedValue, candidateEntries);
                     break;
