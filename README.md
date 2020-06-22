@@ -1,5 +1,7 @@
 # JSONCompare
 
+![Build status](https://github.com/fslev/json-compare/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
+
 A Java library for comparing JSONs
 
 ## Summary
