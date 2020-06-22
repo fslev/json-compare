@@ -1,0 +1,13 @@
+name: Codecov
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    steps:
+      - name: Codecov
+      - uses: codecov/codecov-action@v1.0.7
