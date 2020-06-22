@@ -15,10 +15,9 @@ jobs:
         with:
           node-version: 10.x
 
-      - name: npm install, make test-coverage
+      - name: mvn test
         run: |
-          npm install
-          make test-coverage
+          mvn -B test
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
