@@ -10,4 +10,4 @@ jobs:
   build:
     steps:
       - name: Codecov
-      - uses: codecov/codecov-action@v1.0.7
+        uses: codecov/codecov-action@v1.0.7
