@@ -1,4 +1,0 @@
-language: java
-
-install:
-  - mvn clean install -B -V
