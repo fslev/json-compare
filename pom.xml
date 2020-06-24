@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <name>JSON Compare</name>
@@ -12,6 +13,10 @@
             <timezone>EEST</timezone>
         </developer>
     </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <groupId>com.github.fslev</groupId>
     <artifactId>json-compare</artifactId>
@@ -151,8 +156,8 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Description>${project.description}</Bundle-Description>
                         <Import-Package>*</Import-Package>
-                        <Export-Package />
-                        <Bundle-RequiredExecutionEnvironment />
+                        <Export-Package/>
+                        <Bundle-RequiredExecutionEnvironment/>
                         <_removeheaders>Bnd-LastModified</_removeheaders>
                     </instructions>
                 </configuration>
@@ -173,6 +178,26 @@
                 <configuration>
                     <repoToken>GcbemOZEZLrIqMnUihFHuRUUvSKn9Hupu</repoToken>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- attached to Maven test phase -->
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
