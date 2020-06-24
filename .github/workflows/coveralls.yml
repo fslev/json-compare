@@ -1,6 +1,8 @@
 on: ["push", "pull_request"]
 name: Test Coveralls
 
+repo_token: GcbemOZEZLrIqMnUihFHuRUUvSKn9Hupu
+
 jobs:
 
   build:
