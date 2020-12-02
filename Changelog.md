@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.16
+Change assertion error message order      
+
 ## 2.15      
 Enhance error message  
 Update Jackson dependencies  

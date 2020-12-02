@@ -120,7 +120,7 @@ public class JSONCompare {
         } catch (MatcherException e) {
             String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
                     prettyPrint(expected), prettyPrint(actual));
-            fail(message == null ? defaultMessage : message + "\n" + defaultMessage);
+            fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
         }
     }
 
@@ -134,7 +134,7 @@ public class JSONCompare {
             return;
         }
         String defaultMessage = "JSONs are equal";
-        fail(message == null ? defaultMessage : message + "\n" + defaultMessage);
+        fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
     }
 
     private static JsonNode getJson(String json) {
