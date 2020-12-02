@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.18-SNAPSHOT  
+Refactoring  
+
 ## 2.17
 Change assertion error message order      
 
