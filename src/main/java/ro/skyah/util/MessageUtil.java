@@ -25,7 +25,7 @@ public class MessageUtil {
 
     private static String crop(String msg, int size) {
         if (msg == null) {
-            return msg;
+            return null;
         }
         if (msg.length() > size) {
             return msg.substring(0, size) + "...";

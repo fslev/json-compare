@@ -53,7 +53,7 @@ public abstract class AbstractJsonMatcher {
 
     private static String removeEscapedUseCases(String value) {
         if (value == null) {
-            return value;
+            return null;
         }
         if (value.startsWith("\\" + UseCase.DO_NOT_MATCH.getValue()) ||
                 value.equals("\\" + UseCase.DO_NOT_MATCH_ANY.getValue()) ||

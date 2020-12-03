@@ -9,7 +9,7 @@ import java.util.*;
 public class JsonObjectMatcher extends AbstractJsonMatcher {
 
     // The key names within a JSON OBJECT SHOULD be unique.
-    private Set<String> matchedFieldNames = new HashSet<>();
+    private final Set<String> matchedFieldNames = new HashSet<>();
 
     public JsonObjectMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
                              Set<CompareMode> compareModes) {

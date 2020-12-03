@@ -10,7 +10,7 @@ public class DefaultJsonComparator implements JsonComparator {
             Pattern pattern = Pattern.compile(expected.toString(), Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
             return pattern.matcher(actual.toString()).matches();
         } catch (PatternSyntaxException e) {
-            return expected.toString().toLowerCase().equals(actual.toString().toLowerCase());
+            return expected.toString().equalsIgnoreCase(actual.toString());
         }
     }
 
@@ -19,7 +19,7 @@ public class DefaultJsonComparator implements JsonComparator {
             Pattern pattern = Pattern.compile(expected, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
             return pattern.matcher(actual).matches();
         } catch (PatternSyntaxException e) {
-            return expected.toLowerCase().equals(actual.toLowerCase());
+            return expected.equalsIgnoreCase(actual);
         }
     }
 }

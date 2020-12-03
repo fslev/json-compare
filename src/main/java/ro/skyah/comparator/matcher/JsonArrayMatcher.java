@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class JsonArrayMatcher extends AbstractJsonMatcher {
 
-    private Set<Integer> matchedPositions = new HashSet<>();
+    private final Set<Integer> matchedPositions = new HashSet<>();
 
     public JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
                             Set<CompareMode> compareModes) {
