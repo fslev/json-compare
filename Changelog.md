@@ -1,7 +1,10 @@
 # Changelog
 
-## 2.18-SNAPSHOT  
+## 2.19-SNAPSHOT
+
+## 2.18  
 Refactoring  
+Java 8 support  
 
 ## 2.17
 Change assertion error message order      
