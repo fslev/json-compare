@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.19-SNAPSHOT
+## 2.20-SNAPSHOT
+
+## 2.19
+Upgrade dependencies  
 
 ## 2.18  
 Refactoring  
