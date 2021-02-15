@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.20-SNAPSHOT
+Upgrade Junit  
 
 ## 2.19
 Upgrade dependencies  
