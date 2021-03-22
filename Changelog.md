@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.22-SNAPSHOT
+## 2.23-SNAPSHOT
+
+## 2.22
+Crop error message larger than 65535 characters  
 
 ## 2.21
 Dependencies update  

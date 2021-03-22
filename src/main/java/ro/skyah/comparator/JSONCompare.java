@@ -103,7 +103,7 @@ public class JSONCompare {
                     new HashSet<>(Arrays.asList(compareModes))).matches();
         } catch (MatcherException e) {
             String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
-                    prettyPrint(expected), prettyPrint(actual));
+                    prettyPrint(expected), MessageUtil.cropXXL(prettyPrint(actual)));
             fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
         }
     }
