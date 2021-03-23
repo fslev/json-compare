@@ -1,5 +1,19 @@
 {
   "extends": [
     "config:base"
+  ],
+  "timezone": "Europe/Bucharest",
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "schedule": [
+        "after 1pm"
+      ]
+    }
   ]
 }
