@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.25
+## 2.25-SNAPSHOT
 
 ## 2.24
 Update dependencies  
