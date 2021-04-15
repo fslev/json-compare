@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.23-SNAPSHOT
+Update dependencies  
 
 ## 2.22
 Crop error message larger than 65535 characters  
