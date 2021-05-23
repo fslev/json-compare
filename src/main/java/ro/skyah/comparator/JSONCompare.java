@@ -127,7 +127,7 @@ public class JSONCompare {
         try {
             jsonNode = mapper.readTree(json);
         } catch (IOException e) {
-            fail(String.format("Not a JSON:\n%s", MessageUtil.cropM(json)));
+            fail(String.format("Not a JSON:\n%s", MessageUtil.cropXXL(json)));
         }
         return jsonNode;
     }

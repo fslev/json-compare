@@ -30,7 +30,9 @@ public class MessageUtil {
 
     private static String crop(String msg, int size) {
         if (msg != null && msg.length() > size) {
-            return msg.substring(0, size) + "\n...";
+            String start = msg.substring(0, size / 2) + "<...>";
+            String end = msg.substring(size / 2, size);
+            return start + end;
         }
         return msg;
     }

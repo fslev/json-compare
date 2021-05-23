@@ -73,22 +73,22 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                     break;
                 case DO_NOT_MATCH_ANY:
                     throw new MatcherException("Expected element from position " + (expPosition + 1)
-                            + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
+                            + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
             }
         }
         if (!found && useCase == UseCase.MATCH) {
             throw new MatcherException(
                     "Expected element from position " + (expPosition + 1) + " was NOT FOUND:\n"
-                            + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
+                            + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         }
         if (found && useCase == UseCase.DO_NOT_MATCH) {
             throw new MatcherException("Expected element from position " + (expPosition + 1)
-                    + " was FOUND:\n" + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
+                    + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         }
         if (useCase == UseCase.MATCH_ANY) {
             throw new MatcherException(
                     "Expected condition of type MATCH_ANY from position " + (expPosition + 1) + " was NOT MET. Actual Json Array has no extra elements:\n"
-                            + MessageUtil.cropM(JSONCompare.prettyPrint(expElement)));
+                            + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         }
     }
 }

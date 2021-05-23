@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.25-SNAPSHOT
+## 2.26-SNAPSHOT
+
+## 2.25
+Enhance message formatting  
 
 ## 2.24
 Update dependencies  
