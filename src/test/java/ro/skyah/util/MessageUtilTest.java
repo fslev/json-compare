@@ -32,7 +32,7 @@ public class MessageUtilTest {
         assertEquals(65535, MessageUtil.cropXXL(sb.toString()).length());
         StringBuilder sb1 = new StringBuilder();
         IntStream.range(0, 65536).forEach(i -> sb1.append("a"));
-        assertEquals(65540, MessageUtil.cropXXL(sb1.toString()).length());
+        assertEquals(65541, MessageUtil.cropXXL(sb1.toString()).length());
 
     }
 }
