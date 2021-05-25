@@ -14,8 +14,6 @@ public class MessageUtilTest {
         assertNull(MessageUtil.cropS(s));
         assertNull(MessageUtil.cropM(s));
         assertNull(MessageUtil.cropL(s));
-        assertNull(MessageUtil.cropXL(s));
-        assertNull(MessageUtil.cropXXL(s));
         s = "";
         assertTrue(MessageUtil.cropS(s).isEmpty());
     }
@@ -25,13 +23,13 @@ public class MessageUtilTest {
         String s = "abc";
         assertEquals(s, MessageUtil.cropS(s));
         assertEquals(s, MessageUtil.cropM(s));
-        assertEquals(s, MessageUtil.cropXXL(s));
+        assertEquals(s, MessageUtil.cropL(s));
 
         StringBuilder sb = new StringBuilder();
         IntStream.range(0, 65535).forEach(i -> sb.append("a"));
-        assertEquals(65535, MessageUtil.cropXXL(sb.toString()).length());
+        assertEquals(65535, MessageUtil.cropL(sb.toString()).length());
         StringBuilder sb1 = new StringBuilder();
         IntStream.range(0, 65536).forEach(i -> sb1.append("a"));
-        assertEquals(65541, MessageUtil.cropXXL(sb1.toString()).length());
+        assertEquals(1030, MessageUtil.cropL(sb1.toString()).length());
     }
 }

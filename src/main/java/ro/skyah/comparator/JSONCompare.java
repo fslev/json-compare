@@ -103,7 +103,7 @@ public class JSONCompare {
                     new HashSet<>(Arrays.asList(compareModes))).matches();
         } catch (MatcherException e) {
             String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
-                    prettyPrint(expected), MessageUtil.cropXXL(prettyPrint(actual)));
+                    prettyPrint(expected), MessageUtil.cropL(prettyPrint(actual)));
             fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
         }
     }
@@ -127,7 +127,7 @@ public class JSONCompare {
         try {
             jsonNode = mapper.readTree(json);
         } catch (IOException e) {
-            fail(String.format("Not a JSON:\n%s", MessageUtil.cropXXL(json)));
+            fail(String.format("Not a JSON:\n%s", MessageUtil.cropL(json)));
         }
         return jsonNode;
     }
