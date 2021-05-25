@@ -30,6 +30,6 @@ public class MessageUtilTest {
         assertEquals(65535, MessageUtil.cropL(sb.toString()).length());
         StringBuilder sb1 = new StringBuilder();
         IntStream.range(0, 65536).forEach(i -> sb1.append("a"));
-        assertEquals(1030, MessageUtil.cropL(sb1.toString()).length());
+        assertEquals(2073, MessageUtil.cropL(sb1.toString()).length());
     }
 }

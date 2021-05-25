@@ -2,8 +2,8 @@ package ro.skyah.util;
 
 public class MessageUtil {
 
-    private static final int CROP_SIZE = 1024;
-    private static final int LENGTH_S = 2048;
+    private static final int AFTER_CROP_SIZE = 2048;
+    private static final int LENGTH_S = 4096;
     private static final int LENGTH_M = 8192;
     private static final int LENGTH_L = 65535;
 
@@ -21,8 +21,8 @@ public class MessageUtil {
 
     private static String crop(String msg, int size) {
         if (msg != null && msg.length() > size) {
-            String start = msg.substring(0, CROP_SIZE / 2) + "\n<...>";
-            String end = msg.substring(size - CROP_SIZE / 2, size);
+            String start = msg.substring(0, AFTER_CROP_SIZE / 2) + "\n<...cropped content...>";
+            String end = msg.substring(size - AFTER_CROP_SIZE / 2);
             return start + end;
         }
         return msg;
