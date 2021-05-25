@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.27-SNAPSHOT
+## 2.28-SNAPSHOT
+
+
+## 2.27
+Fix message formatting  
 
 ## 2.26
 Refactor message formatting  
