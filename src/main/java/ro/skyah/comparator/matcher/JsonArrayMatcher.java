@@ -49,7 +49,8 @@ public class JsonArrayMatcher extends AbstractJsonMatcher {
                     } catch (MatcherException e) {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
                             throw new MatcherException(String
-                                    .format("JSON ARRAY elements differ at position %s", expPosition + 1));
+                                    .format("JSON ARRAY elements differ at position %s:\n%s", expPosition + 1,
+                                            MessageUtil.cropL(JSONCompare.prettyPrint(expElement))));
                         }
                         continue actualElementsLoop;
                     }

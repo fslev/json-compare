@@ -66,7 +66,7 @@ public class JsonObjectMatcher extends AbstractJsonMatcher {
                     continue;
                 } else {
                     throw new MatcherException(
-                            String.format("%s <- field \"%s\"", e.getMessage(), expKey));
+                            String.format("%s <- \"%s\"", e.getMessage(), expKey));
                 }
             }
             matchedFieldNames.add(candidateField);

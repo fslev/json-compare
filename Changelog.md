@@ -1,7 +1,10 @@
 # Changelog
 
-## 2.29-SNAPSHOT
+## 2.30-SNAPSHOT
 
+## 2.29
+Upgrade dependencies    
+Refactor error message    
 
 ## 2.28
 Fix message formatting  
