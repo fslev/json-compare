@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.30-SNAPSHOT
+## 2.31-SNAPSHOT
+
+## 2.30
+Upgrade dependencies  
 
 ## 2.29
 Upgrade dependencies    
