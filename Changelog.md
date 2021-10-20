@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.32-SNAPSHOT
+## 2.33-SNAPSHOT
+
+## 2.32
+Code refactoring. Small performance improvement  
 
 ## 2.31
 Upgrade dependencies  

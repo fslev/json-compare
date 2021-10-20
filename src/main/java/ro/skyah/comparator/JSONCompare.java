@@ -20,6 +20,8 @@ import static org.junit.Assert.fail;
 
 public class JSONCompare {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper().enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
+
     public static void assertEquals(String expected, String actual, CompareMode... compareModes) {
         assertEquals(null, expected, actual, compareModes);
     }
@@ -121,11 +123,9 @@ public class JSONCompare {
     }
 
     private static JsonNode getJson(String json) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
         JsonNode jsonNode = null;
         try {
-            jsonNode = mapper.readTree(json);
+            jsonNode = MAPPER.readTree(json);
         } catch (IOException e) {
             fail(String.format("Not a JSON:\n%s", MessageUtil.cropL(json)));
         }
@@ -133,9 +133,8 @@ public class JSONCompare {
     }
 
     public static String prettyPrint(JsonNode jsonNode) {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
