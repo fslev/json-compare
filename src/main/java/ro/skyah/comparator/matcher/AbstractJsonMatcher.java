@@ -1,7 +1,6 @@
 package ro.skyah.comparator.matcher;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.DefaultJsonComparator;
 import ro.skyah.comparator.JsonComparator;
@@ -64,27 +63,23 @@ public abstract class AbstractJsonMatcher {
     }
 
     protected static boolean isJsonObject(JsonNode jsonNode) {
-        if (jsonNode == null) {
-            return false;
-        }
-        return jsonNode.getNodeType().equals(JsonNodeType.OBJECT);
+        return jsonNode != null && jsonNode.isObject();
     }
 
     protected static boolean isJsonArray(JsonNode jsonNode) {
-        if (jsonNode == null) {
-            return false;
-        }
-        return jsonNode.getNodeType().equals(JsonNodeType.ARRAY);
+        return jsonNode != null && jsonNode.isArray();
     }
 
-    protected static boolean isJsonText(JsonNode jsonNode) {
-        JsonNodeType type = jsonNode.getNodeType();
-        return type.equals(JsonNodeType.STRING) || type.equals(JsonNodeType.NUMBER)
-                || type.equals(JsonNodeType.BOOLEAN) || type.equals(JsonNodeType.NULL);
+    protected static boolean isValueNode(JsonNode jsonNode) {
+        return jsonNode != null && jsonNode.isValueNode();
+    }
+
+    protected static boolean isMissingNode(JsonNode jsonNode) {
+        return jsonNode != null && jsonNode.isMissingNode();
     }
 
     protected static boolean areOfSameType(JsonNode expNode, JsonNode actNode) {
-        return (isJsonText(expNode) & isJsonText(actNode))
+        return (isValueNode(expNode) & isValueNode(actNode))
                 || (isJsonObject(expNode) & isJsonObject(actNode))
                 || (isJsonArray(expNode) & isJsonArray(actNode));
     }

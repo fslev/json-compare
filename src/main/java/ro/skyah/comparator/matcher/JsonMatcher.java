@@ -19,10 +19,13 @@ public class JsonMatcher extends AbstractJsonMatcher {
             new JsonObjectMatcher(expected, actual, comparator, compareModes).matches();
         } else if (isJsonArray(expected) && isJsonArray(actual)) {
             new JsonArrayMatcher(expected, actual, comparator, compareModes).matches();
-        } else if (isJsonText(expected) && isJsonText(actual)) {
+        } else if (isValueNode(expected) && isValueNode(actual)) {
             new JsonTextMatcher(expected, actual, comparator, compareModes).matches();
+        } else if (isMissingNode(expected) && isMissingNode(actual)) {
+            //do nothing
         } else {
-            throw new MatcherException("Different JSON types");
+            throw new MatcherException("Different JSON types: "
+                    + expected.getClass().getSimpleName() + " vs " + actual.getClass().getSimpleName());
         }
     }
 }
