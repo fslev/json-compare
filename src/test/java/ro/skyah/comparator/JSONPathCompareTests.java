@@ -152,6 +152,10 @@ public class JSONPathCompareTests {
         expected = "{\"a\":{\"a1\":{\"#($.a11)\":{\"!b\":\"lorem\"}}}}";
         actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertEquals(expected, actual);
+
+        expected = "{\"a\":{\"a1\":{\"#($.a11)\":{\"!a\":\"lorem\"}}}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertNotEquals(expected, actual);
     }
 
     @Test(expected = AssertionError.class)
