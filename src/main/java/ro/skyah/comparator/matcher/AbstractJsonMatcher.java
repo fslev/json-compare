@@ -8,7 +8,7 @@ import ro.skyah.comparator.JsonComparator;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractJsonMatcher {
+abstract class AbstractJsonMatcher {
     protected JsonComparator comparator;
     protected Set<CompareMode> compareModes;
     protected JsonNode expected;
@@ -43,7 +43,7 @@ public abstract class AbstractJsonMatcher {
         } else return UseCase.MATCH;
     }
 
-    protected static String sanitize(String value) {
+    protected static String sanitizeUseCase(String value) {
         if (getUseCase(value) == UseCase.DO_NOT_MATCH || getUseCase(value) == UseCase.DO_NOT_MATCH_ANY) {
             return value.substring(1);
         }

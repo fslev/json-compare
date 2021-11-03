@@ -20,7 +20,7 @@ public class JsonMatcher extends AbstractJsonMatcher {
         } else if (isJsonArray(expected) && isJsonArray(actual)) {
             new JsonArrayMatcher(expected, actual, comparator, compareModes).matches();
         } else if (isValueNode(expected) && isValueNode(actual)) {
-            new JsonTextMatcher(expected, actual, comparator, compareModes).matches();
+            new JsonValueMatcher(expected, actual, comparator, compareModes).matches();
         } else if (isMissingNode(expected) && isMissingNode(actual)) {
             //do nothing
         } else {

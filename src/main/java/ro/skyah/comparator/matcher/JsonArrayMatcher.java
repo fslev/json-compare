@@ -9,7 +9,7 @@ import ro.skyah.util.MessageUtil;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JsonArrayMatcher extends AbstractJsonMatcher {
+class JsonArrayMatcher extends AbstractJsonMatcher {
 
     private final Set<Integer> matchedPositions = new HashSet<>();
 
