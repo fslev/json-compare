@@ -13,13 +13,12 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
 
     private final Set<Integer> matchedPositions = new HashSet<>();
 
-    public JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
-                            Set<CompareMode> compareModes) {
+    JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         super(expected, actual, comparator, compareModes);
     }
 
     @Override
-    public void matches() throws MatcherException {
+    public void match() throws MatcherException {
         for (int i = 0; i < expected.size(); i++) {
             JsonNode expElement = expected.get(i);
             matchWithActualJsonArray(i, expElement, actual);
@@ -45,7 +44,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                 case MATCH:
                     JsonNode actElement = actual.get(j);
                     try {
-                        new JsonMatcher(expElement, actElement, comparator, compareModes).matches();
+                        new JsonMatcher(expElement, actElement, comparator, compareModes).match();
                     } catch (MatcherException e) {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
                             throw new MatcherException(String
@@ -66,7 +65,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                         continue actualElementsLoop;
                     }
                     try {
-                        new JsonMatcher(expElement, actElement, comparator, compareModes).matches();
+                        new JsonMatcher(expElement, actElement, comparator, compareModes).match();
                     } catch (MatcherException e) {
                         found = true;
                         break actualElementsLoop;

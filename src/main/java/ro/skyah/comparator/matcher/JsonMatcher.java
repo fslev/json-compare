@@ -8,19 +8,20 @@ import java.util.Set;
 
 public class JsonMatcher extends AbstractJsonMatcher {
 
-    public JsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
-                       Set<CompareMode> compareModes) {
+    public JsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         super(expected, actual, comparator, compareModes);
     }
 
     @Override
-    public void matches() throws MatcherException {
+    public void match() throws MatcherException {
         if (isJsonObject(expected) && isJsonObject(actual)) {
-            new JsonObjectMatcher(expected, actual, comparator, compareModes).matches();
+            new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
         } else if (isJsonArray(expected) && isJsonArray(actual)) {
-            new JsonArrayMatcher(expected, actual, comparator, compareModes).matches();
+            new JsonArrayMatcher(expected, actual, comparator, compareModes).match();
         } else if (isValueNode(expected) && isValueNode(actual)) {
-            new JsonValueMatcher(expected, actual, comparator, compareModes).matches();
+            new JsonValueMatcher(expected, actual, comparator, compareModes).match();
+        } else if (isJsonPathNode(expected)) {
+            new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
         } else if (isMissingNode(expected) && isMissingNode(actual)) {
             //do nothing
         } else {

@@ -1,7 +1,7 @@
 package ro.skyah.comparator.issues;
 
-import ro.skyah.comparator.JSONCompare;
 import org.junit.Test;
+import ro.skyah.comparator.JSONCompare;
 
 public class Issue5Test {
 

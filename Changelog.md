@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.34-SNAPSHOT
+## 2.35-SNAPSHOT
+
+## 2.34
+Json path support   
 
 ## 2.33
 Match missing nodes    

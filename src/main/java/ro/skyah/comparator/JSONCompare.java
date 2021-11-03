@@ -102,7 +102,7 @@ public class JSONCompare {
         try {
             new JsonMatcher(expected, actual,
                     comparator == null ? new DefaultJsonComparator() : comparator,
-                    new HashSet<>(Arrays.asList(compareModes))).matches();
+                    new HashSet<>(Arrays.asList(compareModes))).match();
         } catch (MatcherException e) {
             String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
                     prettyPrint(expected), MessageUtil.cropL(prettyPrint(actual)));
@@ -114,7 +114,7 @@ public class JSONCompare {
         try {
             new JsonMatcher(expectedJson, actualJson,
                     comparator == null ? new DefaultJsonComparator() : comparator,
-                    new HashSet<>(Arrays.asList(compareModes))).matches();
+                    new HashSet<>(Arrays.asList(compareModes))).match();
         } catch (MatcherException e) {
             return;
         }

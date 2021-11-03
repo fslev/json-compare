@@ -8,19 +8,18 @@ import java.util.Set;
 
 class JsonValueMatcher extends AbstractJsonMatcher {
 
-    public JsonValueMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator,
-                            Set<CompareMode> compareModes) {
+    JsonValueMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         super(expected, actual, comparator, compareModes);
     }
 
     @Override
-    public void matches() throws MatcherException {
+    public void match() throws MatcherException {
         UseCase useCase = getUseCase(expected.asText());
         matchStringType();
         matchNumberType();
         matchBooleanType();
         matchNullType();
-        String expectedText = sanitizeUseCase(expected.asText());
+        String expectedText = sanitize(expected.asText());
         String actualText = actual.asText();
 
         if (comparator.compareValues(expectedText, actualText) != useCase.equals(UseCase.MATCH)) {
