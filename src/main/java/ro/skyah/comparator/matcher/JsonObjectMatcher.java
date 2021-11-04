@@ -1,6 +1,7 @@
 package ro.skyah.comparator.matcher;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.jayway.jsonpath.PathNotFoundException;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.JsonComparator;
 
@@ -21,9 +22,9 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
             Map.Entry<String, JsonNode> entry = it.next();
             String expectedField = entry.getKey();
             JsonNode expectedValue = entry.getValue();
-            Optional<String> jsonPathExpression = extractJsonPathExp(expectedField);
             UseCase useCase = getUseCase(expectedField);
             String expectedSanitizedField = sanitize(expectedField);
+            Optional<String> jsonPathExpression = extractJsonPathExp(expectedSanitizedField);
             List<Map.Entry<String, JsonNode>> candidateEntries = null;
             if (!jsonPathExpression.isPresent()) {
                 candidateEntries = searchCandidateEntriesByField(expectedSanitizedField, actual);
@@ -37,13 +38,26 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                         }
                         matchWithCandidateEntries(expectedSanitizedField, expectedValue, candidateEntries);
                     } else {
-                        new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match();
+                        try {
+                            new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match();
+                        } catch (PathNotFoundException e) {
+                            throw new MatcherException(String.format("%s <- json path ('%s')", e.getMessage(), jsonPathExpression.get()));
+                        }
                     }
                     break;
                 case DO_NOT_MATCH_ANY:
                 case DO_NOT_MATCH:
-                    if (!jsonPathExpression.isPresent() && !candidateEntries.isEmpty()) {
-                        throw new MatcherException(String.format("Field %s was found", expectedField));
+                    if (!jsonPathExpression.isPresent()) {
+                        if (!candidateEntries.isEmpty()) {
+                            throw new MatcherException(String.format("Field %s was found", expectedField));
+                        }
+                    } else {
+                        try {
+                            new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match();
+                        } catch (PathNotFoundException e) {
+                            break;
+                        }
+                        throw new MatcherException(String.format("Json path '%s' was found", expectedField));
                     }
                     break;
             }

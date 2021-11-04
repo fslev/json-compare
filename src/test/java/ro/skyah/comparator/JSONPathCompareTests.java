@@ -124,7 +124,7 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertEquals(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("<- json path ('$.idontexist') <- \"a11\" <- \"a1\" <- \"a\""));
+            assertTrue(e.getMessage().contains("No results for path: $['idontexist'] <- json path ('$.idontexist') <- \"a11\" <- \"a1\" <- \"a\""));
             return;
         }
         fail("No error thrown");
@@ -144,7 +144,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonObjectstWithJsonPath_do_not_match_use_case() {
+    public void matchJsonObjectWithJsonPath_do_not_match_use_case() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"!lorem1\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertEquals(expected, actual);
@@ -156,12 +156,215 @@ public class JSONPathCompareTests {
         expected = "{\"a\":{\"a1\":{\"#($.a11)\":{\"!a\":\"lorem\"}}}}";
         actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertNotEquals(expected, actual);
+
+        expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.x)\":\"lorem1\"}}}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.a)\":\"does not matter\"}}}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
+        JSONCompare.assertNotEquals(expected, actual);
     }
 
     @Test(expected = AssertionError.class)
-    public void matchJsonObjectstWithJsonPath_do_not_match_use_case_negative() {
+    public void matchJsonObjectWithJsonPath_do_not_match_use_case_negative() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"!lorem1\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
         JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void matchJsonObjectWithJsonPathAndRegex() {
+        String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\".*\"}}}}";
+        String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"lo.*m\"}}}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "{\"a\":{\"a1\":{\"#($.a11)\":{\"!b\":\".*\"}}}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "{\"a\":{\"a1\":{\"#($.a11)\":{\"!.*\":\".*\"}}}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void matchJsonObjectWithJsonPathAndRegex_negative() {
+        final String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"lol.*\"}}}}";
+        final String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
+    }
+
+    @Test
+    public void matchJsonObjectWithJsonPathAndCompareModes() {
+        String expected = "{\"b\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\".*\"}},\"a2\":290.11}}";
+        String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
+
+        expected = "{\"b\":false,\"a\":{\"#($.a1)\":{\"a11\":{\"a\":\".*\"}},\"a2\":290.11}}";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
+    }
+
+    @Test
+    public void matchJsonArrayWithJsonPath() {
+        String expected = "[false,{\"#($.length())\":3},1]";
+        String actual = "[1,[false,245.2,null,\"test\"],false]";
+        JSONCompare.assertEquals(expected, actual);
+        expected = "[false,{\"#($.length())\":3},2]";
+        JSONCompare.assertNotEquals(expected, actual);
+
+        expected = "[false,{\"#($[1].x.length())\":4}]";
+        actual = "[1,{\"x\":[false,245.2,null,\"test\"]},false]";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "[false,{\"#($[1].x.length())\":3}]";
+        JSONCompare.assertNotEquals(expected, actual);
+        expected = "[false,{\"#($[0].x.length())\":4}]";
+        JSONCompare.assertNotEquals(expected, actual);
+
+        expected = "[false,{\"x\":[{\"#($.length())\":4}]}]";
+        actual = "[1,{\"x\":[false,245.2,null,\"test\"]},false]";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "[true,{\"x\":[{\"#($.length())\":4}]}]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void matchJsonObjectWithMultipleJsonPaths() {
+        String expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\".*\"}},\"#($.a2)\":290.11}}";
+        String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\".*\"}},\"#($.a0)\":290.11}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertNotEquals(expected, actual);
+
+        expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\"not found\"}},\"#($.a2)\":290.11}}";
+        actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
+    public void matchJsonObjectWithDifferentJsonPaths() {
+        String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
+        String actual = "{\n" +
+                "    \"store\": {\n" +
+                "        \"book\": [\n" +
+                "            {\n" +
+                "                \"category\": \"reference\",\n" +
+                "                \"author\": \"Nigel Rees\",\n" +
+                "                \"title\": \"Sayings of the Century\",\n" +
+                "                \"price\": 8.95\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"Evelyn Waugh\",\n" +
+                "                \"title\": \"Sword of Honour\",\n" +
+                "                \"price\": 12.99\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"Herman Melville\",\n" +
+                "                \"title\": \"Moby Dick\",\n" +
+                "                \"isbn\": \"0-553-21311-3\",\n" +
+                "                \"price\": 8.99\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"J. R. R. Tolkien\",\n" +
+                "                \"title\": \"The Lord of the Rings\",\n" +
+                "                \"isbn\": \"0-395-19395-8\",\n" +
+                "                \"price\": 22.99\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"bicycle\": {\n" +
+                "            \"color\": \"red\",\n" +
+                "            \"price\": 19.95\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"expensive\": 10\n" +
+                "}";
+        JSONCompare.assertEquals(expected, actual);
+
+        expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\"]}";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+
+
+        expected = "{\"#($..book[?(@.price <= $['expensive'])])\":[" +
+                "{\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"Herman Melville\",\n" +
+                "                \"title\": \"Moby Dick\",\n" +
+                "                \"isbn\": \"0-553-21311-3\",\n" +
+                "                \"price\": 8.99\n" +
+                "            },\n" +
+                "{\n" +
+                "                \"category\": \"reference\",\n" +
+                "                \"author\": \"Nigel Rees\",\n" +
+                "                \"title\": \"S.*e Century\",\n" +
+                "                \"price\": 8.95\n" +
+                "            }\n" +
+                "]}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void matchJsonObjectWithDifferentJsonPaths_negative() {
+        final String expected = "{\"#($.store..z)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
+        final String actual = "{\n" +
+                "    \"store\": {\n" +
+                "        \"book\": [\n" +
+                "            {\n" +
+                "                \"category\": \"reference\",\n" +
+                "                \"author\": \"Nigel Rees\",\n" +
+                "                \"title\": \"Sayings of the Century\",\n" +
+                "                \"price\": 8.95\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"Evelyn Waugh\",\n" +
+                "                \"title\": \"Sword of Honour\",\n" +
+                "                \"price\": 12.99\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"Herman Melville\",\n" +
+                "                \"title\": \"Moby Dick\",\n" +
+                "                \"isbn\": \"0-553-21311-3\",\n" +
+                "                \"price\": 8.99\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"J. R. R. Tolkien\",\n" +
+                "                \"title\": \"The Lord of the Rings\",\n" +
+                "                \"isbn\": \"0-395-19395-8\",\n" +
+                "                \"price\": 22.99\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"bicycle\": {\n" +
+                "            \"color\": \"red\",\n" +
+                "            \"price\": 19.95\n" +
+                "        }\n" +
+                "    },\n" +
+                "    \"expensive\": 10\n" +
+                "}";
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
+
+        final String expected1 = "{\"#($..book[?(@.price <= $['expensive'])])\":[" +
+                "{\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"Herman Melville\",\n" +
+                "                \"title\": \"Moby Dick\",\n" +
+                "                \"isbn\": \"0-553-21311-3\",\n" +
+                "                \"price\": 8.99\n" +
+                "            },\n" +
+                "!.*," +
+                "]}";
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected1, actual));
     }
 }

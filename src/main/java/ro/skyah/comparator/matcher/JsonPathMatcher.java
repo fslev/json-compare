@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ParseContext;
-import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.spi.json.JacksonJsonNodeJsonProvider;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.JsonComparator;
@@ -28,11 +27,13 @@ class JsonPathMatcher extends AbstractJsonMatcher {
 
     @Override
     public void match() throws MatcherException {
+        JsonNode result = null;
         try {
-            JsonNode result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
+            result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
             new JsonMatcher(expected, result, comparator, compareModes).match();
-        } catch (MatcherException | PathNotFoundException e) {
-            throw new MatcherException(String.format("%s <- json path ('%s')", e.getMessage(), jsonPath));
+        } catch (MatcherException e) {
+            throw new MatcherException(String.format("Expected json path result:\n%s\nBut got:\n%s\n\n%s <- json path ('%s')",
+                    expected, result, e.getMessage(), jsonPath));
         }
     }
 }

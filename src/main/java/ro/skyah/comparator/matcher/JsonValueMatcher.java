@@ -15,37 +15,37 @@ class JsonValueMatcher extends AbstractJsonMatcher {
     @Override
     public void match() throws MatcherException {
         UseCase useCase = getUseCase(expected.asText());
-        matchStringType();
-        matchNumberType();
-        matchBooleanType();
-        matchNullType();
+        matchTextTypes();
+        matchNumberTypes();
+        matchBooleanTypes();
+        matchNullTypes();
         String expectedText = sanitize(expected.asText());
         String actualText = actual.asText();
 
-        if (comparator.compareValues(expectedText, actualText) != useCase.equals(UseCase.MATCH)) {
+        if (!useCase.equals(UseCase.MATCH_ANY) && comparator.compareValues(expectedText, actualText) != useCase.equals(UseCase.MATCH)) {
             throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
         }
     }
 
-    private void matchNullType() throws MatcherException {
+    private void matchNullTypes() throws MatcherException {
         if (expected.isNull() && !actual.isNull()) {
             throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
         }
     }
 
-    private void matchNumberType() throws MatcherException {
+    private void matchNumberTypes() throws MatcherException {
         if (expected.isNumber() && !actual.isNumber()) {
             throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
         }
     }
 
-    private void matchBooleanType() throws MatcherException {
+    private void matchBooleanTypes() throws MatcherException {
         if (expected.isBoolean() && !actual.isBoolean()) {
             throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
         }
     }
 
-    private void matchStringType() throws MatcherException {
+    private void matchTextTypes() throws MatcherException {
         if (actual.isTextual() && !expected.isTextual()) {
             throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
         }

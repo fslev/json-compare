@@ -21,10 +21,13 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
     public void match() throws MatcherException {
         for (int i = 0; i < expected.size(); i++) {
             JsonNode expElement = expected.get(i);
-            matchWithActualJsonArray(i, expElement, actual);
+            if (isJsonPathNode(expElement)) {
+                new JsonMatcher(expElement, actual, comparator, compareModes).match();
+            } else {
+                matchWithActualJsonArray(i, expElement, actual);
+            }
         }
-        if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
-                && expected.size() < actual.size()) {
+        if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() < actual.size()) {
             throw new MatcherException("Actual JSON ARRAY has extra elements");
         }
     }
@@ -77,18 +80,17 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
             }
         }
         if (!found && useCase == UseCase.MATCH) {
-            throw new MatcherException(
-                    "Expected element from position " + (expPosition + 1) + " was NOT FOUND:\n"
-                            + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+            throw new MatcherException("Expected element from position " + (expPosition + 1) + " was NOT FOUND:\n"
+                    + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         }
         if (found && useCase == UseCase.DO_NOT_MATCH) {
             throw new MatcherException("Expected element from position " + (expPosition + 1)
                     + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         }
         if (useCase == UseCase.MATCH_ANY) {
-            throw new MatcherException(
-                    "Expected condition of type MATCH_ANY from position " + (expPosition + 1) + " was NOT MET. Actual Json Array has no extra elements:\n"
-                            + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+            throw new MatcherException("Expected condition of type MATCH_ANY from position " + (expPosition + 1)
+                    + " was NOT MET. Actual Json Array has no extra elements:\n"
+                    + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         }
     }
 }
