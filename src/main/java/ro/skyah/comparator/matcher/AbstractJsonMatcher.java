@@ -90,12 +90,14 @@ abstract class AbstractJsonMatcher {
     protected static boolean isJsonPathNode(JsonNode jsonNode) {
         if (jsonNode != null && jsonNode.isObject()) {
             Iterator<String> fieldNames = jsonNode.fieldNames();
-            while (fieldNames.hasNext()) {
-                if (!extractJsonPathExp(fieldNames.next()).isPresent()) {
-                    return false;
+            if (fieldNames.hasNext()) {
+                while (fieldNames.hasNext()) {
+                    if (!extractJsonPathExp(fieldNames.next()).isPresent()) {
+                        return false;
+                    }
                 }
+                return true;
             }
-            return true;
         }
         return false;
     }

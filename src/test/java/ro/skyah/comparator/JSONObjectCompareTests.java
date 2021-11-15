@@ -12,6 +12,20 @@ public class JSONObjectCompareTests {
     }
 
     @Test
+    public void compareEmptyJsonObject() {
+        String expected = "{}";
+        String actual = "{\"a\":\"val2\"}";
+        JSONCompare.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void compareEmptyJsonObject_negative() {
+        String expected = "{}";
+        String actual = "[1,2]";
+        JSONCompare.assertNotEquals(expected, actual);
+    }
+
+    @Test
     public void compareByFieldNotFound() {
         String expected = "{\"!b\":\"val1\",\"a\":\"val2\"}";
         String actual = "{\"a\":\"val2\",\"c\":\"val1\"}";

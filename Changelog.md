@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.35-SNAPSHOT
+## 2.36-SNAPSHOT
+
+
+## 2.35
+Bugfix - Compare empty JSON Objects  
 
 ## 2.34
 Json path support   

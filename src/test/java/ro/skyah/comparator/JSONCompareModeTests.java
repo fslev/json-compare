@@ -12,12 +12,18 @@ public class JSONCompareModeTests {
         String expected = "{\"a\":true}";
         String actual = "{\"a\":true}";
         JSONCompare.assertEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
+        expected = "{}";
+        actual = "{}";
+        JSONCompare.assertEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
     }
 
     @Test
     public void compareJSONObjectNonExtensible_negative() {
         String expected = "{\"a\":true}";
         String actual = "{\"a\":true,\"b\":false}";
+        JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
+        expected = "{}";
+        actual = "{\"a\":\"val2\"}";
         JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE);
     }
 
