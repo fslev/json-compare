@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <name>JSON Compare</name>
@@ -184,12 +185,12 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
-                    <includes>
-                        <include>**/*</include>
-                        <skipTests>false</skipTests>
-                    </includes>
-                    <parallel>all</parallel>
-                    <threadCount>8</threadCount>
+                    <properties>
+                        <configurationParameters>
+                            junit.jupiter.execution.parallel.enabled = true
+                            junit.jupiter.execution.parallel.mode.default = concurrent
+                        </configurationParameters>
+                    </properties>
                 </configuration>
             </plugin>
             <plugin>
@@ -212,8 +213,8 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Description>${project.description}</Bundle-Description>
                         <Import-Package>*</Import-Package>
-                        <Export-Package />
-                        <Bundle-RequiredExecutionEnvironment />
+                        <Export-Package/>
+                        <Bundle-RequiredExecutionEnvironment/>
                         <_removeheaders>Bnd-LastModified</_removeheaders>
                     </instructions>
                 </configuration>
