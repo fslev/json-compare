@@ -12,7 +12,7 @@ The library contains some tweaks which help you make assertions by writing less 
 
 ## Based on
 
-1. JUnit
+1. Junit Jupiter API
 2. Jackson
 3. Jayway json-path
 
