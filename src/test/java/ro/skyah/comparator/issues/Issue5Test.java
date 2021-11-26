@@ -1,7 +1,9 @@
 package ro.skyah.comparator.issues;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.JSONCompare;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Issue5Test {
 
@@ -94,7 +96,7 @@ public class Issue5Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testIssue1_negative() {
         String expected =
                 "{\n" +
@@ -180,6 +182,6 @@ public class Issue5Test {
                         "    \"content\" : \"\\\"zone-ownership-verification-1f3084631d3f396d4df4b07df37c94d7cb8b569cfa03a899f343381021fcf112\\\"\",\n" +
                         "    \"ttl\" : 60\n" +
                         "  }]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 }

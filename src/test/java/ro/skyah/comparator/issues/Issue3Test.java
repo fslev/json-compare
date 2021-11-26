@@ -1,7 +1,9 @@
 package ro.skyah.comparator.issues;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.JSONCompare;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Issue3Test {
 
@@ -178,7 +180,7 @@ public class Issue3Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testIssue1_negative() {
         String expected =
                 "{\n" +
@@ -361,6 +363,6 @@ public class Issue3Test {
                         "    \"ttl\" : 3600\n" +
                         "  } ]\n" +
                         "}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 }

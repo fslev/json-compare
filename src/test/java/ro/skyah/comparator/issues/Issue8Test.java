@@ -1,7 +1,9 @@
 package ro.skyah.comparator.issues;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.JSONCompare;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Issue8Test {
 
@@ -12,11 +14,11 @@ public class Issue8Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testJsonObjectMatchUseCase_negative() {
         String expected = "{\"records\":[ {\"a\":0} ]}";
         String actual = "{\"records\":[ {\"a\":1} ]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -26,11 +28,11 @@ public class Issue8Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testJsonArrayMatchUseCase_negative() {
         String expected = "{\"records\":[ 1,true, \"b\", {\"a\": 0}, [2] ]}";
         String actual = "{\"records\":[  \"b\", {\"b\": 0}, true, [2], 1 ]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -40,11 +42,11 @@ public class Issue8Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testJsonObjectDoNotMatchUseCase_negative() {
         String expected = "{\"records\":[ {\"!a\":0} ]}";
         String actual = "{\"records\":[ {\"a\":1} ]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -61,11 +63,11 @@ public class Issue8Test {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testJsonArrayDoNotMatchUseCase_negative1() {
         String expected = "{\"records\":[  [\"!c\"] ]}";
         String actual = "{\"records\":[  \"b\", {\"a\": 0}, [\"c\"], true, 1 ]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test

@@ -12,7 +12,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 /**
  * @author fslev

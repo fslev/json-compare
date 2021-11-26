@@ -1,8 +1,10 @@
 package ro.skyah.comparator.issues;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.JSONCompare;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Issue6Test {
 
@@ -70,7 +72,7 @@ public class Issue6Test {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testIssue1_negative() {
         String expected = "[{\n" +
                 "  \"name\" : \"division1\",\n" +
@@ -88,12 +90,12 @@ public class Issue6Test {
                 "  \"name\" : \"division1\",\n" +
                 "  \"vlan\" : \"115\"\n" +
                 "}]";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
 
     @Test
-    @Ignore
+    @Disabled
     public void testIssue2() {
         String expected = "[" +
                 "{\n" +

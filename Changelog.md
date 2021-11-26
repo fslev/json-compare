@@ -1,7 +1,9 @@
 # Changelog
 
-## 2.36-SNAPSHOT
+## 2.37-SNAPSHOT
 
+## 2.36
+Use Junit Jupiter API  
 
 ## 2.35
 Bugfix - Compare empty JSON Objects  

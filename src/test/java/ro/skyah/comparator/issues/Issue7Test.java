@@ -1,7 +1,9 @@
 package ro.skyah.comparator.issues;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.JSONCompare;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Issue7Test {
 
@@ -15,11 +17,11 @@ public class Issue7Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void matchUseCaseLiterals_negative() {
         String expected = "{\"records\": [\"!.*\"]}";
         String actual = "{\"records\": [\"!.*\" ]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -95,11 +97,11 @@ public class Issue7Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void checkJsonArrayHasNoTextElementThatMatchesTheExpectedTextValue_negative() {
         String expected = "{\"records\": [\"!b\"]}";
         String actual = "{\"records\": [\"b\"]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -109,11 +111,11 @@ public class Issue7Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue_negative1() {
         String expected = "{\"records\": [{\"!.*\": \".*\"}]}";
         String actual = "{\"records\": [\"a\", [true]]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -172,11 +174,11 @@ public class Issue7Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue3_negative() {
         String expected = "{\"records\": [{\"a\": \"!b\"}]}";
         String actual = "{\"records\": [{\"a\": \"b\"}]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -186,11 +188,11 @@ public class Issue7Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void checkJsonArrayHasNoJsonObjectElementThatMatchesTheExpectedTextValue_negative() {
         String expected = "{\"records\": [\"!b\"]}";
         String actual = "{\"records\": [{\"a\": 0}, \"b\"]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -200,11 +202,11 @@ public class Issue7Test {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void checkJsonArrayHasNoElementThatMatchesTheExpectedJsonObject_negative() {
         String expected = "{\"records\": [ {\"!a\": 0} ]}";
         String actual = "{\"records\": [ \"b\", {\"a\": 0} ]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
 
@@ -222,11 +224,11 @@ public class Issue7Test {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void checkJsonArrayHasNoJsonArrayElementThatMatchesTheExpectedTextValue_negative() {
         String expected = "{\"records\": [\"!t.*\"]}";
         String actual = "{\"records\": [ [\"b\"], true ]}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test

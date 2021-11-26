@@ -1,8 +1,8 @@
 package ro.skyah.comparator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JSONPathCompareTests {
 
@@ -109,11 +109,11 @@ public class JSONPathCompareTests {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void compareJsonObjectsWithRelativeJsonPath_negative() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":true}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
 
@@ -166,11 +166,11 @@ public class JSONPathCompareTests {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void matchJsonObjectWithJsonPath_do_not_match_use_case_negative() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"!lorem1\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test

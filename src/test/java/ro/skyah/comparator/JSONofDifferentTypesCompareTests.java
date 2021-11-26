@@ -1,6 +1,8 @@
 package ro.skyah.comparator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JSONofDifferentTypesCompareTests {
 
@@ -18,10 +20,10 @@ public class JSONofDifferentTypesCompareTests {
         JSONCompare.assertNotEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void compareStrangeValues() {
         String expected = "\"1\"Fds\"\"";
         String actual = "1";
-        JSONCompare.assertNotEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertNotEquals(expected, actual));
     }
 }

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JSONValueNodeCompareTests {
 
@@ -29,11 +31,11 @@ public class JSONValueNodeCompareTests {
         JSONCompare.assertEquals(expected, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void compareMissingNodes_negative() {
         JsonNode expected = new ObjectMapper().missingNode();
         JsonNode actual = new TextNode("");
-        JSONCompare.assertEquals(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
     }
 
     @Test
@@ -43,11 +45,11 @@ public class JSONValueNodeCompareTests {
         JSONCompare.assertEquals(null, expectedAsString, actual);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void compareUnquotedStringWithTextNodeFails() {
         String expectedAsString = "some val";
         TextNode actual = new TextNode("some val");
-        JSONCompare.assertEquals(null, expectedAsString, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(null, expectedAsString, actual));
     }
 
     @Test
