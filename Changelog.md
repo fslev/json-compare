@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.37-SNAPSHOT
+## 2.38-SNAPSHOT
+
+## 2.37
+Update dependency  
 
 ## 2.36
 Use Junit Jupiter API  
