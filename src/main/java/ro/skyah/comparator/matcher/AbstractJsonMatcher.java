@@ -15,10 +15,10 @@ abstract class AbstractJsonMatcher {
     protected final static String JSON_PATH_EXP_PREFIX = "#(";
     protected final static String JSON_PATH_EXP_SUFFIX = ")";
 
-    protected JsonComparator comparator;
-    protected Set<CompareMode> compareModes;
-    protected JsonNode expected;
-    protected JsonNode actual;
+    protected final JsonComparator comparator;
+    protected final Set<CompareMode> compareModes;
+    protected final JsonNode expected;
+    protected final JsonNode actual;
 
     AbstractJsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         this.expected = expected;
