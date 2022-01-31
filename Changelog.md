@@ -1,6 +1,10 @@
 # Changelog
 
-## 2.39-SNAPSHOT
+## 2.40-SNAPSHOT
+
+
+## 2.39
+Update dependencies  
 
 ## 2.38
 Update Jackson dependencies    
