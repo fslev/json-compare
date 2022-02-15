@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.JSONCompare;
 
 public class Issue13Test {
+    //Issue: https://github.com/fslev/json-compare/issues/28
 
     @Test
     public void testComparisonOfJsonWithUnintendedRegex() {
