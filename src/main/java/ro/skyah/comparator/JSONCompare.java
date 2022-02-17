@@ -23,6 +23,9 @@ public class JSONCompare {
 
     private static final ObjectMapper MAPPER = new ObjectMapper().enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
 
+    private static final String ASSERTION_ERROR_HINT_MESSAGE = "Hint: By default, json matching uses regular expressions.\n" +
+            "If expected json contains unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.";
+
     public static void assertEquals(String expected, String actual, CompareMode... compareModes) {
         assertEquals(null, expected, actual, compareModes);
     }
@@ -105,8 +108,8 @@ public class JSONCompare {
                     comparator == null ? new DefaultJsonComparator() : comparator,
                     new HashSet<>(Arrays.asList(compareModes))).match();
         } catch (MatcherException e) {
-            String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s ", e.getMessage(),
-                    prettyPrint(expected), MessageUtil.cropL(prettyPrint(actual)));
+            String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s\n\n%s", e.getMessage(),
+                    prettyPrint(expected), MessageUtil.cropL(prettyPrint(actual)), ASSERTION_ERROR_HINT_MESSAGE);
             fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
         }
     }
@@ -123,6 +126,14 @@ public class JSONCompare {
         fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
     }
 
+    public static String prettyPrint(JsonNode jsonNode) {
+        try {
+            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static JsonNode getJson(String json) {
         JsonNode jsonNode = null;
         try {
@@ -131,13 +142,5 @@ public class JSONCompare {
             fail(String.format("Not a JSON:\n%s", MessageUtil.cropL(json)));
         }
         return jsonNode;
-    }
-
-    public static String prettyPrint(JsonNode jsonNode) {
-        try {
-            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

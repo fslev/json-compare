@@ -1,7 +1,10 @@
 # Changelog
 
-## 2.40-SNAPSHOT
+## 2.41-SNAPSHOT
 
+
+## 2.40
+Enhance AssertionError message with hint for unintentional regexes  
 
 ## 2.39
 Update dependencies  
