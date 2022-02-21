@@ -1,7 +1,10 @@
 # Changelog
 
-## 2.41-SNAPSHOT
+## 2.42-SNAPSHOT
 
+
+## 2.41
+AssertionError message contains hint for unintentional regexes only when default comparator is used  
 
 ## 2.40
 Enhance AssertionError message with hint for unintentional regexes  

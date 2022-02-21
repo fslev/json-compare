@@ -108,8 +108,11 @@ public class JSONCompare {
                     comparator == null ? new DefaultJsonComparator() : comparator,
                     new HashSet<>(Arrays.asList(compareModes))).match();
         } catch (MatcherException e) {
-            String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s\n\n%s", e.getMessage(),
-                    prettyPrint(expected), MessageUtil.cropL(prettyPrint(actual)), ASSERTION_ERROR_HINT_MESSAGE);
+            String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s", e.getMessage(),
+                    prettyPrint(expected), MessageUtil.cropL(prettyPrint(actual)));
+            if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
+                defaultMessage += "\n\n" + ASSERTION_ERROR_HINT_MESSAGE + "\n";
+            }
             fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
         }
     }
