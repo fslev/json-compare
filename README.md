@@ -1,5 +1,6 @@
 # JSON Compare
 
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://vshymanskyy.github.io/StandWithUkraine)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.fslev/json-compare.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.fslev%22%20AND%20a:%22json-compare%22)
 ![Build status](https://github.com/fslev/json-compare/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/fslev/json-compare/badge.svg?branch=master)](https://coveralls.io/github/fslev/json-compare?branch=master)
