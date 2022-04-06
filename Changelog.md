@@ -1,7 +1,9 @@
 # Changelog
 
-## 2.42-SNAPSHOT
+## 2.43-SNAPSHOT
 
+## 2.42
+Update dependencies  
 
 ## 2.41
 AssertionError message contains hint for unintentional regexes only when default comparator is used  
