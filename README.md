@@ -100,6 +100,7 @@ JSONCompare.assertEquals(expected, actual, new JsonComparator() {
                 return expected.equals(actual);
             }
         });
+// should fail
 ```
 
 ## Error messages
