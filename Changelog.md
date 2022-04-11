@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.43-SNAPSHOT
+## 2.44-SNAPSHOT
+
+## 2.43
+Refactor Hint message for unintentional regexes  
 
 ## 2.42
 Update dependencies  

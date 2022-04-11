@@ -18,12 +18,12 @@ public class Issue13Test {
         try {
             JSONCompare.assertEquals(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Hint"));
+            assertTrue(e.getMessage().contains("unintentional regexes"));
         }
         try {
             JSONCompare.assertEquals(expected, actual, new DefaultJsonComparator());
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Hint"));
+            assertTrue(e.getMessage().contains("unintentional regexes"));
         }
     }
 
@@ -35,7 +35,7 @@ public class Issue13Test {
         try {
             JSONCompare.assertEquals(expected, actual, new CustomComparator());
         } catch (AssertionError e) {
-            assertFalse(e.getMessage().contains("Hint"));
+            assertFalse(e.getMessage().contains("unintentional regexes"));
         }
     }
 

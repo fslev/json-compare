@@ -23,8 +23,8 @@ public class JSONCompare {
 
     private static final ObjectMapper MAPPER = new ObjectMapper().enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
 
-    private static final String ASSERTION_ERROR_HINT_MESSAGE = "Hint: By default, json matching uses regular expressions.\n" +
-            "If expected json contains unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.";
+    private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching by default uses regular expressions.\n" +
+            "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.";
 
     public static void assertEquals(String expected, String actual, CompareMode... compareModes) {
         assertEquals(null, expected, actual, compareModes);
