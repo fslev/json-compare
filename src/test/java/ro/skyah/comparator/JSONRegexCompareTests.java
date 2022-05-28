@@ -23,6 +23,8 @@ public class JSONRegexCompareTests {
         String expected = "{\"(?!a.*).*\":\".*\"}";
         String actual = "{\"ab\":\"som text\"}";
         JSONCompare.assertNotMatches(expected, actual);
+        expected = "{\"(?!x.*).*\":\"blah\"}";
+        JSONCompare.assertNotMatches(expected, actual);
         expected = "{\"(?!x.*).*\":\".*\"}";
         JSONCompare.assertMatches(expected, actual);
     }
