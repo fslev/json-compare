@@ -1,6 +1,5 @@
 package ro.skyah.comparator.issues;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.JSONCompare;
 
@@ -26,7 +25,7 @@ public class Issue6Test {
                 "  \"name\" : \"division2\",\n" +
                 "  \"vlan\" : \"117\"" +
                 "}]";
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
 
@@ -48,7 +47,7 @@ public class Issue6Test {
                 "  \"a\" : \"division2\",\n" +
                 "  \"b\" : \"114\"\n" +
                 "}]";
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
@@ -69,7 +68,7 @@ public class Issue6Test {
                 "  \"a\" : \"division2\",\n" +
                 "  \"vlan\" : \"114\"\n" +
                 "}]";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
@@ -90,12 +89,11 @@ public class Issue6Test {
                 "  \"name\" : \"division1\",\n" +
                 "  \"vlan\" : \"115\"\n" +
                 "}]";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 
 
     @Test
-    @Disabled
     public void testIssue2() {
         String expected = "[" +
                 "{\n" +
@@ -103,9 +101,9 @@ public class Issue6Test {
                 "  \"!vlan\" : \"115\"\n" +
                 "}]";
         String actual = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
+                "  \"names\" : \"division1\",\n" +
                 "  \"vlan\" : \"116\"\n" +
                 "}]";
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertNotMatches(expected, actual);
     }
 }

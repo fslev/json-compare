@@ -113,7 +113,7 @@ public class Issue4Test {
                         "    \"id\": \"tenant.common.archive.domains-13-1253163-1545209440169_da66beaf2766c82d179e3b55f7ae94d6a1c5a1e37b3913bb9fbc08b316443a18\"\n" +
                         "  }\n" +
                         "}";
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
@@ -222,6 +222,6 @@ public class Issue4Test {
                         "    \"id\": \"tenant.common.archive.domains-13-1253163-1545209440169_da66beaf2766c82d179e3b55f7ae94d6a1c5a1e37b3913bb9fbc08b316443a18\"\n" +
                         "  }\n" +
                         "}";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 }

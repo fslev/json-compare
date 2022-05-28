@@ -14,48 +14,48 @@ public class JSONValueNodeCompareTests {
     public void compareTextNodes() {
         TextNode expected = new TextNode("some val");
         TextNode actual = new TextNode("some val");
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
     public void compareEmptyTextNodes() {
         TextNode expected = new TextNode("");
         TextNode actual = new TextNode("");
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
     public void compareMissingNodes() {
         JsonNode expected = new ObjectMapper().missingNode();
         JsonNode actual = new ObjectMapper().missingNode();
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
     public void compareMissingNodes_negative() {
         JsonNode expected = new ObjectMapper().missingNode();
         JsonNode actual = new TextNode("");
-        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 
     @Test
     public void compareStringWithTextNode() {
         String expectedAsString = "\"some val\"";
         TextNode actual = new TextNode("some val");
-        JSONCompare.assertEquals(null, expectedAsString, actual);
+        JSONCompare.assertMatches(expectedAsString, actual, null, null, null);
     }
 
     @Test
     public void compareUnquotedStringWithTextNodeFails() {
         String expectedAsString = "some val";
         TextNode actual = new TextNode("some val");
-        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(null, expectedAsString, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expectedAsString, actual));
     }
 
     @Test
     public void compareIntNodes() {
         IntNode expected = new IntNode(1000000);
         IntNode actual = new IntNode(1000000);
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 }

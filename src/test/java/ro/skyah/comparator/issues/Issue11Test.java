@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import ro.skyah.comparator.CompareMode;
 import ro.skyah.comparator.JSONCompare;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Issue11Test {
@@ -13,7 +16,7 @@ public class Issue11Test {
         String expected = "{\".*\":{\"eventLogs\":[{\"id\":2},{\"id\":4},{\"id\":1},{\"id\":3}]}}";
         String actual = "{\"_embedded\":{\"eventLogs\":[{\"id\":1},{\"id\":2},{\"id\":3},{\"id\":4}]}}";
         try {
-            JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("elements differ at position"));
         }
@@ -120,7 +123,7 @@ public class Issue11Test {
                 "  }\n" +
                 "}";
         try {
-            JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("elements differ at position"));
         }
@@ -227,7 +230,7 @@ public class Issue11Test {
                 "  }\n" +
                 "}";
         try {
-            JSONCompare.assertEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);
+            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("was not found or cannot be matched"));
         }

@@ -10,20 +10,20 @@ public class JSONofDifferentTypesCompareTests {
     public void compareObjectWithArray() {
         String expected = "{\"a\":\"!test\"}";
         String actual = "[\"a\",\"b\"]";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
     public void compareArrayWithObject() {
         String expected = "[\"a\",\"b\"]";
         String actual = "{\"a\":\"!test\"}";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
     public void compareStrangeValues() {
         String expected = "\"1\"Fds\"\"";
         String actual = "1";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertNotEquals(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.assertNotMatches(expected, actual));
     }
 }

@@ -9,14 +9,14 @@ public class Issue9Test {
     public void testJsonsDoNotMatchNegativelook() {
         String expected = "{\"records\":[ {\"a\":\".((?!0).)*\"} ]}";
         String actual = "{\"records\":[ {\"b\":\"2\"}, {\"a\":\"s1s\"} ]}";
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
     public void testJsonsDoNotMatchNegativelook_negative() {
         String expected = "{\"records\":[ {\"a\":\".((?!0).)*\"} ]}";
         String actual = "{\"records\":[ {\"b\":\"2\"}, {\"a\":\"s0s\"} ]}";
-        JSONCompare.assertNotEquals(expected, actual);
+        JSONCompare.assertNotMatches(expected, actual);
     }
 
 }

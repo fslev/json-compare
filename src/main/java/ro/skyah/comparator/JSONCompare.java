@@ -9,8 +9,7 @@ import ro.skyah.comparator.matcher.MatcherException;
 import ro.skyah.util.MessageUtil;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -26,90 +25,55 @@ public class JSONCompare {
     private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching by default uses regular expressions.\n" +
             "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.";
 
-    public static void assertEquals(String expected, String actual, CompareMode... compareModes) {
-        assertEquals(null, expected, actual, compareModes);
+    public static void assertMatches(Object expected, Object actual) {
+        assertMatches(expected, actual, null, null, null);
     }
 
-    public static void assertEquals(String expected, String actual, JsonComparator comparator, CompareMode... compareModes) {
-        assertEquals(null, expected, actual, comparator, compareModes);
+    public static void assertNotMatches(Object expected, Object actual) {
+        assertNotMatches(expected, actual, null, null, null);
     }
 
-    public static void assertNotEquals(String expected, String actual, CompareMode... compareModes) {
-        assertNotEquals(null, expected, actual, compareModes);
+    public static void assertMatches(Object expected, Object actual, Set<CompareMode> compareModes) {
+        assertMatches(expected, actual, null, compareModes);
     }
 
-    public static void assertNotEquals(String expected, String actual, JsonComparator comparator, CompareMode... compareModes) {
-        assertNotEquals(null, expected, actual, comparator, compareModes);
+    public static void assertNotMatches(Object expected, Object actual, Set<CompareMode> compareModes) {
+        assertNotMatches(expected, actual, null, compareModes);
     }
 
-    public static void assertEquals(String message, String expected, String actual, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        JsonNode actualJson = getJson(actual);
-        assertEquals(message, expectedJson, actualJson, null, compareModes);
+    public static void assertMatches(Object expected, Object actual, JsonComparator comparator) {
+        assertMatches(expected, actual, comparator, null);
     }
 
-    public static void assertEquals(String message, String expected, String actual, JsonComparator comparator, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        JsonNode actualJson = getJson(actual);
-        assertEquals(message, expectedJson, actualJson, comparator, compareModes);
+    public static void assertNotMatches(Object expected, Object actual, JsonComparator comparator) {
+        assertNotMatches(expected, actual, comparator, null);
     }
 
-    public static void assertEquals(String message, String expected, JsonNode actual, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        assertEquals(message, expectedJson, actual, null, compareModes);
+    public static void assertMatches(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes) {
+        assertMatches(expected, actual, comparator, compareModes, null);
     }
 
-    public static void assertEquals(String message, String expected, JsonComparator comparator, JsonNode actual, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        assertEquals(message, expectedJson, actual, comparator, compareModes);
+    public static void assertNotMatches(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes) {
+        assertNotMatches(expected, actual, comparator, compareModes, null);
     }
 
-    public static void assertNotEquals(String message, String expected, JsonNode actual, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        assertNotEquals(message, expectedJson, actual, null, compareModes);
+    public static void assertMatches(Object expected, Object actual, Set<CompareMode> compareModes, String message) {
+        assertMatches(expected, actual, null, compareModes, message);
     }
 
-    public static void assertNotEquals(String message, String expected, JsonNode actual, JsonComparator comparator, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        assertNotEquals(message, expectedJson, actual, comparator, compareModes);
+    public static void assertNotMatches(Object expected, Object actual, Set<CompareMode> compareModes, String message) {
+        assertNotMatches(expected, actual, null, compareModes, message);
     }
 
-    public static void assertNotEquals(String message, String expected, String actual, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        JsonNode actualJson = getJson(actual);
-        assertNotEquals(message, expectedJson, actualJson, null, compareModes);
-    }
-
-    public static void assertNotEquals(String message, String expected, String actual, JsonComparator comparator, CompareMode... compareModes) {
-        JsonNode expectedJson = getJson(expected);
-        JsonNode actualJson = getJson(actual);
-        assertNotEquals(message, expectedJson, actualJson, comparator, compareModes);
-    }
-
-    public static void assertEquals(JsonNode expected, JsonNode actual, CompareMode... compareModes) {
-        assertEquals(null, expected, actual, null, compareModes);
-    }
-
-    public static void assertNotEquals(JsonNode expected, JsonNode actual, CompareMode... compareModes) {
-        assertNotEquals(null, expected, actual, null, compareModes);
-    }
-
-    public static void assertEquals(JsonNode expected, JsonNode actual, JsonComparator comparator, CompareMode... compareModes) {
-        assertEquals(null, expected, actual, comparator, compareModes);
-    }
-
-    public static void assertNotEquals(JsonNode expected, JsonNode actual, JsonComparator comparator, CompareMode... compareModes) {
-        assertNotEquals(null, expected, actual, comparator, compareModes);
-    }
-
-    public static void assertEquals(String message, JsonNode expected, JsonNode actual, JsonComparator comparator, CompareMode... compareModes) {
+    public static void assertMatches(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes, String message) {
+        JsonNode expectedJson = toJson(expected);
+        JsonNode actualJson = toJson(actual);
         try {
-            new JsonMatcher(expected, actual,
-                    comparator == null ? new DefaultJsonComparator() : comparator,
-                    new HashSet<>(Arrays.asList(compareModes))).match();
+            new JsonMatcher(expectedJson, actualJson,
+                    comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
         } catch (MatcherException e) {
             String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s", e.getMessage(),
-                    prettyPrint(expected), MessageUtil.cropL(prettyPrint(actual)));
+                    prettyPrint(expectedJson), MessageUtil.cropL(prettyPrint(actualJson)));
             if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
                 defaultMessage += "\n\n" + ASSERTION_ERROR_HINT_MESSAGE + "\n";
             }
@@ -117,11 +81,12 @@ public class JSONCompare {
         }
     }
 
-    public static void assertNotEquals(String message, JsonNode expectedJson, JsonNode actualJson, JsonComparator comparator, CompareMode... compareModes) {
+    public static void assertNotMatches(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes, String message) {
+        JsonNode expectedJson = toJson(expected);
+        JsonNode actualJson = toJson(actual);
         try {
             new JsonMatcher(expectedJson, actualJson,
-                    comparator == null ? new DefaultJsonComparator() : comparator,
-                    new HashSet<>(Arrays.asList(compareModes))).match();
+                    comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
         } catch (MatcherException e) {
             return;
         }
@@ -137,12 +102,13 @@ public class JSONCompare {
         }
     }
 
-    private static JsonNode getJson(String json) {
+    private static JsonNode toJson(Object obj) {
         JsonNode jsonNode = null;
         try {
-            jsonNode = MAPPER.readTree(json);
+            jsonNode = obj instanceof JsonNode ? (JsonNode) obj :
+                    (obj instanceof String) ? MAPPER.readTree(obj.toString()) : MAPPER.convertValue(obj, JsonNode.class);
         } catch (IOException e) {
-            fail(String.format("Not a JSON:\n%s", MessageUtil.cropL(json)));
+            fail(String.format("Cannot convert to JSON:\n%s", MessageUtil.cropL(obj.toString())));
         }
         return jsonNode;
     }

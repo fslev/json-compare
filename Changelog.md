@@ -1,6 +1,11 @@
 # Changelog
 
-## 2.44-SNAPSHOT
+## 3.1-SNAPSHOT
+
+## 3.0
+Renamed JSONCompare.assertEquals() and .assertNotEquals() to .assertMatches() and .assertNotMatches()  
+JSONCompare now accepts JSON convertible Objects as arguments  
+Update dependencies  
 
 ## 2.43
 Refactor Hint message for unintentional regexes  

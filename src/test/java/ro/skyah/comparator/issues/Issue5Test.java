@@ -93,7 +93,7 @@ public class Issue5Test {
                         "    \"content\" : \"\\\"zone-ownership-verification-1f3084631d3f396d4df4b07df37c94d7cb8b569cfa03a899f343381021fcf112\\\"\",\n" +
                         "    \"ttl\" : 60\n" +
                         "  }]}";
-        JSONCompare.assertEquals(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
@@ -182,6 +182,6 @@ public class Issue5Test {
                         "    \"content\" : \"\\\"zone-ownership-verification-1f3084631d3f396d4df4b07df37c94d7cb8b569cfa03a899f343381021fcf112\\\"\",\n" +
                         "    \"ttl\" : 60\n" +
                         "  }]}";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertEquals(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 }
