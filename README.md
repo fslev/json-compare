@@ -70,6 +70,13 @@ String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
 
+Match any JSON convertible Java objects  
+```javascript
+String expected = "{\"a\":1,\"b\":[4, 2, \"\\\\d+\"]}";
+Map<String, Object> actual = Map.of("a", 1, "b", Arrays.asList(1, 2, 3, 4));
+JSONCompare.assertMatches(expected, actual);
+```
+
 JSONCompare by default matches JSON fields and values using regular expressions.  
 If you have special regex characters inside either expected values or expected fields, but you literally want to match them, then you can quote them:  
 
