@@ -153,7 +153,7 @@ JSONCompare.assertMatches(expected, actual);
 or, between JSON object fields
 ```javascript
 String expected = "{\"!a\":\"value does not matter\"}";
-String actual = "{\"ab\":\"value does not matter\"}";
+String actual = "{\"b\":\"value does not matter\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
 
