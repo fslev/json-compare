@@ -157,6 +157,13 @@ String actual = "{\"ab\":\"value does not matter\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
 
+Of course, you can always use negative lookahead or lookbehind regular expressions
+```javascript
+String expected = "{\"(?!lorem.*).*\":\"value does not matter\"}";
+String actual = "{\"ab\":\"value does not matter\"}";
+JSONCompare.assertMatches(expected, actual);
+```
+
 Check for extra JSON values or fields by using the power of `regex` and `DO NOT MATCH` use case  
 ```javascript
 String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";

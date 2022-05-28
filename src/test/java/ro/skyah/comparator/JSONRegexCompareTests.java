@@ -19,6 +19,15 @@ public class JSONRegexCompareTests {
     }
 
     @Test
+    public void compareWithNegativeLookAheadRegex_negative() {
+        String expected = "{\"(?!a.*).*\":\".*\"}";
+        String actual = "{\"ab\":\"som text\"}";
+        JSONCompare.assertNotMatches(expected, actual);
+        expected = "{\"(?!x.*).*\":\".*\"}";
+        JSONCompare.assertMatches(expected, actual);
+    }
+
+    @Test
     public void compareWithEmptyValue() {
         String expected = "{\"a\":\".*\"}";
         String actual = "{\"a\":\"\"}";
