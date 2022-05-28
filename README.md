@@ -6,9 +6,9 @@
 
 A Java library for comparing JSONs, with some tweaks !
 
-## Summary
-Compare two JSONs and check detailed differences between them.  
-The library contains some tweaks which help you make assertions by writing less code.   
+## Brief
+Compare any JSON convertible Java objects and check detailed differences between them.  
+The library has some tweaks which might help you make assertions by writing less code.
 
 ## Based on
 
@@ -38,9 +38,9 @@ Assert that expected JSON is included within the actual JSON:
 ```javascript
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 ```
-JSON inclusion is checked by default, but you can use the special compare modes:
+JSON inclusion is checked by default, but you can use these special compare modes:
 * JSON_OBJECT_NON_EXTENSIBLE
 * JSON_ARRAY_NON_EXTENSIBLE
 * JSON_ARRAY_STRICT_ORDER
@@ -49,25 +49,25 @@ JSON inclusion is checked by default, but you can use the special compare modes:
 ```javascript
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
-JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE);
+JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE));
                             
 String expected = "[false,\"test\",4]";
 String actual = "[4,false,\"test\"]";
-JSONCompare.assertNotEquals(expected, actual, CompareMode.JSON_ARRAY_STRICT_ORDER);                            
+JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_ARRAY_STRICT_ORDER));                            
 ```
 
 You can use regular expressions on JSON values:
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 ```
 , but also on JSON object fields:
 
 ```javascript
 String expected = "{\".*oba.*\":\"some value\"}";
 String actual = "{\"foobar\":\"some value\"}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 ```
 
 JSONCompare by default matches JSON fields and values using regular expressions.  
@@ -76,7 +76,7 @@ If you have special regex characters inside either expected values or expected f
 ```javascript
 String expected = "{\"a\":\"\\Qd+\\E\"}";
 String actual = "{\"a\":\"d+\"}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 ```
 
 By quoting special characters, using \Q and \E, you disable the regex mechanism for that corresponding sequence.  
@@ -90,7 +90,7 @@ However, you can ignore the default regular expression compare mode, by using a 
 ```javascript
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
-JSONCompare.assertEquals(expected, actual, new JsonComparator() {
+JSONCompare.assertMatches(expected, actual, new JsonComparator() {
             public boolean compareValues(Object expected, Object actual) {
                 return expected.equals(actual);
             }
@@ -106,7 +106,7 @@ JSONCompare.assertEquals(expected, actual, new JsonComparator() {
 ```javascript
 String expected = "{\"b\":{\"x\":\"val1\",\"y\":\"val2\"},\"a\":{\"t\":\"val3\",\"z\":\"val1\"}}";
 String actual = "{\"a\":{\"t\":\"val3\",\"z\":\"val4\"},\"b\":{\"x\":\"val1\",\"y\":\"val2\"}}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 
 Output:
 
@@ -141,28 +141,28 @@ By using the `!` DO NOT MATCH option, the comparison between JSON values will be
 ```javascript
 String expected = "{\"a\":\"!test\"}";
 String actual = "{\"a\":\"testing\"}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 ```
 or, between JSON object fields
 ```javascript
 String expected = "{\"!a\":\"value does not matter\"}";
 String actual = "{\"ab\":\"value does not matter\"}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 ```
 
 Check for extra JSON values or fields by using the power of `regex` and `DO NOT MATCH` use case  
 ```javascript
 String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 
 String expected = "[false,\"test\",4,\"!.*\"]";
 String actual = "[4,false,\"test\"]";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 
 String expected = "[false,\"test\",4,\".*\"]";
 String actual = "[4,false,\"test\"]";
-JSONCompare.assertNotEquals(expected, actual);
+JSONCompare.assertNotMatches(expected, actual);
 ```
 ### Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
@@ -195,5 +195,5 @@ String actual = "{\n" +
                 "        ]\n" +
                 "    }\n" +
                 "}";
-JSONCompare.assertEquals(expected, actual);
+JSONCompare.assertMatches(expected, actual);
 ```
