@@ -162,8 +162,8 @@ In this particular case, field values are ignored.
 
 Of course, you can always use negative lookahead or lookbehind regular expressions
 ```javascript
-String expected = "{\"(?!lorem.*).*\":\"value does not matter\"}";
-String actual = "{\"ab\":\"value does not matter\"}";
+String expected = "{\"(?!lorem.*).*\":\"some val\"}";
+String actual = "{\"ipsum\":\"some val\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
 
