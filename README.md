@@ -160,12 +160,14 @@ JSONCompare.assertMatches(expected, actual);
 Negating a field name, it means that the actual JSON object should not have any field with same name on same level.
 In this particular case, field values are ignored.  
 
-Of course, you can always use negative lookahead or lookbehind regular expressions
+Of course, you can use negative lookahead or lookbehind regular expressions
 ```javascript
-String expected = "{\"(?!lorem.*).*\":\"some val\"}";
-String actual = "{\"ipsum\":\"some val\"}";
+String expected = "{\"(?!lorem.*).*\":\"valorem\"}";
+String actual = "{\"ipsum\":\"valorem\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
+The assertion will pass only if the actual JSON has a field which does not contain 'lorem' and it has the value 'valorem'.  
+
 
 Check for extra JSON values or fields by using the power of `regex` and `DO NOT MATCH` use case  
 ```javascript
