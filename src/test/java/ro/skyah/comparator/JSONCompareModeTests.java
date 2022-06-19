@@ -55,6 +55,7 @@ public class JSONCompareModeTests {
         String expected = "[2,{\"a\":true}]";
         String actual = "[1,2,3,4,{\"a\":true,\"b\":false}]";
         JSONCompare.assertNotMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
+        JSONCompare.assertNotMatches(expected, actual, null, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
     }
 
     @Test
@@ -360,5 +361,12 @@ public class JSONCompareModeTests {
                 return expected.equals(actual);
             }
         });
+    }
+
+    @Test
+    public void compareJsonsUsingInstanceOfJsonCompare() {
+        String expected = "{\"a\":\"!text to (match\"}";
+        String actual = "{\"a\":\"text to (match\"}";
+        new JSONCompare().assertNotMatches(expected, actual);
     }
 }
