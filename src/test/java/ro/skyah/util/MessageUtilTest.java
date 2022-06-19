@@ -17,6 +17,7 @@ public class MessageUtilTest {
         assertNull(MessageUtil.cropL(s));
         s = "";
         assertTrue(MessageUtil.cropS(s).isEmpty());
+        assertTrue(new MessageUtil().cropS(s).isEmpty());
     }
 
     @Test
