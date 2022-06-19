@@ -1,6 +1,6 @@
 package ro.skyah.util;
 
-public class MessageUtil {
+public final class MessageUtil {
 
     private static final int AFTER_CROP_SIZE = 2048;
     private static final int S = 4096;
