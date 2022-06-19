@@ -5,6 +5,13 @@ import org.junit.jupiter.api.Test;
 public class JSONRegexCompareTests {
 
     @Test
+    public void compareWithInvalidFieldRegex() {
+        String expected = "{\"[a\":\"\\\\d+\"}";
+        String actual = "{\"[a\":10}";
+        JSONCompare.assertMatches(expected, actual);
+    }
+
+    @Test
     public void compareWithSimpleRegex() {
         String expected = "{\"a\":\".*me.*\"}";
         String actual = "{\"a\":\"some text\"}";
