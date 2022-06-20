@@ -364,6 +364,7 @@ public class JSONCompareModeTests {
     }
 
     @Test
+    // for code coverage
     public void compareJsonsUsingInstanceOfJsonCompare() {
         String expected = "{\"a\":\"!text to (match\"}";
         String actual = "{\"a\":\"text to (match\"}";
