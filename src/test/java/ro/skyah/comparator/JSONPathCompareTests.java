@@ -134,6 +134,13 @@ public class JSONPathCompareTests {
     }
 
     @Test
+    public void incompleteDelimitationOfJsonPathExpression() {
+        String expected = "{\"#(a\":1}";
+        String actual = "{\"#(a\":1}";
+        JSONCompare.assertMatches(expected, actual);
+    }
+
+    @Test
     public void checkJsonPathAssertionErrorMessage() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"lorem1\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
