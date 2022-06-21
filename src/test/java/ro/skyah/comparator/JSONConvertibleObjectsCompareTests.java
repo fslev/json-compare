@@ -42,5 +42,7 @@ public class JSONConvertibleObjectsCompareTests {
         assertTrue(e.getMessage().contains(expected));
         AssertionError e1 = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches("{\"a\":1}", "{\"a:1}"));
         assertTrue(e1.getMessage().contains("Cannot convert to JSON:"));
+        AssertionError e2 = assertThrows(AssertionError.class, () -> JSONCompare.assertNotMatches("{\"a\":1}", "{\"a:2}"));
+        assertTrue(e2.getMessage().contains("Cannot convert to JSON:"));
     }
 }
