@@ -177,6 +177,33 @@ public class JSONPathCompareTests {
     }
 
     @Test
+    public void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field() {
+        String expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.b)\":\".*\"}}}}";
+        String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
+        JSONCompare.assertMatches(expected, actual);
+    }
+
+    @Test
+    public void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field_negative() {
+        String expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.a)\":\".*\"}}}}";
+        String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
+        try {
+            JSONCompare.assertMatches(expected, actual);
+        } catch (AssertionError e) {
+            assertTrue(e.getMessage().contains("Json path") && e.getMessage().contains("was found"));
+            return;
+        }
+        fail("JSONs match");
+    }
+
+    @Test
+    public void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field_negative1() {
+        String expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.a)\":\".*\"}}}}";
+        String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
+        JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
     public void matchJsonObjectWithJsonPathAndRegex() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\".*\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
