@@ -8,7 +8,7 @@ A Java library for comparing JSONs, with some tweaks !
 
 ## Brief
 Compare any JSON convertible Java objects and check detailed differences between them.  
-The library has some tweaks which might help you make assertions by writing less code.
+The library has some tweaks which helps you make assertions by writing less code.
 
 ## Based on
 
@@ -78,7 +78,7 @@ JSONCompare.assertMatches(expected, actual);
 ```
 
 JSONCompare by default matches JSON fields and values using regular expressions.  
-If you have special regex characters inside either expected values or expected fields, but you literally want to match them, then you can quote them:  
+If you have unintentional regex characters inside either expected values or expected fields, then you can quote them:  
 
 ```javascript
 String expected = "{\"a\":\"\\Qd+\\E\"}";
@@ -171,6 +171,8 @@ The assertion will pass if the actual JSON has a field which does not contain 'l
 
 Check for extra JSON values or fields by using the power of `regex` and `DO NOT MATCH` use case  
 ```javascript
+// actual Json should NOT contain any extra fields
+
 String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertMatches(expected, actual);
@@ -179,6 +181,7 @@ String expected = "[false,\"test\",4,\"!.*\"]";
 String actual = "[4,false,\"test\"]";
 JSONCompare.assertMatches(expected, actual);
 
+// actual Json array should contain extra elements
 String expected = "[false,\"test\",4,\".*\"]";
 String actual = "[4,false,\"test\"]";
 JSONCompare.assertNotMatches(expected, actual);
