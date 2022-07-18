@@ -82,20 +82,6 @@ public class JSONCompareMessageTests {
     public void checkMessageFromFailedMatchingBetweenHighDepthJsons() {
         String expected = "{\n" +
                 "          \"@\": {\n" +
-                "            \"instanceId1\": {\n" +
-                "              \"requestParameters\": {\n" +
-                "                \"txt1\": \"a of instanceId1\",\n" +
-                "                \"txt2\": \"b of instanceId1\"\n" +
-                "              },\n" +
-                "              \"startDate\": \"\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z\",\n" +
-                "              \"!endDate\": \".*\",\n" +
-                "              \"groupIds\": [\n" +
-                "                \"gr1\",\n" +
-                "                \"gr2\"\n" +
-                "              ],\n" +
-                "              \"version\": 0,\n" +
-                "              \"!.*\": \".*\"\n" +
-                "            },\n" +
                 "            \"instanceId2\": {\n" +
                 "              \"requestParameters\": {\n" +
                 "                \"txt1\": \"c of instanceId2\",\n" +
@@ -113,15 +99,6 @@ public class JSONCompareMessageTests {
                 "          }}";
         String actual = "{\n" +
                 "        \"@\" : {\n" +
-                "          \"instanceId1\" : {\n" +
-                "            \"requestParameters\" : {\n" +
-                "              \"txt2\" : \"b of instanceId1\",\n" +
-                "              \"txt1\" : \"a of instanceId1\"\n" +
-                "            },\n" +
-                "            \"version\" : 0,\n" +
-                "            \"startDate\" : \"2022-07-18T09:37:34.189Z\",\n" +
-                "            \"groupIds\" : [ \"gr2\", \"gr1\" ]\n" +
-                "          },\n" +
                 "          \"instanceId2\" : {\n" +
                 "            \"requestParameters\" : {\n" +
                 "              \"txt2\" : \"d of instanceId2\",\n" +
