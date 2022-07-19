@@ -119,6 +119,73 @@ public class JSONPathCompareTests {
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 
+    @Test
+    public void compareJsonObjectsWithRegexJsonPathExpression() {
+        String expected = "{\"accounts\":[ {\n" +
+                "        \"#($.[?(@.note =~ /.*does not exist.*/)])\": [\n" +
+                "          \"!.*\"\n" +
+                "        ]\n" +
+                "      }]}";
+        String actual = "{\"accounts\" : [ {\n" +
+                "    \"user_id\" : \"u335943216\",\n" +
+                "    \"server\" : \"access899606563.webspace-data.io\",\n" +
+                "    \"protocols\" : [ {\n" +
+                "      \"port\" : 990,\n" +
+                "      \"protocol\" : \"FTPS\",\n" +
+                "      \"directory\" : \"/.\"\n" +
+                "    } ],\n" +
+                "    \"mainuser\" : false,\n" +
+                "    \"note\" : \"Second note 8d15dba4-ab44-4b30-a5c4-75c61d75e844\",\n" +
+                "    \"internalUUID\" : \"e4d4c505-d5ee-4ae6-acee-32ab08da9c20\"\n" +
+                "  }, {\n" +
+                "    \"user_id\" : \"u870495182\",\n" +
+                "    \"server\" : \"access899606563.webspace-data.io\",\n" +
+                "    \"protocols\" : [ {\n" +
+                "      \"port\" : 990,\n" +
+                "      \"protocol\" : \"FTPS\",\n" +
+                "      \"directory\" : \"/.\"\n" +
+                "    } ],\n" +
+                "    \"mainuser\" : false,\n" +
+                "    \"note\" : \"Second note cd18864f-7528-4865-99b9-786ac7a752f9\",\n" +
+                "    \"internalUUID\" : \"3efc23e2-8c1d-4cb2-aa6b-b714bd35c4a5\"\n" +
+                "  } ]\n" +
+                "}";
+        JSONCompare.assertMatches(expected, actual);
+    }
+
+    @Test
+    public void compareJsonObjectsWithNegativeRegexJsonPathExpression() {
+        String expected = "{\"accounts\":[ {\n" +
+                "        \"#($.[?(@.note =~ /(?!Second.*).*/)])\": [\n" +
+                "          \"!.*\"\n" +
+                "        ]\n" +
+                "      }]}";
+        String actual = "{\"accounts\" : [ {\n" +
+                "    \"user_id\" : \"u335943216\",\n" +
+                "    \"server\" : \"access899606563.webspace-data.io\",\n" +
+                "    \"protocols\" : [ {\n" +
+                "      \"port\" : 990,\n" +
+                "      \"protocol\" : \"FTPS\",\n" +
+                "      \"directory\" : \"/.\"\n" +
+                "    } ],\n" +
+                "    \"mainuser\" : false,\n" +
+                "    \"note\" : \"Second note 8d15dba4-ab44-4b30-a5c4-75c61d75e844\",\n" +
+                "    \"internalUUID\" : \"e4d4c505-d5ee-4ae6-acee-32ab08da9c20\"\n" +
+                "  }, {\n" +
+                "    \"user_id\" : \"u870495182\",\n" +
+                "    \"server\" : \"access899606563.webspace-data.io\",\n" +
+                "    \"protocols\" : [ {\n" +
+                "      \"port\" : 990,\n" +
+                "      \"protocol\" : \"FTPS\",\n" +
+                "      \"directory\" : \"/.\"\n" +
+                "    } ],\n" +
+                "    \"mainuser\" : false,\n" +
+                "    \"note\" : \"Second note cd18864f-7528-4865-99b9-786ac7a752f9\",\n" +
+                "    \"internalUUID\" : \"3efc23e2-8c1d-4cb2-aa6b-b714bd35c4a5\"\n" +
+                "  } ]\n" +
+                "}";
+        JSONCompare.assertMatches(expected, actual);
+    }
 
     @Test
     public void checkInvalidOrNotFoundJsonPathErrorMessage() {
