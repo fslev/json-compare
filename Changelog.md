@@ -1,7 +1,7 @@
 # Changelog
 
 ## 4.0
-Refactored base package name (io.json.compare)  
+Renamed base package name to 'io.json.compare'  
 Refactored JSON paths from assertion error message  
 Enhanced failed JSON conversion message with Jackson exception message     
 
