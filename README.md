@@ -81,7 +81,7 @@ JSONCompare by default matches JSON fields and values using regular expressions.
 If you have unintentional regex characters inside either expected values or expected fields, then you can quote them:  
 
 ```javascript
-String expected = "{\"a\":\"\\Qd+\\E\"}";
+String expected = "{\"a\":\"\\\\Qd+\\\\E\"}";
 String actual = "{\"a\":\"d+\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
