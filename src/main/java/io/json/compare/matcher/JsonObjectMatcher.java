@@ -34,7 +34,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 case MATCH:
                     if (!jsonPathExpression.isPresent()) {
                         if (candidateEntries.isEmpty()) {
-                            throw new MatcherException(String.format("Field %s was not found or cannot be matched", expectedField));
+                            throw new MatcherException(String.format("Field '%s' was not found or cannot be matched", expectedField));
                         }
                         matchWithCandidateEntries(expectedSanitizedField, expectedValue, candidateEntries);
                     } else {
@@ -49,7 +49,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 case DO_NOT_MATCH:
                     if (!jsonPathExpression.isPresent()) {
                         if (!candidateEntries.isEmpty()) {
-                            throw new MatcherException(String.format("Field %s was found", expectedField));
+                            throw new MatcherException(String.format("Field '%s' was found", expectedField));
                         }
                     } else {
                         try {
@@ -83,7 +83,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 if (it.hasNext()) {
                     continue;
                 } else {
-                    throw new MatcherException(String.format("%s <- \"%s\"", e.getMessage(), expectedKey));
+                    throw new MatcherException(String.format("%s <- %s", e.getMessage(), expectedKey));
                 }
             }
             matchedFieldNames.add(candidateField);

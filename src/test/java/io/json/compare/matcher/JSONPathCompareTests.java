@@ -196,7 +196,7 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("No results for path: $['idontexist'] <- json path ('$.idontexist') <- \"a11\" <- \"a1\" <- \"a\""));
+            assertTrue(e.getMessage().contains("No results for path: $['idontexist'] <- json path ('$.idontexist') <- a11 <- a1 <- a"));
             return;
         }
         fail("No error thrown");
@@ -216,7 +216,7 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("But found: \"lorem\"  <- json path ('$.a') <- \"a11\" <- \"a1\" <- \"a\""));
+            assertTrue(e.getMessage().contains("But found: \"lorem\"  <- json path ('$.a') <- a11 <- a1 <- a"));
             return;
         }
         fail("No error thrown");

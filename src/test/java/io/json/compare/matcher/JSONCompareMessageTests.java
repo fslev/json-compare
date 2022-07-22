@@ -74,7 +74,7 @@ public class JSONCompareMessageTests {
         try {
             JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Field a was not found"));
+            assertTrue(e.getMessage().contains("Field 'a' was not found"));
         }
     }
 
@@ -104,7 +104,7 @@ public class JSONCompareMessageTests {
         try {
             JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
         } catch (AssertionError e) {
-            System.out.println(e);
+            assertTrue(e.getMessage().contains("Field 'version' was not found or cannot be matched <- @"));
         }
     }
 
