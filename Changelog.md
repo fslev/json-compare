@@ -3,7 +3,7 @@
 ## 4.0
 Refactored base package name (io.json.compare)  
 Refactored JSON paths from assertion error message  
-Enhanced failed JSON conversion error message with Jackson exception message     
+Enhanced failed JSON conversion message with Jackson exception message     
 
 ## 3.0
 Renamed JSONCompare.assertEquals() and .assertNotEquals() to .assertMatches() and .assertNotMatches()  
