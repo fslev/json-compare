@@ -469,7 +469,7 @@ public class JSONPathCompareTests {
                 "                \"isbn\": \"0-553-21311-3\",\n" +
                 "                \"price\": 8.99\n" +
                 "            },\n" +
-                "!.*," +
+                "\"!.*\"" +
                 "]}";
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual));
     }
