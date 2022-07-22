@@ -2,8 +2,8 @@ package io.json.compare.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
-import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
+import io.json.compare.JSONCompare;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

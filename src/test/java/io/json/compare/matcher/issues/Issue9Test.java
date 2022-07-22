@@ -1,7 +1,7 @@
 package io.json.compare.matcher.issues;
 
-import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
+import io.json.compare.JSONCompare;
 
 public class Issue9Test {
 

@@ -1,8 +1,8 @@
 package io.json.compare.matcher.issues;
 
+import org.junit.jupiter.api.Test;
 import io.json.compare.JSONCompare;
 import io.json.compare.JsonComparator;
-import org.junit.jupiter.api.Test;
 
 /**
  * https://github.com/fslev/json-compare/issues/1

@@ -1,8 +1,8 @@
 package io.json.compare.matcher.issues;
 
+import org.junit.jupiter.api.Test;
 import io.json.compare.DefaultJsonComparator;
 import io.json.compare.JSONCompare;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
