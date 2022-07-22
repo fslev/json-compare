@@ -4,6 +4,7 @@ import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JSONofDifferentTypesCompareTests {
 
@@ -25,6 +26,7 @@ public class JSONofDifferentTypesCompareTests {
     public void compareStrangeValues() {
         String expected = "\"1\"Fds\"\"";
         String actual = "1";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertNotMatches(expected, actual));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> JSONCompare.assertNotMatches(expected, actual));
+        assertTrue(exception.getMessage().contains("Invalid JSON"));
     }
 }
