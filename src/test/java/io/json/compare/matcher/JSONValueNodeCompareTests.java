@@ -8,6 +8,7 @@ import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JSONValueNodeCompareTests {
 
@@ -50,7 +51,8 @@ public class JSONValueNodeCompareTests {
     public void compareUnquotedStringWithTextNodeFails() {
         String expectedAsString = "some val";
         TextNode actual = new TextNode("some val");
-        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expectedAsString, actual));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> JSONCompare.assertMatches(expectedAsString, actual));
+        assertTrue(exception.getMessage().contains("Invalid JSON"));
     }
 
     @Test
