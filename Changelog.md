@@ -1,7 +1,8 @@
 # Changelog
 
-## 3.1-SNAPSHOT
-
+## 4.0-SNAPSHOT
+Refactor base package name (io.json.compare) 
+  
 ## 3.0
 Renamed JSONCompare.assertEquals() and .assertNotEquals() to .assertMatches() and .assertNotMatches()  
 JSONCompare now accepts JSON convertible Objects as arguments  
