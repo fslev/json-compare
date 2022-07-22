@@ -39,12 +39,12 @@ public class JSONConvertibleObjectsCompareTests {
         String expected = "{\"a\":1,\"b\":[4,2,d]}";
         Map<String, Object> actual = new HashMap<>();
         actual.put("a", 1);
-        AssertionError e = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
-        assertTrue(e.getMessage().contains("Cannot convert to JSON:"));
+        RuntimeException e = assertThrows(RuntimeException.class, () -> JSONCompare.assertMatches(expected, actual));
+        assertTrue(e.getMessage().contains("Invalid JSON"));
         assertTrue(e.getMessage().contains(expected));
-        AssertionError e1 = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches("{\"a\":1}", "{\"a:1}"));
-        assertTrue(e1.getMessage().contains("Cannot convert to JSON:"));
-        AssertionError e2 = assertThrows(AssertionError.class, () -> JSONCompare.assertNotMatches("{\"a\":1}", "{\"a:2}"));
-        assertTrue(e2.getMessage().contains("Cannot convert to JSON:"));
+        RuntimeException e1 = assertThrows(RuntimeException.class, () -> JSONCompare.assertMatches("{\"a\":1}", "{\"a:1}"));
+        assertTrue(e1.getMessage().contains("Invalid JSON"));
+        RuntimeException e2 = assertThrows(RuntimeException.class, () -> JSONCompare.assertNotMatches("{\"a\":1}", "{\"a:2}"));
+        assertTrue(e2.getMessage().contains("Invalid JSON"));
     }
 }

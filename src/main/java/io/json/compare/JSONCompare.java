@@ -103,13 +103,11 @@ public class JSONCompare {
     }
 
     private static JsonNode toJson(Object obj) {
-        JsonNode jsonNode = null;
         try {
-            jsonNode = obj instanceof JsonNode ? (JsonNode) obj :
+            return obj instanceof JsonNode ? (JsonNode) obj :
                     (obj instanceof String) ? MAPPER.readTree(obj.toString()) : MAPPER.convertValue(obj, JsonNode.class);
         } catch (IOException e) {
-            fail(String.format("Cannot convert to JSON:\n%s", MessageUtil.cropL(obj.toString())));
+            throw new RuntimeException(String.format("Invalid JSON\n%s\n", e));
         }
-        return jsonNode;
     }
 }
