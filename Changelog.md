@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.0-SNAPSHOT
+## 4.0
 Refactor base package name (io.json.compare)  
 Refactor JSON paths from assertion error message  
 Enhanced failed JSON conversion error message    
