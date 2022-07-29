@@ -1,15 +1,14 @@
 # Changelog
 
-
 ## 4.2-SNAPSHOT
 
 ## 4.1
 Upgrade Junit Jupiter API - 5.9.0    
 
 ## 4.0
-Refactor base package name (io.json.compare)  
-Refactor JSON paths from assertion error message  
-Enhanced failed JSON conversion error message    
+Renamed base package name to 'io.json.compare'  
+Refactored JSON paths from assertion error message  
+Failed JSON conversion now throws a RuntimeException enhanced with Jackson exception message
 
 ## 3.0
 Renamed JSONCompare.assertEquals() and .assertNotEquals() to .assertMatches() and .assertNotMatches()  
