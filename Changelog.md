@@ -4,6 +4,7 @@
 
 ## 4.2
 Add and use JsonUtils     
+Update dependencies  
 
 ## 4.1
 Upgrade Junit Jupiter API - 5.9.0    
