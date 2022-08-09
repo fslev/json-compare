@@ -204,22 +204,22 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <extensions>true</extensions>
-                <version>5.1.7</version>
-                <configuration>
-                    <instructions>
-                        <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Description>${project.description}</Bundle-Description>
-                        <Import-Package>*</Import-Package>
-                        <Export-Package />
-                        <Bundle-RequiredExecutionEnvironment />
-                        <_removeheaders>Bnd-LastModified</_removeheaders>
-                    </instructions>
-                </configuration>
-            </plugin>
+               <groupId>org.apache.felix</groupId>
+               <artifactId>maven-bundle-plugin</artifactId>
+               <extensions>true</extensions>
+               <version>5.1.8</version>
+               <configuration>
+                   <instructions>
+                       <Bundle-Name>${project.artifactId}</Bundle-Name>
+                       <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+                       <Bundle-Description>${project.description}</Bundle-Description>
+                       <Import-Package>*</Import-Package>
+                       <Export-Package />
+                       <Bundle-RequiredExecutionEnvironment />
+                       <_removeheaders>Bnd-LastModified</_removeheaders>
+                   </instructions>
+               </configuration>
+           </plugin>         
         </plugins>
     </build>
 
