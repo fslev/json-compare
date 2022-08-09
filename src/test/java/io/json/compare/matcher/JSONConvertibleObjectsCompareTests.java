@@ -4,6 +4,8 @@ import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,5 +48,18 @@ public class JSONConvertibleObjectsCompareTests {
         assertTrue(e1.getMessage().contains("Invalid JSON"));
         RuntimeException e2 = assertThrows(RuntimeException.class, () -> JSONCompare.assertNotMatches("{\"a\":1}", "{\"a:2}"));
         assertTrue(e2.getMessage().contains("Invalid JSON"));
+    }
+
+    @Test
+    public void compareNumbers() {
+        BigDecimal expectedBigDec = new BigDecimal(20000);
+        BigDecimal actualBigDec = new BigDecimal(20000L);
+        JSONCompare.assertMatches(expectedBigDec, actualBigDec);
+        BigInteger expectedBigInt = new BigInteger("20000000");
+        BigInteger actualBigInt = new BigInteger("20000000");
+        JSONCompare.assertMatches(expectedBigInt, actualBigInt);
+        Double expectedDouble = 0.12454543D;
+        Double actualDouble = 0.12454543D;
+        JSONCompare.assertMatches(expectedDouble, actualDouble);
     }
 }

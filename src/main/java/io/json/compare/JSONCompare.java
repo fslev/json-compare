@@ -1,11 +1,9 @@
 package io.json.compare;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.json.compare.matcher.JsonMatcher;
 import io.json.compare.matcher.MatcherException;
+import io.json.compare.util.JsonUtils;
 import io.json.compare.util.MessageUtil;
 
 import java.io.IOException;
@@ -19,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 
 public class JSONCompare {
-
-    private static final ObjectMapper MAPPER = new ObjectMapper().enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
 
     private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching by default uses regular expressions.\n" +
             "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.";
@@ -96,16 +92,15 @@ public class JSONCompare {
 
     public static String prettyPrint(JsonNode jsonNode) {
         try {
-            return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-        } catch (JsonProcessingException e) {
+            return JsonUtils.prettyPrint(jsonNode);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     private static JsonNode toJson(Object obj) {
         try {
-            return obj instanceof JsonNode ? (JsonNode) obj :
-                    (obj instanceof String) ? MAPPER.readTree(obj.toString()) : MAPPER.convertValue(obj, JsonNode.class);
+            return JsonUtils.toJson(obj);
         } catch (IOException e) {
             throw new RuntimeException(String.format("Invalid JSON\n%s\n", e));
         }

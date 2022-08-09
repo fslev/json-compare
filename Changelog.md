@@ -1,6 +1,9 @@
 # Changelog
 
-## 4.2-SNAPSHOT
+## 4.3-SNAPSHOT
+
+## 4.2
+Add and use JsonUtils     
 
 ## 4.1
 Upgrade Junit Jupiter API - 5.9.0    
