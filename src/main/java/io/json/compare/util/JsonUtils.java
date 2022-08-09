@@ -18,6 +18,9 @@ public class JsonUtils {
     }
 
     public static String prettyPrint(Object content) throws IOException {
+        if (content instanceof String && content.toString().isEmpty()) {
+            return "";
+        }
         return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(toJson(content));
     }
 }

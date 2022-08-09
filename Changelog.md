@@ -1,6 +1,9 @@
 # Changelog
 
-## 4.3-SNAPSHOT
+## 4.4-SNAPSHOT
+
+## 4.3
+Refactor JsonUtils pretty print  
 
 ## 4.2
 Add and use JsonUtils     

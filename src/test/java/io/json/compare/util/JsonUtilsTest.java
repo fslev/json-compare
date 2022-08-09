@@ -39,7 +39,9 @@ public class JsonUtilsTest {
         assertEquals("null", JsonUtils.prettyPrint("null"));
         assertEquals("null", JsonUtils.prettyPrint(null));
         assertThrows(JsonParseException.class, () -> JsonUtils.prettyPrint("invalid"));
-        assertNull(null, JsonUtils.prettyPrint(""));
+        assertThrows(JsonParseException.class, () -> JsonUtils.prettyPrint("{invalid}"));
+        assertThrows(JsonParseException.class, () -> JsonUtils.prettyPrint("{\"a\":0},1"));
+        assertEquals("", JsonUtils.prettyPrint(""));
     }
 
     private static String readFromPath(String filePath) throws IOException {
