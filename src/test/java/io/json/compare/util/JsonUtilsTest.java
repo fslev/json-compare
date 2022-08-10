@@ -34,6 +34,9 @@ public class JsonUtilsTest {
 
     @Test
     public void testEmptyJsonPrettyPrint() throws IOException {
+        assertEquals("{\n" +
+                "  \"foo\" : \"bar\"\n" +
+                "}", JsonUtils.prettyPrint("{\"foo\":\"bar\"}"));
         assertEquals("{ }", JsonUtils.prettyPrint("{}"));
         assertEquals("[ ]", JsonUtils.prettyPrint("[]"));
         assertEquals("null", JsonUtils.prettyPrint("null"));
