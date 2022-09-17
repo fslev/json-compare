@@ -1,6 +1,10 @@
 # Changelog
 
-## 4.4-SNAPSHOT
+## 4.5-SNAPSHOT
+
+## 4.4
+Enable assertion error diff support:   
+  - Refactor fail() with AssertionFailureBuilder  
 
 ## 4.3
 Refactor JsonUtils pretty print  

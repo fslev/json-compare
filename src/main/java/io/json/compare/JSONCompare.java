@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.matcher.JsonMatcher;
 import io.json.compare.matcher.MatcherException;
 import io.json.compare.util.JsonUtils;
-import io.json.compare.util.MessageUtil;
+import org.junit.jupiter.api.AssertionFailureBuilder;
 
 import java.io.IOException;
 import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -68,12 +66,12 @@ public class JSONCompare {
             new JsonMatcher(expectedJson, actualJson,
                     comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
         } catch (MatcherException e) {
-            String defaultMessage = String.format("%s\nExpected:\n%s\nBut got:\n%s", e.getMessage(),
-                    prettyPrint(expectedJson), MessageUtil.cropL(prettyPrint(actualJson)));
+            String defaultMessage = String.format("%s\n", e.getMessage());
             if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
                 defaultMessage += "\n\n" + ASSERTION_ERROR_HINT_MESSAGE + "\n";
             }
-            fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
+            AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + "\n" + message)
+                    .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson)).buildAndThrow();
         }
     }
 
@@ -87,7 +85,8 @@ public class JSONCompare {
             return;
         }
         String defaultMessage = "JSONs are equal";
-        fail(message == null ? defaultMessage : defaultMessage + "\n" + message);
+        AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + "\n" + message)
+                .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson)).buildAndThrow();
     }
 
     public static String prettyPrint(JsonNode jsonNode) {
