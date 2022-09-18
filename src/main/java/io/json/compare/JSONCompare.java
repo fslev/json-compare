@@ -86,7 +86,8 @@ public class JSONCompare {
         }
         String defaultMessage = "JSONs are equal";
         AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + "\n" + message)
-                .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson)).buildAndThrow();
+                .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson))
+                .includeValuesInMessage(false).buildAndThrow();
     }
 
     public static String prettyPrint(JsonNode jsonNode) {

@@ -1,6 +1,9 @@
 # Changelog
 
-## 4.5-SNAPSHOT
+## 4.6-SNAPSHOT
+
+## 4.5
+Do not include values inside assertion error message if JSONs are equal  
 
 ## 4.4
 Enable assertion error diff support:   
