@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 class JsonValueMatcher extends AbstractJsonMatcher {
@@ -13,41 +15,31 @@ class JsonValueMatcher extends AbstractJsonMatcher {
     }
 
     @Override
-    public void match() throws MatcherException {
-        UseCase useCase = getUseCase(expected.asText());
-        matchTextTypes();
-        matchNumberTypes();
-        matchBooleanTypes();
-        matchNullTypes();
-        String expectedText = sanitize(expected.asText());
-        String actualText = actual.asText();
+    public List<String> match() {
+        List<String> diffs = new ArrayList<>();
+        String diff = "Expected %s: %s  But got: %s";
 
-        if (!useCase.equals(UseCase.MATCH_ANY) && comparator.compareValues(expectedText, actualText) != useCase.equals(UseCase.MATCH)) {
-            throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
-        }
-    }
-
-    private void matchNullTypes() throws MatcherException {
         if (expected.isNull() && !actual.isNull()) {
-            throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
-        }
-    }
+            diffs.add(String.format(diff, "null", expected, actual));
+            return diffs;
+        } else if (expected.isNumber() && !actual.isNumber()) {
+            diffs.add(String.format(diff, "number", expected, actual));
+            return diffs;
+        } else if (expected.isBoolean() && !actual.isBoolean()) {
+            diffs.add(String.format(diff, "boolean", expected, actual));
+            return diffs;
+        } else if (actual.isTextual() && !expected.isTextual()) {
+            diffs.add(String.format(diff, "text", expected, actual));
+            return diffs;
+        } else {
+            UseCase useCase = getUseCase(expected.asText());
+            String expectedText = sanitize(expected.asText());
+            String actualText = actual.asText();
 
-    private void matchNumberTypes() throws MatcherException {
-        if (expected.isNumber() && !actual.isNumber()) {
-            throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
-        }
-    }
-
-    private void matchBooleanTypes() throws MatcherException {
-        if (expected.isBoolean() && !actual.isBoolean()) {
-            throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
-        }
-    }
-
-    private void matchTextTypes() throws MatcherException {
-        if (actual.isTextual() && !expected.isTextual()) {
-            throw new MatcherException(String.format("Expected value: %s  But found: %s ", expected, actual));
+            if (!useCase.equals(UseCase.MATCH_ANY) && comparator.compareValues(expectedText, actualText) != useCase.equals(UseCase.MATCH)) {
+                diffs.add(String.format(diff, "value", expected, actual));
+            }
+            return diffs;
         }
     }
 }

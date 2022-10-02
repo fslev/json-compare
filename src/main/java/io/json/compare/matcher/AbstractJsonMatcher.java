@@ -5,10 +5,7 @@ import io.json.compare.CompareMode;
 import io.json.compare.DefaultJsonComparator;
 import io.json.compare.JsonComparator;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 abstract class AbstractJsonMatcher {
 
@@ -27,7 +24,7 @@ abstract class AbstractJsonMatcher {
         this.compareModes = compareModes == null ? new HashSet<>() : compareModes;
     }
 
-    protected abstract void match() throws MatcherException;
+    protected abstract List<String> match();
 
     protected static UseCase getUseCase(JsonNode node) {
         if (node.isValueNode()) {

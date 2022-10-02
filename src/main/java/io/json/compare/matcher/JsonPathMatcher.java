@@ -10,6 +10,8 @@ import com.jayway.jsonpath.spi.json.JacksonJsonNodeJsonProvider;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 class JsonPathMatcher extends AbstractJsonMatcher {
@@ -26,14 +28,12 @@ class JsonPathMatcher extends AbstractJsonMatcher {
     }
 
     @Override
-    public void match() throws MatcherException {
-        JsonNode result = null;
-        try {
-            result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
-            new JsonMatcher(expected, result, comparator, compareModes).match();
-        } catch (MatcherException e) {
-            throw new MatcherException(String.format("Expected json path result:\n%s\nBut got:\n%s\n\n%s <- json path ('%s')",
-                    expected, result, e.getMessage(), jsonPath));
-        }
+    public List<String> match() {
+        List<String> diffs = new ArrayList<>();
+        JsonNode result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
+        List<String> jsonPathDiffs = new JsonMatcher(expected, result, comparator, compareModes).match();
+        jsonPathDiffs.forEach(diff -> diffs.add(String.format("Json path ('%s') -> Expected json path result:\n%s\nBut got:\n%s\n\n%s",
+                jsonPath, expected, result, diff)));
+        return diffs;
     }
 }
