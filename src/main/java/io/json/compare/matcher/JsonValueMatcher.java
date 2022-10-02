@@ -17,10 +17,10 @@ class JsonValueMatcher extends AbstractJsonMatcher {
     @Override
     public List<String> match() {
         List<String> diffs = new ArrayList<>();
-        String diff = "Expected %s: %s  But got: %s";
+        String diff = "\nExpected %s: %s But got: %s";
 
         if (expected.isNull() && !actual.isNull()) {
-            diffs.add(String.format(diff, "null", expected, actual));
+            diffs.add(String.format(diff, "null", "", actual));
             return diffs;
         } else if (expected.isNumber() && !actual.isNumber()) {
             diffs.add(String.format(diff, "number", expected, actual));

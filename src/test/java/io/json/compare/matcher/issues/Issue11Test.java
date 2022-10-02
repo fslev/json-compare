@@ -232,7 +232,7 @@ public class Issue11Test {
         try {
             JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("was not found or cannot be matched"));
+            assertTrue(e.getMessage().contains("was not found"));
         }
     }
 

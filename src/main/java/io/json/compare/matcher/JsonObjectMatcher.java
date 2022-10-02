@@ -71,26 +71,26 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
         return diffs;
     }
 
-    private List<String> matchWithCandidates(String expectedKey, JsonNode expectedValue, List<Map.Entry<String, JsonNode>> candidates) {
+    private List<String> matchWithCandidates(String expectedField, JsonNode expectedValue, List<Map.Entry<String, JsonNode>> candidates) {
         List<String> diffs = new ArrayList<>();
 
         UseCase expectedValueUseCase = getUseCase(expectedValue);
 
         for (Map.Entry<String, JsonNode> candidateEntry : candidates) {
-            String candidateKey = candidateEntry.getKey();
+            String candidateField = candidateEntry.getKey();
 
             if (expectedValueUseCase == UseCase.MATCH_ANY) {
-                matchedFieldNames.add(candidateKey);
+                matchedFieldNames.add(candidateField);
                 return Collections.emptyList();
             }
 
             JsonNode candidateValue = candidateEntry.getValue();
             List<String> candidateDiffs = new JsonMatcher(expectedValue, candidateValue, comparator, compareModes).match();
             if (candidateDiffs.isEmpty()) {
-                matchedFieldNames.add(candidateKey);
+                matchedFieldNames.add(candidateField);
                 return Collections.emptyList();
             } else {
-                candidateDiffs.forEach(diff -> diffs.add(String.format("%s -> %s", expectedKey, diff)));
+                candidateDiffs.forEach(diff -> diffs.add(String.format("%s -> %s", expectedField, diff)));
             }
         }
         return diffs;
