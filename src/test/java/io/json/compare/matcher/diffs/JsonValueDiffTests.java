@@ -37,13 +37,14 @@ public class JsonValueDiffTests {
 
     @Test
     public void compareAll() {
-        String expected = "{\"a\":null,\"b\":1,\"c\":false,\"d\":\"false\"}";
-        String actual = "{\"a\":\"null\",\"b\":\"1\",\"c\":\"false\",\"d\":false}";
+        String expected = "{\"a\":null,\"b\":1,\"c\":false,\"d\":\"false\",\"e\":\"text\"}";
+        String actual = "{\"a\":\"null\",\"b\":\"1\",\"c\":\"false\",\"d\":false,\"e\":false}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
+        assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "a ->.*Expected null:  But got: \"null\".*" +
                 "b ->.*Expected number: 1 But got: \"1\".*" +
-                "c ->.*Expected boolean: false But got: \"false\".*"));
+                "c ->.*Expected boolean: false But got: \"false\".*" +
+                "e ->.*Expected value: \"text\" But got: false.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 }

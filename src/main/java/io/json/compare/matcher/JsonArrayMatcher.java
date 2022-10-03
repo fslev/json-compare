@@ -37,7 +37,6 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
     private List<String> matchWithJsonArray(int expPosition, JsonNode expElement, JsonNode actualArray) {
         List<String> diffs = new ArrayList<>();
         UseCase useCase = getUseCase(expElement);
-        boolean found = false;
 
         for (int j = 0; j < actualArray.size(); j++) {
             if (matchedPositions.contains(j)) {
@@ -70,7 +69,9 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                     if (areOfSameType(expElement, actElement)) {
                         elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
                         if (!elementDiffs.isEmpty()) {
-                            found = true;
+                            diffs.add("Expected element from position " + (expPosition + 1)
+                                    + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+                            return diffs;
                         }
                     }
                     break;
@@ -80,16 +81,10 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                             expElement, expPosition + 1));
                     return diffs;
             }
-            if (found) {
-                break;
-            }
         }
-        if (!found && useCase == UseCase.MATCH) {
+        if (useCase == UseCase.MATCH) {
             diffs.add("Expected element from position " + (expPosition + 1) + " was NOT FOUND:\n"
                     + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
-        } else if (found) {
-            diffs.add("Expected element from position " + (expPosition + 1)
-                    + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         } else if (useCase == UseCase.MATCH_ANY) {
             diffs.add(String.format("Actual Json Array has no extra elements. Condition %s from position %s means there" +
                     " should be more actual elements", expElement, expPosition + 1));
