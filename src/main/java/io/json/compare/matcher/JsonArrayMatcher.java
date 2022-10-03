@@ -87,7 +87,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                     + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         } else if (useCase == UseCase.MATCH_ANY) {
             diffs.add(String.format("Actual Json Array has no extra elements. Expected condition %s from position %s means there" +
-                    " should be more actual elements", expElement, expPosition + 1));
+                    " should be more actual elements to match", expElement, expPosition + 1));
         }
         return diffs;
     }
