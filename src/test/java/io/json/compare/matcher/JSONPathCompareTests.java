@@ -196,10 +196,9 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("FOUND 1 DIFFERENCE(S):\n" +
-                    "\n" +
-                    "_________________________DIFF__________________________\n" +
-                    "a -> a1 -> a11 -> json path ('$.idontexist') -> No results for path: $['idontexist']"));
+            assertTrue(e.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                    "_________________________DIFF__________________________.*" +
+                    "\\Qa -> a1 -> a11 -> json path ('$.idontexist') -> No results for path: $['idontexist']\\E.*"));
             return;
         }
         fail("No error thrown");

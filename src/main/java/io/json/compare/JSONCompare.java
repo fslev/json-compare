@@ -67,7 +67,7 @@ public class JSONCompare {
         if (!diffs.isEmpty()) {
             String defaultMessage = String.format("FOUND %s DIFFERENCE(S):\n%s\n",
                     diffs.size(), diffs.stream().map(diff ->
-                            "\n_________________________DIFF__________________________\n" + diff).reduce(String::concat).get());
+                            "\n\n_________________________DIFF__________________________\n" + diff).reduce(String::concat).get());
             if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
                 defaultMessage += "\n\n" + ASSERTION_ERROR_HINT_MESSAGE + "\n";
             }
