@@ -29,7 +29,7 @@ public class JsonMatcher extends AbstractJsonMatcher {
             return Collections.emptyList();
         } else {
             List<String> diffs = new ArrayList<>();
-            diffs.add("Different JSON types: expected" + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
+            diffs.add("Different JSON types: expected " + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
             return diffs;
         }
     }

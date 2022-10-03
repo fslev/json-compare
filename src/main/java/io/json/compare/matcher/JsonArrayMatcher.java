@@ -55,8 +55,8 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                         return Collections.emptyList();
                     } else {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
-                            diffs.add(String.format("\nJSON ARRAY elements differ at position %s:\n%s\nDifferences:\n%s", expPosition + 1,
-                                    MessageUtil.cropL(JSONCompare.prettyPrint(expElement)), String.join("\n", elementDiffs)));
+                            diffs.add(String.format("\nJSON ARRAY elements differ at position %s:\n%s\n________diffs________\n%s", expPosition + 1,
+                                    MessageUtil.cropL(JSONCompare.prettyPrint(expElement)), String.join("\n_____________________\n", elementDiffs)));
                             return diffs;
                         }
                     }
