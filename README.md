@@ -137,10 +137,9 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
                 "  \"broad\": \"invented\"\n" +
                 "}";
         JSONCompare.assertMatches(expected, actual);
-
-
-Output:
-
+```
+### Output
+```
 org.opentest4j.AssertionFailedError: FOUND 4 DIFFERENCE(S):
 
 
