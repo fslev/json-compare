@@ -1,6 +1,9 @@
 # Changelog
 
-## 4.6-SNAPSHOT
+## 5.1-SNAPSHOT
+
+## 5.0 (2022-10-04)
+- Differences support
 
 ## 4.5
 Do not include values inside assertion error message if JSONs are equal  
