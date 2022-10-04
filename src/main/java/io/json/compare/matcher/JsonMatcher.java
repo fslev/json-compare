@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 public class JsonMatcher extends AbstractJsonMatcher {
@@ -13,20 +16,21 @@ public class JsonMatcher extends AbstractJsonMatcher {
     }
 
     @Override
-    public void match() throws MatcherException {
+    public List<String> match() {
         if (isJsonObject(expected) && isJsonObject(actual)) {
-            new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
         } else if (isJsonArray(expected) && isJsonArray(actual)) {
-            new JsonArrayMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonArrayMatcher(expected, actual, comparator, compareModes).match();
         } else if (isValueNode(expected) && isValueNode(actual)) {
-            new JsonValueMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonValueMatcher(expected, actual, comparator, compareModes).match();
         } else if (isJsonPathNode(expected)) {
-            new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
         } else if (isMissingNode(expected) && isMissingNode(actual)) {
-            //do nothing
+            return Collections.emptyList();
         } else {
-            throw new MatcherException("Different JSON types: "
-                    + expected.getClass().getSimpleName() + " vs " + actual.getClass().getSimpleName());
+            List<String> diffs = new ArrayList<>();
+            diffs.add("Different JSON types: expected " + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
+            return diffs;
         }
     }
 }

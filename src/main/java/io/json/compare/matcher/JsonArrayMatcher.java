@@ -6,8 +6,7 @@ import io.json.compare.JSONCompare;
 import io.json.compare.JsonComparator;
 import io.json.compare.util.MessageUtil;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 class JsonArrayMatcher extends AbstractJsonMatcher {
 
@@ -18,79 +17,81 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
     }
 
     @Override
-    public void match() throws MatcherException {
+    public List<String> match() {
+        List<String> diffs = new ArrayList<>();
+
         for (int i = 0; i < expected.size(); i++) {
             JsonNode expElement = expected.get(i);
             if (isJsonPathNode(expElement)) {
-                new JsonMatcher(expElement, actual, comparator, compareModes).match();
+                diffs.addAll(new JsonMatcher(expElement, actual, comparator, compareModes).match());
             } else {
-                matchWithActualJsonArray(i, expElement, actual);
+                diffs.addAll(matchWithJsonArray(i, expElement, actual));
             }
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() < actual.size()) {
-            throw new MatcherException("Actual JSON ARRAY has extra elements");
+            diffs.add("Actual JSON ARRAY has extra elements");
         }
+        return diffs;
     }
 
-    private void matchWithActualJsonArray(int expPosition, JsonNode expElement, JsonNode actual) throws MatcherException {
+    private List<String> matchWithJsonArray(int expPosition, JsonNode expElement, JsonNode actualArray) {
+        List<String> diffs = new ArrayList<>();
         UseCase useCase = getUseCase(expElement);
-        boolean found = false;
-        actualElementsLoop:
-        for (int j = 0; j < actual.size(); j++) {
+
+        for (int j = 0; j < actualArray.size(); j++) {
             if (matchedPositions.contains(j)) {
                 continue;
             }
             if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) && j != expPosition) {
                 continue;
             }
+            List<String> elementDiffs;
             switch (useCase) {
                 case MATCH:
-                    JsonNode actElement = actual.get(j);
-                    try {
-                        new JsonMatcher(expElement, actElement, comparator, compareModes).match();
-                    } catch (MatcherException e) {
+                    JsonNode actElement = actualArray.get(j);
+                    elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
+                    if (elementDiffs.isEmpty()) {
+                        matchedPositions.add(j);
+                        return Collections.emptyList();
+                    } else {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
-                            throw new MatcherException(String
-                                    .format("JSON ARRAY elements differ at position %s:\n%s", expPosition + 1,
-                                            MessageUtil.cropL(JSONCompare.prettyPrint(expElement))));
+                            diffs.add(String.format("JSON ARRAY elements differ at position %s:" +
+                                            System.lineSeparator() + "%s" + System.lineSeparator() +
+                                            "________diffs________" + System.lineSeparator() + "%s", expPosition + 1,
+                                    MessageUtil.cropL(JSONCompare.prettyPrint(expElement)), String.join(
+                                            System.lineSeparator() + "_____________________" + System.lineSeparator(), elementDiffs)));
+                            return diffs;
                         }
-                        continue actualElementsLoop;
                     }
-                    found = true;
-                    matchedPositions.add(j);
-                    break actualElementsLoop;
+                    break;
                 case MATCH_ANY:
                     matchedPositions.add(j);
-                    return;
+                    return Collections.emptyList();
                 case DO_NOT_MATCH:
-                    actElement = actual.get(j);
-                    if (!areOfSameType(expElement, actElement)) {
-                        continue actualElementsLoop;
-                    }
-                    try {
-                        new JsonMatcher(expElement, actElement, comparator, compareModes).match();
-                    } catch (MatcherException e) {
-                        found = true;
-                        break actualElementsLoop;
+                    actElement = actualArray.get(j);
+                    if (areOfSameType(expElement, actElement)) {
+                        elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
+                        if (!elementDiffs.isEmpty()) {
+                            diffs.add("Expected element from position " + (expPosition + 1)
+                                    + " was FOUND:" + System.lineSeparator() + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+                            return diffs;
+                        }
                     }
                     break;
                 case DO_NOT_MATCH_ANY:
-                    throw new MatcherException("Expected element from position " + (expPosition + 1)
-                            + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+                    diffs.add(String.format("Expected condition %s from position %s was not met." +
+                                    " Actual JSON array has extra elements.",
+                            expElement, expPosition + 1));
+                    return diffs;
             }
         }
-        if (!found && useCase == UseCase.MATCH) {
-            throw new MatcherException("Expected element from position " + (expPosition + 1) + " was NOT FOUND:\n"
+        if (useCase == UseCase.MATCH) {
+            diffs.add(System.lineSeparator() + "Expected element from position " + (expPosition + 1) + " was NOT FOUND:" + System.lineSeparator()
                     + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+        } else if (useCase == UseCase.MATCH_ANY) {
+            diffs.add(String.format("Expected condition %s from position %s was not met." +
+                    " Actual Json Array has no extra elements.", expElement, expPosition + 1));
         }
-        if (found && useCase == UseCase.DO_NOT_MATCH) {
-            throw new MatcherException("Expected element from position " + (expPosition + 1)
-                    + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
-        }
-        if (useCase == UseCase.MATCH_ANY) {
-            throw new MatcherException("Expected condition of type MATCH_ANY from position " + (expPosition + 1)
-                    + " was NOT MET. Actual Json Array has no extra elements:\n"
-                    + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
-        }
+        return diffs;
     }
 }

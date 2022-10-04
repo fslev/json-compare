@@ -196,7 +196,9 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("No results for path: $['idontexist'] <- json path ('$.idontexist') <- a11 <- a1 <- a"));
+            assertTrue(e.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                    "____DIFF_____.*" +
+                    "a -> a1 -> a11 -> Json path \\Q'$.idontexist'\\E.*->.*No results for path.*idontexist.*"));
             return;
         }
         fail("No error thrown");
@@ -216,7 +218,10 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("But found: \"lorem\"  <- json path ('$.a') <- a11 <- a1 <- a"));
+            assertTrue(e.getMessage().matches("(?s).*a -> a1 -> a11 -> \\QJson path '$.a' -> Expected json path result\\E.*" +
+                    "\"lorem1\".*" +
+                    "But got:.*" +
+                    "\"lorem\".*"));
             return;
         }
         fail("No error thrown");
@@ -266,7 +271,7 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Json path") && e.getMessage().contains("was found"));
+            assertTrue(e.getMessage().contains("Json path") && e.getMessage().contains("was FOUND"));
             return;
         }
         fail("JSONs match");
@@ -350,7 +355,7 @@ public class JSONPathCompareTests {
         actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertNotMatches(expected, actual);
 
-        expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\"not found\"}},\"#($.a2)\":290.11}}";
+        expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\"NOT FOUND\"}},\"#($.a2)\":290.11}}";
         actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertNotMatches(expected, actual);
     }

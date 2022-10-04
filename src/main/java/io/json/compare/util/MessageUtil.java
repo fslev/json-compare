@@ -21,7 +21,8 @@ public final class MessageUtil {
 
     private static String crop(String msg, int limit) {
         if (msg != null && msg.length() > limit) {
-            String start = msg.substring(0, AFTER_CROP_SIZE / 2) + "\n\n<...cropped content...>\n\n";
+            String start = msg.substring(0, AFTER_CROP_SIZE / 2) + System.lineSeparator() + System.lineSeparator() +
+                    "<...cropped content...>" + System.lineSeparator() + System.lineSeparator();
             String end = msg.substring(msg.length() - AFTER_CROP_SIZE / 2);
             return start + end;
         }

@@ -2,11 +2,11 @@ package io.json.compare;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.matcher.JsonMatcher;
-import io.json.compare.matcher.MatcherException;
 import io.json.compare.util.JsonUtils;
 import org.junit.jupiter.api.AssertionFailureBuilder;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 
@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class JSONCompare {
 
-    private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching by default uses regular expressions.\n" +
+    private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching by default uses regular expressions." + System.lineSeparator() +
             "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.";
 
     public static void assertMatches(Object expected, Object actual) {
@@ -62,15 +62,17 @@ public class JSONCompare {
     public static void assertMatches(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes, String message) {
         JsonNode expectedJson = toJson(expected);
         JsonNode actualJson = toJson(actual);
-        try {
-            new JsonMatcher(expectedJson, actualJson,
-                    comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
-        } catch (MatcherException e) {
-            String defaultMessage = String.format("%s\n", e.getMessage());
+        List<String> diffs = new JsonMatcher(expectedJson, actualJson,
+                comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
+        if (!diffs.isEmpty()) {
+            String defaultMessage = String.format("FOUND %s DIFFERENCE(S):" + System.lineSeparator() + "%s" + System.lineSeparator(),
+                    diffs.size(), diffs.stream().map(diff ->
+                             System.lineSeparator() + System.lineSeparator() + "_________________________DIFF__________________________" +
+                                    System.lineSeparator() + diff).reduce(String::concat).get());
             if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
-                defaultMessage += "\n\n" + ASSERTION_ERROR_HINT_MESSAGE + "\n";
+                defaultMessage +=  System.lineSeparator() + System.lineSeparator() + ASSERTION_ERROR_HINT_MESSAGE + System.lineSeparator();
             }
-            AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + "\n" + message)
+            AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + System.lineSeparator() + message)
                     .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson)).buildAndThrow();
         }
     }
@@ -78,14 +80,13 @@ public class JSONCompare {
     public static void assertNotMatches(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes, String message) {
         JsonNode expectedJson = toJson(expected);
         JsonNode actualJson = toJson(actual);
-        try {
-            new JsonMatcher(expectedJson, actualJson,
-                    comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
-        } catch (MatcherException e) {
+        List<String> diffs = new JsonMatcher(expectedJson, actualJson,
+                comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
+        if (!diffs.isEmpty()) {
             return;
         }
-        String defaultMessage = "JSONs are equal";
-        AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + "\n" + message)
+        String defaultMessage =  System.lineSeparator() + "JSONs are equal";
+        AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + System.lineSeparator() + message)
                 .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson))
                 .includeValuesInMessage(false).buildAndThrow();
     }
@@ -102,7 +103,7 @@ public class JSONCompare {
         try {
             return JsonUtils.toJson(obj);
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Invalid JSON\n%s\n", e));
+            throw new RuntimeException(String.format("Invalid JSON" + System.lineSeparator() + "%s" + System.lineSeparator(), e));
         }
     }
 }

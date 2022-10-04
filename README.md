@@ -109,37 +109,63 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
 // should fail
 ```
 
-## Error messages
+## Differences
 ```javascript
-String expected = "{\"b\":{\"x\":\"val1\",\"y\":\"val2\"},\"a\":{\"t\":\"val3\",\"z\":\"val1\"}}";
-String actual = "{\"a\":{\"t\":\"val3\",\"z\":\"val4\"},\"b\":{\"x\":\"val1\",\"y\":\"val2\"}}";
-JSONCompare.assertMatches(expected, actual);
+        String expected = "{\n" +
+                "  \"caught\": false,\n" +
+                "  \"pain\": {\n" +
+                "    \"range\": [\n" +
+                "      \"bell\",\n" +
+                "      \"blue\",\n" +
+                "      -2059921070\n" +
+                "    ],\n" +
+                "    \"not_anyone\": -1760889549.4041045,\n" +
+                "    \"flat\": -2099670336\n" +
+                "  }\n" +
+                "}";
+        String actual = "{\n" +
+                "  \"caught\": true,\n" +
+                "  \"pain\": {\n" +
+                "    \"range\": [\n" +
+                "      \"bell\",\n" +
+                "      \"red\",\n" +
+                "      -2059921075\n" +
+                "    ],\n" +
+                "    \"anyone\": -1760889549.4041045,\n" +
+                "    \"flat\": -2099670336\n" +
+                "  },\n" +
+                "  \"broad\": \"invented\"\n" +
+                "}";
+        JSONCompare.assertMatches(expected, actual);
+
 
 Output:
 
-java.lang.AssertionError: Expected ["val1"] but found ["val4"] <- field "z" <- field "a"
-Expected:
-{
-  "b" : {
-    "x" : "val1",
-    "y" : "val2"
-  },
-  "a" : {
-    "t" : "val3",
-    "z" : "val1"
-  }
-}
-But got:
-{
-  "a" : {
-    "t" : "val3",
-    "z" : "val4"
-  },
-  "b" : {
-    "x" : "val1",
-    "y" : "val2"
-  }
-}
+org.opentest4j.AssertionFailedError: FOUND 4 DIFFERENCE(S):
+
+
+_________________________DIFF__________________________
+caught -> 
+Expected value: false But got: true
+
+_________________________DIFF__________________________
+pain -> range -> 
+Expected element from position 2 was NOT FOUND:
+"blue"
+
+_________________________DIFF__________________________
+pain -> range -> 
+Expected element from position 3 was NOT FOUND:
+-2059921070
+
+_________________________DIFF__________________________
+pain -> Field 'not_anyone' was NOT FOUND
+
+
+Json matching by default uses regular expressions.
+In case expected json contains any unintentional regexes, then quote them between \Q and \E delimiters or use a custom comparator.
+ ==> 
+<Click to see difference>
 ```
 
 ## Matching with some tweaks
