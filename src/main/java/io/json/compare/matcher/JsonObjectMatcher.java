@@ -44,7 +44,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                         try {
                             diffs.addAll(new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match());
                         } catch (PathNotFoundException e) {
-                            diffs.add(String.format("json path '%s' -> %s", jsonPathExpression.get(), e.getMessage()));
+                            diffs.add(String.format("Json path '%s' -> %s", jsonPathExpression.get(), e.getMessage()));
                         }
                     }
                     break;
