@@ -26,8 +26,10 @@ public class JsonPathDiffTests {
                 "u11 ->.*Expected value: 20209 But got: 20000.*"));
         JSONCompare.assertNotMatches(expected, actual);
 
-        String expected1 = "{\"#($.a.length())\":2,\"b\":\"val2\",\"x\":{\"x1\":{\"y11\":{\"#($.a)\":\"lorem2\"}}}}";
-        String actual1 = "{\"x\":{\"x2\":290.11,\"x1\":{\"x11\":null,\"y11\":{\"a\":\"lorem2\"}}},\"b\":\"val2\",\"a\":[4,5]}";
+        String expected1 = "{\"#($.a.length())\":2,\"b\":\"val2\",\"x\":{\"x1\":{\"y11\":{\"#($.a)\":\"lorem2\"}}}," +
+                "\"u\":{\"#($.u1)\":{\"u11\":20000}}}";
+        String actual1 = "{\"x\":{\"x2\":290.11,\"x1\":{\"x11\":null,\"y11\":{\"a\":\"lorem2\"}}},\"b\":\"val2\",\"a\":[4,5]," +
+                "\"u\":{\"u1\":{\"u11\":20000}}}";
         JSONCompare.assertMatches(expected1, actual1);
     }
 
