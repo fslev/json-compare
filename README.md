@@ -139,7 +139,7 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
         JSONCompare.assertMatches(expected, actual);
 ```
 ### Output
-```
+```javascript
 org.opentest4j.AssertionFailedError: FOUND 4 DIFFERENCE(S):
 
 
