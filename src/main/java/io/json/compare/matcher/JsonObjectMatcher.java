@@ -36,7 +36,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 case MATCH:
                     if (!jsonPathExpression.isPresent()) {
                         if (candidateEntries.isEmpty()) {
-                            diffs.add(String.format("Field '%s' was not found", expectedField));
+                            diffs.add(String.format("Field '%s' was NOT FOUND", expectedField));
                         } else {
                             diffs.addAll(matchWithCandidates(expectedSanitizedField, expectedValue, candidateEntries));
                         }
@@ -44,7 +44,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                         try {
                             diffs.addAll(new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match());
                         } catch (PathNotFoundException e) {
-                            diffs.add(String.format("json path ('%s') -> %s", jsonPathExpression.get(), e.getMessage()));
+                            diffs.add(String.format("json path '%s' -> %s", jsonPathExpression.get(), e.getMessage()));
                         }
                     }
                     break;
@@ -52,7 +52,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 case DO_NOT_MATCH:
                     if (!jsonPathExpression.isPresent()) {
                         if (!candidateEntries.isEmpty()) {
-                            diffs.add(String.format("Field '%s' was found", expectedField));
+                            diffs.add(String.format("Field '%s' was FOUND", expectedField));
                         }
                     } else {
                         try {
@@ -60,7 +60,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                         } catch (PathNotFoundException e) {
                             break;
                         }
-                        diffs.add(String.format("Json path '%s' was found", expectedField));
+                        diffs.add(String.format("Json path '%s' was FOUND", expectedField));
                     }
                     break;
             }

@@ -198,7 +198,7 @@ public class JSONPathCompareTests {
         } catch (AssertionError e) {
             assertTrue(e.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                     "_________________________DIFF__________________________.*" +
-                    "\\Qa -> a1 -> a11 -> json path ('$.idontexist') -> No results for path: $['idontexist']\\E.*"));
+                    "\\Qa -> a1 -> a11 -> json path '$.idontexist' -> No results for path: $['idontexist']\\E.*"));
             return;
         }
         fail("No error thrown");
@@ -271,7 +271,7 @@ public class JSONPathCompareTests {
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Json path") && e.getMessage().contains("was found"));
+            assertTrue(e.getMessage().contains("Json path") && e.getMessage().contains("was FOUND"));
             return;
         }
         fail("JSONs match");
@@ -355,7 +355,7 @@ public class JSONPathCompareTests {
         actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertNotMatches(expected, actual);
 
-        expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\"not found\"}},\"#($.a2)\":290.11}}";
+        expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\"NOT FOUND\"}},\"#($.a2)\":290.11}}";
         actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertNotMatches(expected, actual);
     }

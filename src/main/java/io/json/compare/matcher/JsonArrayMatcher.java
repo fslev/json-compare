@@ -55,8 +55,11 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                         return Collections.emptyList();
                     } else {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
-                            diffs.add(String.format("JSON ARRAY elements differ at position %s:\n%s\n________diffs________\n%s", expPosition + 1,
-                                    MessageUtil.cropL(JSONCompare.prettyPrint(expElement)), String.join("\n_____________________\n", elementDiffs)));
+                            diffs.add(String.format("JSON ARRAY elements differ at position %s:" +
+                                            System.lineSeparator() + "%s" + System.lineSeparator() +
+                                            "________diffs________" + System.lineSeparator() + "%s", expPosition + 1,
+                                    MessageUtil.cropL(JSONCompare.prettyPrint(expElement)), String.join(
+                                            System.lineSeparator() + "_____________________" + System.lineSeparator(), elementDiffs)));
                             return diffs;
                         }
                     }
@@ -70,7 +73,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                         elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
                         if (!elementDiffs.isEmpty()) {
                             diffs.add("Expected element from position " + (expPosition + 1)
-                                    + " was FOUND:\n" + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+                                    + " was FOUND:" + System.lineSeparator() + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
                             return diffs;
                         }
                     }
@@ -83,7 +86,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
             }
         }
         if (useCase == UseCase.MATCH) {
-            diffs.add("\nExpected element from position " + (expPosition + 1) + " was NOT FOUND:\n"
+            diffs.add(System.lineSeparator() + "Expected element from position " + (expPosition + 1) + " was NOT FOUND:" + System.lineSeparator()
                     + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         } else if (useCase == UseCase.MATCH_ANY) {
             diffs.add(String.format("Expected condition %s from position %s was not met." +

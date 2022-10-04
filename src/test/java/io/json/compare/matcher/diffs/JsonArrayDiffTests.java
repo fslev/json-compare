@@ -122,7 +122,7 @@ public class JsonArrayDiffTests {
                 "Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*" +
                 "JSON ARRAY elements differ at position 4:.*lorem2.*ipsum2.*lorem3.*ipsum3.*diffs.*" +
                 "lorem2 ->.*Expected value: \"ipsum2\" But got: \"ipsum-updated\".*" +
-                "Field 'lorem3' was not found.*"));
+                "Field 'lorem3' was NOT FOUND.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 

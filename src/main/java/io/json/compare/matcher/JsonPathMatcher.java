@@ -32,7 +32,9 @@ class JsonPathMatcher extends AbstractJsonMatcher {
         List<String> diffs = new ArrayList<>();
         JsonNode result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
         List<String> jsonPathDiffs = new JsonMatcher(expected, result, comparator, compareModes).match();
-        jsonPathDiffs.forEach(diff -> diffs.add(String.format("Json path ('%s') -> Expected json path result:\n%s\nBut got:\n%s\n\n%s",
+        jsonPathDiffs.forEach(diff -> diffs.add(String.format("Json path ('%s') -> Expected json path result:" +
+                        System.lineSeparator() + "%s" + System.lineSeparator() +
+                        "But got:" + System.lineSeparator() + "%s" + System.lineSeparator() + System.lineSeparator() + "%s",
                 jsonPath, expected, result, diff)));
         return diffs;
     }
