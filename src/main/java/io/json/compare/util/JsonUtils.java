@@ -10,7 +10,8 @@ import java.io.IOException;
 public class JsonUtils {
 
     private static final ObjectMapper MAPPER = new ObjectMapper().setNodeFactory(JsonNodeFactory.withExactBigDecimals(true))
-            .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
+            .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS).configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
+            .configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
     public static JsonNode toJson(Object obj) throws IOException {
         return obj instanceof JsonNode ? (JsonNode) obj :
