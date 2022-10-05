@@ -35,7 +35,7 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 
 Assert that expected JSON is included within the actual JSON:
 
-```json
+```diff
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertMatches(expected, actual);
