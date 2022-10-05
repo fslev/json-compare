@@ -10,7 +10,7 @@ A Java library for comparing JSONs, with some tweaks !
 Compare any JSON convertible Java objects and check detailed differences between them.  
 The library has some tweaks which helps you make assertions without writing any code at all.  
 
-## Features
+# Features
 - **[Compare modes](#compare-modes)**
 - **[Regular expression support](#regex)**
 - **[Differences](#differences)**
@@ -38,7 +38,7 @@ The library has some tweaks which helps you make assertions without writing any 
 compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
-## <a name="compare-modes"></a>Compare modes
+# <a name="compare-modes"></a>Compare modes
 
 Assert that expected JSON is included within the actual JSON:
 
@@ -63,7 +63,7 @@ String actual = "[4,false,\"test\"]";
 JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_ARRAY_STRICT_ORDER));                            
 ```
 
-## <a name="regex"></a> Regular expression support
+# <a name="regex"></a> Regular expression support
 
 You can use regular expressions on JSON values:
 ```javascript
@@ -118,7 +118,7 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
 // should fail
 ```
 
-## <a name="differences"></a>Differences
+# <a name="differences"></a>Differences
 ```javascript
 String expected = "{\n" +
         "  \"caught\": false,\n" +
@@ -178,7 +178,7 @@ In case expected json contains any unintentional regexes, then quote them betwee
 <Click to see difference>
 ```
 
-## <a name="tweaks"></a>Matching with some tweaks
+# <a name="tweaks"></a>Matching with some tweaks
 By using the `!` DO NOT MATCH option, the comparison between JSON values will be negated:    
 
 ```javascript
@@ -222,7 +222,7 @@ String expected = "[false,\"test\",4,\".*\"]";
 String actual = "[4,false,\"test\"]";
 JSONCompare.assertNotMatches(expected, actual);
 ```
-## <a name="json-path"></a>Embedded json path expression
+# <a name="json-path"></a>Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
 The expected JSON can contain json path expressions delimited by __'#('__ and __')'__ together with the expected results:  
 ```javascript
