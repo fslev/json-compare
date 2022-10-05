@@ -63,7 +63,7 @@ String actual = "[4,false,\"test\"]";
 JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_ARRAY_STRICT_ORDER));                            
 ```
 
-## <a name="regex"></a Regular expression support
+## <a name="regex"></a> Regular expression support
 
 You can use regular expressions on JSON values:
 ```javascript
