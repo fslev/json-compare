@@ -32,7 +32,8 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
 ## Features
-### [Compare modes](#compare-modes)
+#### [Compare modes](#compare-modes)
+#### [Differences](#differences)
 
 ## <a name="compare-modes"></a>Compare modes
 
@@ -112,7 +113,7 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
 // should fail
 ```
 
-## Differences
+## <a name="differences"></a>Differences
 ```javascript
 String expected = "{\n" +
         "  \"caught\": false,\n" +
