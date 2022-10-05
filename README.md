@@ -11,11 +11,11 @@ Compare any JSON convertible Java objects and check detailed differences between
 The library has some tweaks which helps you make assertions without writing any code at all.  
 
 ## Features
-#### [Compare modes](#compare-modes)
-#### [Regular expression support](#regex)
-#### [Differences](#differences)
-#### [Tweaks](#tweaks)
-#### [Json Path support](#json-path)
+- **[Compare modes](#compare-modes)**
+- **[Regular expression support](#regex)**
+- **[Differences](#differences)**
+- **[Tweaks](#tweaks)**
+- **[Json Path support](#json-path)**
 
 ## Based on
 
