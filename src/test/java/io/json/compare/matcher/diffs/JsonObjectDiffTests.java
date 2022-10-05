@@ -134,6 +134,20 @@ public class JsonObjectDiffTests {
     }
 
     @Test
+    public void compareJsonObjectsAndCheckForDoNotMatchAnyDifferencesFromArrayObject() {
+        String expected = "{\"b\":2,\"a\":0,\"c\":{\"c1\":\"lorem1\"},\"u\":[3,1,\"!.*\"]}";
+        String actual = "{\"a\":1, \"u\":[3,1,false], \"b\":2,\"c\":{\"c2\":\"lorem2\",\"c1\":\"lorem1\"},\"x\":0}";
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual,
+                new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
+                "a ->.*Expected value: 0 But got: 1.*" +
+                "c -> Actual JSON OBJECT has extra fields.*" +
+                "u ->.*Expected condition \\Q\"!.*\"\\E from position 3 was not met. Actual JSON array has extra elements.*" +
+                "Actual JSON OBJECT has extra fields.*"));
+        JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
     public void compareJsonObjectsAndCheckForMismatchDifferences() {
         String expected = "{\n" +
                 "  \"branch\": -212276217.0580678,\n" +
