@@ -8,7 +8,7 @@ A Java library for comparing JSONs, with some tweaks !
 
 ## Brief
 Compare any JSON convertible Java objects and check detailed differences between them.  
-The library has some tweaks which helps you make assertions by writing less code.
+The library has some tweaks which helps you make assertions without writing any code at all.  
 
 ## Based on
 
@@ -31,7 +31,10 @@ The library has some tweaks which helps you make assertions by writing less code
 compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
-## Examples
+## Features
+### [Compare modes](#compare-modes)
+
+## <a name="compare-modes"></a>Compare modes
 
 Assert that expected JSON is included within the actual JSON:
 
