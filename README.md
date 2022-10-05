@@ -123,6 +123,7 @@ String expected = "{\n" +
         "    \"flat\": -2099670336\n" +
         "  }\n" +
         "}";
+        
 String actual = "{\n" +
         "  \"caught\": true,\n" +
         "  \"pain\": {\n" +
@@ -136,6 +137,7 @@ String actual = "{\n" +
         "  },\n" +
         "  \"broad\": \"invented\"\n" +
         "}";
+        
 JSONCompare.assertMatches(expected, actual);
 ```
 #### Output
