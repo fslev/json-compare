@@ -35,7 +35,7 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 
 Assert that expected JSON is included within the actual JSON:
 
-```javascript
+```java
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertMatches(expected, actual);
@@ -46,7 +46,7 @@ JSON inclusion is checked by default, but you can use these special compare mode
 * JSON_ARRAY_STRICT_ORDER
 
 
-```javascript
+```java
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
 JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE));
@@ -57,21 +57,21 @@ JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_ARRAY_STR
 ```
 
 You can use regular expressions on JSON values:
-```javascript
+```java
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
 , but also on JSON object fields:
 
-```javascript
+```java
 String expected = "{\".*oba.*\":\"some value\"}";
 String actual = "{\"foobar\":\"some value\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
 
 Match any JSON convertible Java objects  
-```javascript
+```java
 String expected = "{\"a\":1,\"b\":[4, 2, \"\\\\d+\"]}";
 Map<String, Object> actual = Map.of("a", 1, "b", Arrays.asList(1, 2, 3, 4));
 JSONCompare.assertMatches(expected, actual);
@@ -80,7 +80,7 @@ JSONCompare.assertMatches(expected, actual);
 JSONCompare by default matches JSON fields and values using regular expressions.  
 If you have unintentional regex characters inside either expected values or expected fields, then you can quote them:  
 
-```javascript
+```java
 String expected = "{\"a\":\"\\\\Qd+\\\\E\"}";
 String actual = "{\"a\":\"d+\"}";
 JSONCompare.assertMatches(expected, actual);
@@ -94,7 +94,7 @@ From Java _Pattern_ docs:
 ```
 
 However, you can ignore the default regular expression compare mode, by using a ***custom comparator***
-```javascript
+```java
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
 JSONCompare.assertMatches(expected, actual, new JsonComparator() {
@@ -110,7 +110,7 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
 ```
 
 ## Differences
-```javascript
+```java
 String expected = "{\n" +
         "  \"caught\": false,\n" +
         "  \"pain\": {\n" +
@@ -141,7 +141,7 @@ String actual = "{\n" +
 JSONCompare.assertMatches(expected, actual);
 ```
 #### Output
-```javascript
+```java
 org.opentest4j.AssertionFailedError: FOUND 4 DIFFERENCE(S):
 
 
@@ -172,13 +172,13 @@ In case expected json contains any unintentional regexes, then quote them betwee
 ## Matching with some tweaks
 By using the `!` DO NOT MATCH option, the comparison between JSON values will be negated:    
 
-```javascript
+```java
 String expected = "{\"a\":\"!test\"}";
 String actual = "{\"a\":\"testing\"}";
 JSONCompare.assertMatches(expected, actual);
 ```
 or, between JSON object fields
-```javascript
+```java
 String expected = "{\"!a\":\"value does not matter\"}";
 String actual = "{\"b\":\"value does not matter\"}";
 JSONCompare.assertMatches(expected, actual);
@@ -188,7 +188,7 @@ Negating a field name, it means that the actual JSON object should not have any 
 In this particular case, field values are ignored.  
 
 Of course, you can use negative lookahead or lookbehind regular expressions
-```javascript
+```java
 String expected = "{\"(?!lorem.*).*\":\"valorem\"}";
 String actual = "{\"ipsum\":\"valorem\"}";
 JSONCompare.assertMatches(expected, actual);
@@ -197,7 +197,7 @@ The assertion will pass if the actual JSON has a field which does not contain 'l
 
 
 Check for extra JSON values or fields by using the power of `regex` and `DO NOT MATCH` use case  
-```javascript
+```java
 // actual Json should NOT contain any extra fields
 
 String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";
@@ -216,7 +216,7 @@ JSONCompare.assertNotMatches(expected, actual);
 ### Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
 The expected JSON can contain json path expressions delimited by __'#('__ and __')'__ together with the expected results:  
-```javascript
+```java
 String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
 String actual = "{\n" +
                 "    \"store\": {\n" +
