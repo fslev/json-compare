@@ -106,9 +106,8 @@ public class JsonArrayDiffTests {
         String expected = "[{\"lorem\":\"ipsum\"},\"!.*\",\"1\",\"!.*\"]";
         String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*" +
-                "Expected condition \"\\Q!.*\\E\" from position 4 was not met. Actual JSON array has extra elements.*"));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                "Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -117,9 +116,8 @@ public class JsonArrayDiffTests {
         String expected = "[{\"lorem\":\"ipsum\"},\"!.*\",\"1\",{\"lorem2\":\"ipsum2\",\"lorem3\":\"ipsum3\"}]";
         String actual = "[\"a\",true,1,{\"lorem2\":\"ipsum-updated\"}]";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
+        assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "JSON ARRAY elements differ at position 1:.*lorem.*ipsum.*diffs.*Different JSON types: expected ObjectNode but got TextNode.*" +
-                "Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*" +
                 "JSON ARRAY elements differ at position 4:.*lorem2.*ipsum2.*lorem3.*ipsum3.*diffs.*" +
                 "lorem2 ->.*Expected value: \"ipsum2\" But got: \"ipsum-updated\".*" +
                 "Field 'lorem3' was NOT FOUND.*"));

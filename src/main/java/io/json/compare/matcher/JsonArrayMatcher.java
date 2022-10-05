@@ -22,10 +22,14 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
 
         for (int i = 0; i < expected.size(); i++) {
             JsonNode expElement = expected.get(i);
+            UseCase useCase = getUseCase(expElement);
+            if (useCase.equals(UseCase.DO_NOT_MATCH_ANY) && !diffs.isEmpty()) {
+                continue;
+            }
             if (isJsonPathNode(expElement)) {
                 diffs.addAll(new JsonMatcher(expElement, actual, comparator, compareModes).match());
             } else {
-                diffs.addAll(matchWithJsonArray(i, expElement, actual));
+                diffs.addAll(matchWithJsonArray(i, expElement, useCase, actual));
             }
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() < actual.size()) {
@@ -34,9 +38,8 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         return diffs;
     }
 
-    private List<String> matchWithJsonArray(int expPosition, JsonNode expElement, JsonNode actualArray) {
+    private List<String> matchWithJsonArray(int expPosition, JsonNode expElement, UseCase useCase, JsonNode actualArray) {
         List<String> diffs = new ArrayList<>();
-        UseCase useCase = getUseCase(expElement);
 
         for (int j = 0; j < actualArray.size(); j++) {
             if (matchedPositions.contains(j)) {
