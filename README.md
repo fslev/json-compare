@@ -38,6 +38,39 @@ The library has some tweaks which helps you make assertions without writing any 
 compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
+Match any JSON convertible Java objects
+```javascript
+String expectedString = "{\"a\":1, \"b\": [4, 2, \"\\\\d+\"]}";
+String actualString = "{\"a\":1, \"b\":[4, 2, 5], \"c\":3}";
+JSONCompare.assertMatches(expectedString, actualString); // assertion passes
+
+// actual represented as Map
+Map<String, Object> actualMap = new HashMap<>();
+actualMap.put("a", 1);
+actualMap.put("b", Arrays.asList(4, 2, 5));
+actualMap.put("c", 3);
+JSONCompare.assertMatches(expectedString, actualMap); // assertion passes
+
+// Failed assertion
+String anotherActualString = "{\"a\":10, \"b\":[4, 20, 5], \"c\":3}";
+JSONCompare.assertNotMatches(expectedString, anotherActualString); // assertion passes
+JSONCompare.assertMatches(expectedString, anotherActualString); // assertion fails
+
+==>
+
+org.opentest4j.AssertionFailedError: FOUND 2 DIFFERENCE(S):
+
+
+_________________________DIFF__________________________
+a -> 
+Expected value: 1 But got: 10
+
+_________________________DIFF__________________________
+b -> 
+Expected element from position 2 was NOT FOUND:
+2
+```
+
 # <a name="compare-modes"></a>Compare modes
 
 Assert that expected JSON is included within the actual JSON:
@@ -76,13 +109,6 @@ JSONCompare.assertMatches(expected, actual);
 ```javascript
 String expected = "{\".*oba.*\":\"some value\"}";
 String actual = "{\"foobar\":\"some value\"}";
-JSONCompare.assertMatches(expected, actual);
-```
-
-Match any JSON convertible Java objects  
-```javascript
-String expected = "{\"a\":1,\"b\":[4, 2, \"\\\\d+\"]}";
-Map<String, Object> actual = Map.of("a", 1, "b", Arrays.asList(1, 2, 3, 4));
 JSONCompare.assertMatches(expected, actual);
 ```
 
