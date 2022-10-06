@@ -38,7 +38,7 @@ The library has some tweaks which helps you make assertions without writing any 
 compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
-Match any JSON convertible Java objects
+### Match any JSON convertible Java objects
 ```javascript
 String expectedString = "{\"a\":1, \"b\": [4, 2, \"\\\\d+\"]}";
 String actualString = "{\"a\":1, \"b\":[4, 2, 5], \"c\":3}";
