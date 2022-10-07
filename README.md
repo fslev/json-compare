@@ -100,7 +100,7 @@ Actual JSON OBJECT has extra fields
 ```
 ...same for JSON_ARRAY_NON_EXTENSIBLE  
 
-__Example of JSON_ARRAY_STRICT_ORDER:__
+_Example of JSON_ARRAY_STRICT_ORDER:_
 ```javascript
 // JSON Array strict order is by default ignored
 String expected = "[1, 2, 3]";
