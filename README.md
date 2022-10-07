@@ -79,7 +79,7 @@ This behaviour can be overridden by using the following compare modes:
 * JSON_ARRAY_NON_EXTENSIBLE
 * JSON_ARRAY_STRICT_ORDER
 
-_Example of JSON_OBJECT_NON_EXTENSIBLE:_
+_Example of *JSON_OBJECT_NON_EXTENSIBLE*:_
 ```javascript
 // Expected Json is included in actual Json
 String expected = "{\"b\":\"val1\"}";
@@ -98,9 +98,9 @@ org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 _________________________DIFF__________________________
 Actual JSON OBJECT has extra fields
 ```
-...same for JSON_ARRAY_NON_EXTENSIBLE  
+...same for *JSON_ARRAY_NON_EXTENSIBLE*  
 
-_Example of JSON_ARRAY_STRICT_ORDER:_
+_Example of *JSON_ARRAY_STRICT_ORDER*:_
 ```javascript
 // JSON Array strict order is by default ignored
 String expected = "[1, 2, 3]";
