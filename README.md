@@ -73,27 +73,63 @@ Expected element from position 2 was NOT FOUND:
 
 # <a name="compare-modes"></a>Compare modes
 
-Assert that expected JSON is included within the actual JSON:
-
-```javascript
-String expected = "{\"b\":\"val1\"}";
-String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
-JSONCompare.assertMatches(expected, actual);
-```
-JSON inclusion is checked by default, but you can use these special compare modes:
+By default, [JSONCompare](https://github.com/fslev/json-compare) rules out the Json sizes and also the order of elements from an array.    
+This behaviour can be overridden by using the following compare modes:  
 * JSON_OBJECT_NON_EXTENSIBLE
 * JSON_ARRAY_NON_EXTENSIBLE
 * JSON_ARRAY_STRICT_ORDER
 
-
+Example of JSON_OBJECT_NON_EXTENSIBLE:  
 ```javascript
+// Expected Json is included in actual Json
 String expected = "{\"b\":\"val1\"}";
 String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
-JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE));
-                            
-String expected = "[false,\"test\",4]";
-String actual = "[4,false,\"test\"]";
-JSONCompare.assertNotMatches(expected, actual, Set.of(CompareMode.JSON_ARRAY_STRICT_ORDER));                            
+JSONCompare.assertMatches(expected, actual); // assertion passes
+
+// JSON objects MUST have same sizes
+String expected1 = "{\"b\":\"val1\"}";
+String actual1 = "{\"a\":\"val2\",\"b\":\"val1\"}";
+JSONCompare.assertNotMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))); // assertion passes
+JSONCompare.assertMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))); // assertion fails
+
+==>                             
+org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
+
+_________________________DIFF__________________________
+Actual JSON OBJECT has extra fields
+```
+...same for JSON_ARRAY_NON_EXTENSIBLE  
+
+Example of JSON_ARRAY_STRICT_ORDER:
+```javascript
+// JSON Array strict order is by default ignored
+String expected = "[1, 2, 3]";
+String actual = "[3, 2, 1, 5, 4]";
+JSONCompare.assertMatches(expected, actual); // assertion passes
+
+// Check JSON Array strict order
+String expected1 = "[1, 2, 3]";
+String actual1 = "[3, 2, 1, 5, 4]";
+JSONCompare.assertNotMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))); // assertion passes
+JSONCompare.assertMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))); // assertion fails
+
+==>
+org.opentest4j.AssertionFailedError: FOUND 2 DIFFERENCE(S):
+
+
+_________________________DIFF__________________________
+JSON ARRAY elements differ at position 1:
+1
+________diffs________
+
+Expected value: 1 But got: 3
+
+_________________________DIFF__________________________
+JSON ARRAY elements differ at position 3:
+3
+________diffs________
+
+Expected value: 3 But got: 1
 ```
 
 # <a name="regex"></a> Regular expression support
