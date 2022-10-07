@@ -79,7 +79,7 @@ This behaviour can be overridden by using the following compare modes:
 * JSON_ARRAY_NON_EXTENSIBLE
 * JSON_ARRAY_STRICT_ORDER
 
-__Example of JSON_OBJECT_NON_EXTENSIBLE:__  
+_Example of JSON_OBJECT_NON_EXTENSIBLE:_
 ```javascript
 // Expected Json is included in actual Json
 String expected = "{\"b\":\"val1\"}";
