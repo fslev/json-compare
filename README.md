@@ -73,7 +73,7 @@ Expected element from position 2 was NOT FOUND:
 
 # <a name="compare-modes"></a>Compare modes
 
-By default, [JSONCompare](https://github.com/fslev/json-compare) rules out the Json sizes and also the order of elements from an array.    
+By default, [JSONCompare](https://github.com/fslev/json-compare) rules out the Json sizes and also the order of elements from an array. 
 This behaviour can be overridden by using the following compare modes:  
 * JSON_OBJECT_NON_EXTENSIBLE
 * JSON_ARRAY_NON_EXTENSIBLE
