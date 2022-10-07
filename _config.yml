@@ -1,10 +1,12 @@
-theme: minima
+remote_theme: pages-themes/slate@v0.2.0
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-remote-theme
 
 title: "JSON Compare"
 description: "Java library for comparing JSON objects"
 author: "Florin Slevoaca"
 url: "https://fslev.github.io/json-compare"
 permalink: pretty
+google_analytics: 68410452
