@@ -2,7 +2,7 @@
 
 ## 5.2-SNAPSHOT
 
-## [5.1] (2022-10-05)
+## [json-compare-5.1] (2022-10-05)
 - refactor DO_NOT_MATCH_ANY use case behaviour for JSON arrays
 
 ## [5.0] (2022-10-04)
