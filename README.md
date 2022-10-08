@@ -1,5 +1,5 @@
 # JSON Compare <sup>[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://vshymanskyy.github.io/StandWithUkraine)</sup>
-Website: https://fslev.github.io/json-compare  
+
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.fslev/json-compare.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.fslev%22%20AND%20a:%22json-compare%22)
 ![Build status](https://github.com/fslev/json-compare/workflows/Java%20CI%20with%20Maven/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/fslev/json-compare/badge.svg?branch=main)](https://coveralls.io/github/fslev/json-compare?branch=main)
@@ -9,7 +9,7 @@ A Java library for comparing JSONs, with some tweaks !
 ## Brief
 Compare any JSON convertible Java objects and check the differences between them when matching fails.  
 The library has some tweaks which helps you make assertions without writing any code at all.  
-
+Website: https://fslev.github.io/json-compare  
 # Features
 - **[Compare modes](#compare-modes)**
 - **[Regular expression support](#regex)**
