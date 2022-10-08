@@ -7,7 +7,7 @@
 A Java library for comparing JSONs, with some tweaks !
 
 ## Brief
-Compare any JSON convertible Java objects and check detailed differences between them.  
+Compare any JSON convertible Java objects and check the differences between them when assertion fails.  
 The library has some tweaks which helps you make assertions without writing any code at all.  
 
 # Features
