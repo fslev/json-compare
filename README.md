@@ -9,7 +9,7 @@ A Java library for comparing JSONs, with some tweaks !
 ## Brief
 Compare any JSON convertible Java objects and check the differences between them when matching fails.  
 The library has some tweaks which helps you make assertions without writing any code at all.  
-__Website:__ https://fslev.github.io/json-compare  
+_Website:_ https://fslev.github.io/json-compare  
 # Features
 - **[Compare modes](#compare-modes)**
 - **[Regular expression support](#regex)**
