@@ -83,12 +83,12 @@ _Example of **JSON_OBJECT_NON_EXTENSIBLE**:_
 ```javascript
 // Expected Json is included in actual Json
 String expected = "{\"b\":\"val1\"}";
-String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
+String actual = "{\"a\":\"val2\", \"b\":\"val1\"}";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 
 // JSON objects MUST have same sizes
 String expected1 = "{\"b\":\"val1\"}";
-String actual1 = "{\"a\":\"val2\",\"b\":\"val1\"}";
+String actual1 = "{\"a\":\"val2\", \"b\":\"val1\"}";
 JSONCompare.assertNotMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))); // assertion passes
 JSONCompare.assertMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))); // assertion fails
 
