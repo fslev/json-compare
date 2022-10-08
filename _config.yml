@@ -5,7 +5,8 @@ plugins:
   - jekyll-remote-theme
 
 title: "JSON Compare"
-description: "Java library for comparing JSON objects"
+tagline: "Java library for comparing Jsons"
+description: "Match any JSON convertible Java objects and check the differences between them when assertion fails"
 author: "Florin Slevoaca"
 url: "https://fslev.github.io/json-compare"
 permalink: pretty
