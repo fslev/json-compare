@@ -333,7 +333,7 @@ Expected condition ".*" from position 4 was not met. Actual Json Array has no ex
 ```
 # <a name="json-path"></a>Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
-The expected JSON can contain json path expressions delimited by __'#('__ and __')'__ together with the expected results:  
+The expected JSON can contain json path expressions delimited by `#(` and `)` together with the expected results:  
 ```javascript
 String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
 String actual = "{\n" +
