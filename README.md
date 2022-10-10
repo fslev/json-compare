@@ -268,9 +268,9 @@ Negating a field name, it means that the actual JSON object should not have any 
 
 Of course, you can use negative lookahead or lookbehind regular expressions
 ```javascript
-String expected = "{\"(?!lorem.*).*\":\"valorem\"}";
-String actual = "{\"ipsum\":\"valorem\"}";
-JSONCompare.assertMatches(expected, actual);
+String expected = "{\"(?!lorem.*).*\": \"valorem\"}";
+String actual = "{\"ipsum\": \"valorem\"}";
+JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 The assertion will pass if the actual JSON has a field which does not contain 'lorem' and which points to value 'valorem'.  
 

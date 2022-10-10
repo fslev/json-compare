@@ -121,4 +121,11 @@ public class ReadmeTests {
         String actual = "{\"b\": \"of course value does not matter\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
+
+    @Test
+    public void matchJsonTweaksNegativeLookaround() {
+        String expected = "{\"(?!lorem.*).*\": \"valorem\"}";
+        String actual = "{\"ipsum\": \"valorem\"}";
+        JSONCompare.assertMatches(expected, actual); // assertion passes
+    }
 }
