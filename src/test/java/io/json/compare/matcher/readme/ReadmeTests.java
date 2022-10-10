@@ -16,23 +16,23 @@ public class ReadmeTests {
 
     @Test
     public void matchJsonConvertibleJavaObjects() {
-        String expectedString = "{\"a\":1, \"b\": [4, 2, \"\\\\d+\"]}";
-        String actualString = "{\"a\":1, \"b\":[4, 2, 5], \"c\":3}";
+        String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
+        String actualString = "{\"a\":1, \"b\":[\"ipsum\", 4, 5], \"c\":true}";
         JSONCompare.assertMatches(expectedString, actualString); // assertion passes
 
         // actual represented as Map
         Map<String, Object> actualMap = new HashMap<>();
         actualMap.put("a", 1);
-        actualMap.put("b", Arrays.asList(4, 2, 5));
-        actualMap.put("c", 3);
+        actualMap.put("b", Arrays.asList("ipsum", 4, 5));
+        actualMap.put("c", true);
         JSONCompare.assertMatches(expectedString, actualMap); // assertion passes
 
         // Failed assertion
-        String anotherActualString = "{\"a\":10, \"b\":[4, 20, 5], \"c\":3}";
+        String anotherActualString = "{\"a\":2, \"b\":[4, \"lorem\", 5], \"c\":true}";
         JSONCompare.assertNotMatches(expectedString, anotherActualString); // assertion passes
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expectedString, anotherActualString));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "a ->.*Expected value: 1 But got: 10.*" +
+                "a ->.*Expected value: 1 But got: 2.*" +
                 "b ->.*Expected element from position 2 was NOT FOUND.*"));
     }
 
@@ -56,13 +56,13 @@ public class ReadmeTests {
     @Test
     public void checkJsonElementsOrder() {
         // JSON Array strict order is by default ignored
-        String expected = "[1, 2, 3]";
-        String actual = "[3, 2, 1, 5, 4]";
+        String expected = "[\"lorem\", 2, false]";
+        String actual = "[false, 2, \"lorem\", 5, 4]";
         JSONCompare.assertMatches(expected, actual); // assertion passes
 
         // Check JSON Array strict order
-        String expected1 = "[1, 2, 3]";
-        String actual1 = "[3, 2, 1, 5, 4]";
+        String expected1 = "[\"lorem\", 2, false]";
+        String actual1 = "[false, 2, \"lorem\", 5, 4]";
         JSONCompare.assertNotMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))); // assertion passes
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1,
                 new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))));

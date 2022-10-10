@@ -9,7 +9,7 @@ A Java library for comparing JSONs, with some tweaks !
 ## Brief
 Compare any JSON convertible Java objects and check the differences between them when matching fails.  
 The library has some tweaks which helps you make assertions without writing any code at all.  
-_Website:_ https://fslev.github.io/json-compare  
+
 # Features
 - **[Compare modes](#compare-modes)**
 - **[Regular expression support](#regex)**
@@ -40,19 +40,19 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 
 ### Match any JSON convertible Java objects
 ```javascript
-String expectedString = "{\"a\":1, \"b\": [4, 2, \"\\\\d+\"]}";
-String actualString = "{\"a\":1, \"b\":[4, 2, 5], \"c\":3}";
+String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
+String actualString = "{\"a\":1, \"b\":[\"ipsum\", 4, 5], \"c\":true}";
 JSONCompare.assertMatches(expectedString, actualString); // assertion passes
 
 // actual represented as Map
 Map<String, Object> actualMap = new HashMap<>();
 actualMap.put("a", 1);
-actualMap.put("b", Arrays.asList(4, 2, 5));
-actualMap.put("c", 3);
+actualMap.put("b", Arrays.asList("ipsum", 4, 5));
+actualMap.put("c", true);
 JSONCompare.assertMatches(expectedString, actualMap); // assertion passes
 
 // Failed assertion
-String anotherActualString = "{\"a\":10, \"b\":[4, 20, 5], \"c\":3}";
+String anotherActualString = "{\"a\":2, \"b\":[4, \"lorem\", 5], \"c\":true}";
 JSONCompare.assertNotMatches(expectedString, anotherActualString); // assertion passes
 JSONCompare.assertMatches(expectedString, anotherActualString); // assertion fails
 
@@ -60,15 +60,14 @@ JSONCompare.assertMatches(expectedString, anotherActualString); // assertion fai
 
 org.opentest4j.AssertionFailedError: FOUND 2 DIFFERENCE(S):
 
-
 _________________________DIFF__________________________
 a -> 
-Expected value: 1 But got: 10
+Expected value: 1 But got: 2
 
 _________________________DIFF__________________________
 b -> 
 Expected element from position 2 was NOT FOUND:
-2
+"ipsum"
 ```
 
 # <a name="compare-modes"></a>Compare modes
@@ -103,33 +102,32 @@ Actual JSON OBJECT has extra fields
 _Example of **JSON_ARRAY_STRICT_ORDER**:_
 ```javascript
 // JSON Array strict order is by default ignored
-String expected = "[1, 2, 3]";
-String actual = "[3, 2, 1, 5, 4]";
+String expected = "[\"lorem\", 2, false]";
+String actual = "[false, 2, \"lorem\", 5, 4]";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 
 // Check JSON Array strict order
-String expected1 = "[1, 2, 3]";
-String actual1 = "[3, 2, 1, 5, 4]";
-JSONCompare.assertNotMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))); // assertion passes
-JSONCompare.assertMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))); // assertion fails
+String expected1 = "[\"lorem\", 2, false]";
+String actual1 = "[false, 2, \"lorem\", 5, 4]";
+JSONCompare.assertNotMatches(expected1, actual1, Set.of(CompareMode.JSON_ARRAY_STRICT_ORDER)); // assertion passes
+JSONCompare.assertMatches(expected1, actual1, Set.of(CompareMode.JSON_ARRAY_STRICT_ORDER)); // assertion fails
 
 ==>
 org.opentest4j.AssertionFailedError: FOUND 2 DIFFERENCE(S):
 
-
 _________________________DIFF__________________________
 JSON ARRAY elements differ at position 1:
-1
+"lorem"
 ________diffs________
 
-Expected value: 1 But got: 3
+Expected value: "lorem" But got: false
 
 _________________________DIFF__________________________
 JSON ARRAY elements differ at position 3:
-3
+false
 ________diffs________
 
-Expected value: 3 But got: 1
+Expected boolean: false But got: "lorem"
 ```
 
 # <a name="regex"></a> Regular expression support
@@ -290,30 +288,33 @@ The expected JSON can contain json path expressions delimited by __'#('__ and __
 ```javascript
 String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
 String actual = "{\n" +
-                "    \"store\": {\n" +
-                "        \"book\": [\n" +
-                "            {\n" +
-                "                \"category\": \"reference\",\n" +
-                "                \"author\": \"Nigel Rees\",\n" +
-                "                \"title\": \"Sayings of the Century\",\n" +
-                "                \"price\": 8.95\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"category\": \"fiction\",\n" +
-                "                \"author\": \"Herman Melville\",\n" +
-                "                \"title\": \"Moby Dick\",\n" +
-                "                \"isbn\": \"0-553-21311-3\",\n" +
-                "                \"price\": 8.99\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"category\": \"fiction\",\n" +
-                "                \"author\": \"J. R. R. Tolkien\",\n" +
-                "                \"title\": \"The Lord of the Rings\",\n" +
-                "                \"isbn\": \"0-395-19395-8\",\n" +
-                "                \"price\": 22.99\n" +
-                "            }\n" +
-                "        ]\n" +
-                "    }\n" +
-                "}";
+"    \"store\": {\n" +
+"        \"book\": [\n" +
+"            {\n" +
+"                \"category\": \"reference\",\n" +
+"                \"author\": \"Nigel Rees\",\n" +
+"                \"title\": \"Sayings of the Century\",\n" +
+"                \"price\": 8.95\n" +
+"            },\n" +
+"            {\n" +
+"                \"category\": \"fiction\",\n" +
+"                \"author\": \"Herman Melville\",\n" +
+"                \"title\": \"Moby Dick\",\n" +
+"                \"isbn\": \"0-553-21311-3\",\n" +
+"                \"price\": 8.99\n" +
+"            },\n" +
+"            {\n" +
+"                \"category\": \"fiction\",\n" +
+"                \"author\": \"J. R. R. Tolkien\",\n" +
+"                \"title\": \"The Lord of the Rings\",\n" +
+"                \"isbn\": \"0-395-19395-8\",\n" +
+"                \"price\": 22.99\n" +
+"            }\n" +
+"        ]\n" +
+"    }\n" +
+"}";
 JSONCompare.assertMatches(expected, actual);
 ```
+
+## Website
+https://fslev.github.io/json-compare  
