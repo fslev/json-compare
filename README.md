@@ -280,7 +280,6 @@ The assertion will pass if the actual JSON has a field which does not contain _'
 Check for extra JSON values or fields by using the power of `regex` and **DO_NOT_MATCH_ANY** use case  
 ```javascript
 // actual JSON object should NOT contain any extra fields
-
 String expected = "{\"b\": \"val1\", \"!.*\": \".*\"}";
 String actual = "{\"a\": \"val2\", \"b\": \"val1\"}";
 JSONCompare.assertMatches(expected, actual); //assertion fails
@@ -293,7 +292,6 @@ Field '!.*' was FOUND
 ```
 ```javascript
 // actual JSON array should NOT contain any extra elements
-
 String expected = "[false, \"test\", 4, \"!.*\"]";
 String actual = "[4, false, \"test\", 1]";
 JSONCompare.assertNotMatches(expected, actual); // assertion fails
@@ -320,7 +318,6 @@ Field '.*' was NOT FOUND
 ```
 ```javascript
 // Actual JSON array should have extra elements
-
 String expected = "[false, \"test\", 4, \".*\"]";
 String actual = "[4, false, \"test\"]";
 JSONCompare.assertMatches(expected, actual); // assertion fails
