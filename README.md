@@ -243,7 +243,7 @@ In case expected json contains any unintentional regexes, then quote them betwee
 # <a name="tweaks"></a>Matching with some tweaks
 
 [JSONCompare](https://github.com/fslev/json-compare) has some tweaks which help you to _fine tune_ the matching mechanism.  
-These tweaks can be directly embedded inside the expected JSON, thus you don't have to write any code at all:  
+These tweaks can be directly **embedded inside the expected JSON**, thus you don't have to write any code at all:  
 
 - DO_NOT_MATCH  `!`
 - DO_NOT_MATCH_ANY  `!.*`
