@@ -249,7 +249,7 @@ These tweaks can be directly **embedded inside the expected JSON**, thus you don
 - DO_NOT_MATCH_ANY  `!.*`
 - MATCH_ANY  `.*`
 
-By using the `!` DO NOT MATCH option, the comparison between JSON values will be negated:    
+By using the `!` **DO NOT MATCH option**, the comparison between JSON values will be negated:    
 
 ```javascript
 String expected = "{\"a\":\"!test\"}";
