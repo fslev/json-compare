@@ -264,7 +264,7 @@ JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 
 Negating a field name, it means that the actual JSON object should not have any field with same name on same level.
-In this particular case, field values are ignored.  
+**In this particular case, field values are ignored**.  
 
 Of course, you can use negative lookahead or lookbehind regular expressions
 ```javascript
