@@ -296,7 +296,7 @@ Field '!.*' was FOUND
 
 String expected = "[false, \"test\", 4, \"!.*\"]";
 String actual = "[4, false, \"test\", 1]";
-
+JSONCompare.assertNotMatches(expected, actual); // assertion fails
 ==>
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
