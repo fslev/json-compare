@@ -136,16 +136,16 @@ Expected boolean: false But got: "lorem"
 
 You can use regular expressions on JSON values:
 ```javascript
-String expected = "{\"a\":\".*me.*\"}";
-String actual = "{\"a\":\"some text\"}";
-JSONCompare.assertMatches(expected, actual);
+String expected = "{\"a\": \".*me.*\"}";
+String actual = "{\"a\": \"some text\"}";
+JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 , but also on JSON object fields:
 
 ```javascript
-String expected = "{\".*oba.*\":\"some value\"}";
-String actual = "{\"foobar\":\"some value\"}";
-JSONCompare.assertMatches(expected, actual);
+String expected = "{\".*oba.*\": \"some value\"}";
+String actual = "{\"foobar\": \"some value\"}";
+JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 
 JSONCompare by default matches JSON fields and values using regular expressions.  
@@ -154,7 +154,7 @@ If you have unintentional regex characters inside either expected values or expe
 ```javascript
 String expected = "{\"a\":\"\\\\Qd+\\\\E\"}";
 String actual = "{\"a\":\"d+\"}";
-JSONCompare.assertMatches(expected, actual);
+JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 
 By quoting special characters, using \Q and \E, you disable the regex mechanism for that corresponding sequence.  
@@ -169,14 +169,14 @@ However, you can ignore the default regular expression compare mode, by using a 
 String expected = "{\"a\":\".*me.*\"}";
 String actual = "{\"a\":\"some text\"}";
 JSONCompare.assertMatches(expected, actual, new JsonComparator() {
-            public boolean compareValues(Object expected, Object actual) {
-                return expected.equals(actual);
-            }
+    public boolean compareValues(Object expected, Object actual) {
+        return expected.equals(actual);
+    }
 
-            public boolean compareFields(String expected, String actual) {
-                return expected.equals(actual);
-            }
-        });
+    public boolean compareFields(String expected, String actual) {
+        return expected.equals(actual);
+    }
+});
 // should fail
 ```
 

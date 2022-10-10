@@ -70,4 +70,25 @@ public class ReadmeTests {
                 "JSON ARRAY elements differ at position 1.*" +
                 "JSON ARRAY elements differ at position 3.*"));
     }
+
+    @Test
+    public void matchJsonRegexValues() {
+        String expected = "{\"a\": \".*me.*\"}";
+        String actual = "{\"a\": \"some text\"}";
+        JSONCompare.assertMatches(expected, actual); // assertion passes
+    }
+
+    @Test
+    public void matchJsonRegexFields() {
+        String expected = "{\".*oba.*\": \"some value\"}";
+        String actual = "{\"foobar\": \"some value\"}";
+        JSONCompare.assertMatches(expected, actual); // assertion passes
+    }
+
+    @Test
+    public void matchJsonRegexQuote() {
+        String expected = "{\"a\":\"\\\\Qd+\\\\E\"}";
+        String actual = "{\"a\":\"d+\"}";
+        JSONCompare.assertMatches(expected, actual); // assertion passes
+    }
 }
