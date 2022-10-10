@@ -272,7 +272,7 @@ String expected = "{\"(?!lorem.*).*\": \"valorem\"}";
 String actual = "{\"ipsum\": \"valorem\"}";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
-The assertion will pass if the actual JSON has a field which does not contain 'lorem' and which points to value 'valorem'.  
+The assertion will pass if the actual JSON has a field which does not contain _'lorem'_ and which points to value _'valorem'_.  
 
 
 Check for extra JSON values or fields by using the power of `regex` and `DO NOT MATCH` use case  
