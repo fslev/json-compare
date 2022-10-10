@@ -245,10 +245,10 @@ In case expected json contains any unintentional regexes, then quote them betwee
 [JSONCompare](https://github.com/fslev/json-compare) has some tweaks which help you to _fine tune_ the matching mechanism.  
 These tweaks can be directly **embedded inside the expected JSON**, thus <ins>you don't have to write any code at all<ins>:  
 
-- **DO_NOT_MATCH**  `!`
-- **DO_NOT_MATCH_ANY**  `!.*`
-- **MATCH_ANY**  `.*`
-- **JSON PATH expressions** `#(..)`
+- DO_NOT_MATCH  `!`
+- DO_NOT_MATCH_ANY  `!.*`
+- MATCH_ANY  `.*`
+- JSON PATH expressions `#(..)`
 
 ### DO NOT MATCH `!`
 By using the `!` **DO NOT MATCH** option, the comparison between JSON values will be negated:    
