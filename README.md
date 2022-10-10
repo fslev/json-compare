@@ -242,9 +242,9 @@ In case expected json contains any unintentional regexes, then quote them betwee
 
 # <a name="tweaks"></a>Matching with some tweaks
 
-- DO_NOT_MATCH - `!`
-- DO_NOT_MATCH_ANY - `!.*`
-- MATCH_ANY - `.*`
+- DO_NOT_MATCH  `!`
+- DO_NOT_MATCH_ANY  `!.*`
+- MATCH_ANY  `.*`
 
 By using the `!` DO NOT MATCH option, the comparison between JSON values will be negated:    
 
