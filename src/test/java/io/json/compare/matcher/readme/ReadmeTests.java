@@ -95,9 +95,9 @@ public class ReadmeTests {
 
     @Test
     public void matchJsonRegexCustomComparator() {
-        String expected = "{\"a\": \".*me.*\"}";
-        String actual = "{\"a\": \"some text\"}";
-        JSONCompare.assertNotMatches(expected, actual, new JsonComparator() {
+        String expected = "{\"a\": \"\\\\d+\"}";
+        String actual = "{\"a\": \"\\\\d+\"}";
+        JSONCompare.assertMatches(expected, actual, new JsonComparator() {
             public boolean compareValues(Object expected, Object actual) {
                 return expected.equals(actual);
             }

@@ -168,6 +168,8 @@ However, you can ignore the default regular expression compare mode, by using a 
 ```javascript
 String expected = "{\"a\": \".*me.*\"}";
 String actual = "{\"a\": \"some text\"}";
+String expected = "{\"a\": \"\\\\d+\"}";
+String actual = "{\"a\": \"\\\\d+\"}";
 JSONCompare.assertMatches(expected, actual, new JsonComparator() {
     public boolean compareValues(Object expected, Object actual) {
         return expected.equals(actual);
@@ -177,14 +179,6 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
         return expected.equals(actual);
     }
 });
-
-// should fail ==>
-
-org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
-
-_________________________DIFF__________________________
-a -> 
-Expected value: ".*me.*" But got: "some text"
 ```
 
 # <a name="differences"></a>Differences
