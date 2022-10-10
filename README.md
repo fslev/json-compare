@@ -166,8 +166,6 @@ From Java _Pattern_ docs:
 
 However, you can ignore the default regular expression compare mode, by using a ***custom comparator***
 ```javascript
-String expected = "{\"a\": \".*me.*\"}";
-String actual = "{\"a\": \"some text\"}";
 String expected = "{\"a\": \"\\\\d+\"}";
 String actual = "{\"a\": \"\\\\d+\"}";
 JSONCompare.assertMatches(expected, actual, new JsonComparator() {
