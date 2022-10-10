@@ -305,7 +305,7 @@ Expected condition "!.*" from position 4 was not met. Actual JSON array has extr
 ```
 
 ### MATCH ANY
-Check actual Json has extra fields or elements.  
+Check actual Json should have extra fields or elements.  
 ```javascript
 // Actual JSON object should have extra fields
 String expected = "{\"b\": \"val1\", \".*\": \".*\"}";
