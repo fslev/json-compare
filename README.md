@@ -148,7 +148,7 @@ String actual = "{\"foobar\": \"some value\"}";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 
-JSONCompare by default matches JSON fields and values using regular expressions.  
+[JSONCompare](https://github.com/fslev/json-compare) by default matches JSON fields and values using regular expressions.  
 If you have unintentional regex characters inside either expected values or expected fields, then you can quote them:  
 
 ```javascript
@@ -241,6 +241,9 @@ In case expected json contains any unintentional regexes, then quote them betwee
 ```
 
 # <a name="tweaks"></a>Matching with some tweaks
+
+[JSONCompare](https://github.com/fslev/json-compare) has some tweaks which enables to fine tune the matching mechanism.  
+These tweaks can be directly embedded inside the expected JSON, thus you don't have to write any code at all:  
 
 - DO_NOT_MATCH  `!`
 - DO_NOT_MATCH_ANY  `!.*`
