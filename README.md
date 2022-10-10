@@ -252,15 +252,15 @@ These tweaks can be directly **embedded inside the expected JSON**, thus you don
 By using the `!` **DO NOT MATCH** option, the comparison between JSON values will be negated:    
 
 ```javascript
-String expected = "{\"a\":\"!test\"}";
-String actual = "{\"a\":\"testing\"}";
-JSONCompare.assertMatches(expected, actual);
+String expected = "{\"a\": \"!test\"}";
+String actual = "{\"a\": \"testing\"}";
+JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 or, between JSON object fields
 ```javascript
-String expected = "{\"!a\":\"value does not matter\"}";
-String actual = "{\"b\":\"value does not matter\"}";
-JSONCompare.assertMatches(expected, actual);
+String expected = "{\"!a\": \"value does not matter\"}";
+String actual = "{\"b\": \"of course value does not matter\"}";
+JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 
 Negating a field name, it means that the actual JSON object should not have any field with same name on same level.

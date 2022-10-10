@@ -107,4 +107,18 @@ public class ReadmeTests {
             }
         }); // assertion passes
     }
+
+    @Test
+    public void matchJsonTweaksDoNotMatchValues() {
+        String expected = "{\"a\": \"!test\"}";
+        String actual = "{\"a\": \"testing\"}";
+        JSONCompare.assertMatches(expected, actual); // assertion passes
+    }
+
+    @Test
+    public void matchJsonTweaksDoNotMatchFields() {
+        String expected = "{\"!a\": \"value does not matter\"}";
+        String actual = "{\"b\": \"of course value does not matter\"}";
+        JSONCompare.assertMatches(expected, actual); // assertion passes
+    }
 }
