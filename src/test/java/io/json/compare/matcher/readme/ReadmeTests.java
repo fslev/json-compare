@@ -140,6 +140,20 @@ public class ReadmeTests {
     public void matchJsonTweaksDoNotMatchAnyArray() {
         String expected = "[false, \"test\", 4, \"!.*\"]";
         String actual = "[4, false, \"test\", 1]";
-        JSONCompare.assertMatches(expected, actual); //assertion fails
+        JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
+    public void matchJsonTweaksMatchAnyObjectFields() {
+        String expected = "{\"b\": \"val1\", \".*\": \".*\"}";
+        String actual = "{\"b\": \"val1\"}";
+        JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
+    public void matchJsonTweaksMatchAnyArray() {
+        String expected = "[false, \"test\", 4, \".*\"]";
+        String actual = "[4, false, \"test\"]";
+        JSONCompare.assertNotMatches(expected, actual);
     }
 }

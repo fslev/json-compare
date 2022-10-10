@@ -304,6 +304,33 @@ _________________________DIFF__________________________
 Expected condition "!.*" from position 4 was not met. Actual JSON array has extra elements.
 ```
 
+### MATCH ANY
+Check actual Json has extra fields or elements.  
+```javascript
+// Actual JSON object should have extra fields
+String expected = "{\"b\": \"val1\", \".*\": \".*\"}";
+String actual = "{\"b\": \"val1\"}";
+JSONCompare.assertMatches(expected, actual); // assertion fails
+
+==>
+org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
+
+_________________________DIFF__________________________
+Field '.*' was NOT FOUND
+```
+```javascript
+// Actual JSON array should have any extra elements
+
+String expected = "[false, \"test\", 4, \".*\"]";
+String actual = "[4, false, \"test\"]";
+JSONCompare.assertMatches(expected, actual); // assertion fails
+
+==>
+org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
+
+_________________________DIFF__________________________
+Expected condition ".*" from position 4 was not met. Actual Json Array has no extra elements.
+```
 # <a name="json-path"></a>Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
 The expected JSON can contain json path expressions delimited by __'#('__ and __')'__ together with the expected results:  
