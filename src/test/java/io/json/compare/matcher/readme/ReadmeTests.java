@@ -156,4 +156,36 @@ public class ReadmeTests {
         String actual = "[4, false, \"test\"]";
         JSONCompare.assertNotMatches(expected, actual);
     }
+
+    @Test
+    public void matchJsonTweaksJsonPath() {
+        String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
+        String actual = "{\n" +
+                "    \"store\": {\n" +
+                "        \"book\": [\n" +
+                "            {\n" +
+                "                \"category\": \"reference\",\n" +
+                "                \"author\": \"Nigel Rees\",\n" +
+                "                \"title\": \"Sayings of the Century\",\n" +
+                "                \"price\": 8.95\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"Herman Melville\",\n" +
+                "                \"title\": \"Moby Dick\",\n" +
+                "                \"isbn\": \"0-553-21311-3\",\n" +
+                "                \"price\": 8.99\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"category\": \"fiction\",\n" +
+                "                \"author\": \"J. R. R. Tolkien\",\n" +
+                "                \"title\": \"The Lord of the Rings\",\n" +
+                "                \"isbn\": \"0-395-19395-8\",\n" +
+                "                \"price\": 22.99\n" +
+                "            }\n" +
+                "        ]\n" +
+                "    }\n" +
+                "}";
+        JSONCompare.assertMatches(expected, actual);
+    }
 }

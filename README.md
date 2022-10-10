@@ -332,34 +332,47 @@ Expected condition ".*" from position 4 was not met. Actual Json Array has no ex
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
 The expected JSON can contain json path expressions delimited by `#(` and `)` together with the expected results:  
 ```javascript
-String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
+String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-1\",\"!.*\"]}";
 String actual = "{\n" +
-"    \"store\": {\n" +
-"        \"book\": [\n" +
-"            {\n" +
-"                \"category\": \"reference\",\n" +
-"                \"author\": \"Nigel Rees\",\n" +
-"                \"title\": \"Sayings of the Century\",\n" +
-"                \"price\": 8.95\n" +
-"            },\n" +
-"            {\n" +
-"                \"category\": \"fiction\",\n" +
-"                \"author\": \"Herman Melville\",\n" +
-"                \"title\": \"Moby Dick\",\n" +
-"                \"isbn\": \"0-553-21311-3\",\n" +
-"                \"price\": 8.99\n" +
-"            },\n" +
-"            {\n" +
-"                \"category\": \"fiction\",\n" +
-"                \"author\": \"J. R. R. Tolkien\",\n" +
-"                \"title\": \"The Lord of the Rings\",\n" +
-"                \"isbn\": \"0-395-19395-8\",\n" +
-"                \"price\": 22.99\n" +
-"            }\n" +
-"        ]\n" +
-"    }\n" +
-"}";
-JSONCompare.assertMatches(expected, actual);
+    "    \"store\": {\n" +
+    "        \"book\": [\n" +
+    "            {\n" +
+    "                \"category\": \"reference\",\n" +
+    "                \"author\": \"Nigel Rees\",\n" +
+    "                \"title\": \"Sayings of the Century\",\n" +
+    "                \"price\": 8.95\n" +
+    "            },\n" +
+    "            {\n" +
+    "                \"category\": \"fiction\",\n" +
+    "                \"author\": \"Herman Melville\",\n" +
+    "                \"title\": \"Moby Dick\",\n" +
+    "                \"isbn\": \"0-553-21311-3\",\n" +
+    "                \"price\": 8.99\n" +
+    "            },\n" +
+    "            {\n" +
+    "                \"category\": \"fiction\",\n" +
+    "                \"author\": \"J. R. R. Tolkien\",\n" +
+    "                \"title\": \"The Lord of the Rings\",\n" +
+    "                \"isbn\": \"0-395-19395-8\",\n" +
+    "                \"price\": 22.99\n" +
+    "            }\n" +
+    "        ]\n" +
+    "    }\n" +
+    "}";
+JSONCompare.assertMatches(expected, actual); // assertion fails
+
+==>
+org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
+
+_________________________DIFF__________________________
+Json path '$.store..isbn' -> Expected json path result:
+["0-395-19395-8","0-553-21311-1","!.*"]
+But got:
+["0-553-21311-3","0-395-19395-8"]
+________diffs________
+
+Expected element from position 2 was NOT FOUND:
+"0-553-21311-1"
 ```
 
 ## Website
