@@ -333,7 +333,7 @@ Powered by [JsonPath](https://github.com/json-path/JsonPath)
 The expected JSON can contain json path expressions delimited by `#(` and `)` together with the expected results:  
 ```javascript
 // Select the 'isbn' values of store books and match with expected ones  
-String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-1\",\"!.*\"]}";
+String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\", \"0-553-21311-1\", \"!.*\"]}";
 String actual = "{\n" +
     "    \"store\": {\n" +
     "        \"book\": [\n" +
