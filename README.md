@@ -319,7 +319,7 @@ _________________________DIFF__________________________
 Field '.*' was NOT FOUND
 ```
 ```javascript
-// Actual JSON array should have any extra elements
+// Actual JSON array should have extra elements
 
 String expected = "[false, \"test\", 4, \".*\"]";
 String actual = "[4, false, \"test\"]";
