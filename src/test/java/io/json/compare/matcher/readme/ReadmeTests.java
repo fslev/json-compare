@@ -105,6 +105,6 @@ public class ReadmeTests {
             public boolean compareFields(String expected, String actual) {
                 return expected.equals(actual);
             }
-        });
+        }); // assertion passes
     }
 }

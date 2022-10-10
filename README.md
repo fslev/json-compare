@@ -178,7 +178,7 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
     public boolean compareFields(String expected, String actual) {
         return expected.equals(actual);
     }
-});
+}); // assertion passes
 ```
 
 # <a name="differences"></a>Differences
