@@ -248,7 +248,9 @@ These tweaks can be directly **embedded inside the expected JSON**, thus you don
 - **DO_NOT_MATCH**  `!`
 - **DO_NOT_MATCH_ANY**  `!.*`
 - **MATCH_ANY**  `.*`
+- **JSON PATH expressions** `#(..)`
 
+## DO NOT MATCH
 By using the `!` **DO NOT MATCH** option, the comparison between JSON values will be negated:    
 
 ```javascript
@@ -274,7 +276,7 @@ JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 The assertion will pass if the actual JSON has a field which does not contain _'lorem'_ and which points to value _'valorem'_.  
 
-
+## DO NOT MATCH ANY
 Check for extra JSON values or fields by using the power of `regex` and **DO_NOT_MATCH_ANY** use case  
 ```javascript
 // actual Json should NOT contain any extra fields
