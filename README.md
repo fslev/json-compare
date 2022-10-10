@@ -180,6 +180,7 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
 ```
 
 # <a name="differences"></a>Differences
+Matching is based on soft assertion. It does not stop at first encountered difference, but it continues until expected JSON is depleted. Finally, all differences are displayed via an AssertionError message:    
 ```javascript
 String expected = "{\n" +
         "  \"caught\": false,\n" +
