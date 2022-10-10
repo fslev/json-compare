@@ -291,7 +291,7 @@ org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 _________________________DIFF__________________________
 Field '!.*' was FOUND
 ```
-```
+```javascript
 // actual JSON array should NOT contain any extra elements
 
 String expected = "[false, \"test\", 4, \"!.*\"]";
