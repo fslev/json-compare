@@ -332,7 +332,7 @@ Expected condition ".*" from position 4 was not met. Actual Json Array has no ex
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
 The expected JSON can contain json path expressions delimited by `#(` and `)` together with the expected results:  
 ```javascript
-// Select store books having 'isbn' attributes and expect list of values 
+// Select the 'isbn' values of store books 
 String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-1\",\"!.*\"]}";
 String actual = "{\n" +
     "    \"store\": {\n" +
