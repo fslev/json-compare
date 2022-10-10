@@ -279,21 +279,31 @@ The assertion will pass if the actual JSON has a field which does not contain _'
 ### DO NOT MATCH ANY
 Check for extra JSON values or fields by using the power of `regex` and **DO_NOT_MATCH_ANY** use case  
 ```javascript
-// actual Json should NOT contain any extra fields
+// actual JSON object should NOT contain any extra fields
 
-String expected = "{\"b\":\"val1\",\"a\":\"val2\",\"!.*\":\".*\"}";
-String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
-JSONCompare.assertMatches(expected, actual);
+String expected = "{\"b\": \"val1\", \"!.*\": \".*\"}";
+String actual = "{\"a\": \"val2\", \"b\": \"val1\"}";
+JSONCompare.assertMatches(expected, actual); //assertion fails
 
-String expected = "[false,\"test\",4,\"!.*\"]";
-String actual = "[4,false,\"test\"]";
-JSONCompare.assertMatches(expected, actual);
+==>
+org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
-// actual Json array should contain extra elements
-String expected = "[false,\"test\",4,\".*\"]";
-String actual = "[4,false,\"test\"]";
-JSONCompare.assertNotMatches(expected, actual);
+_________________________DIFF__________________________
+Field '!.*' was FOUND
 ```
+```
+// actual JSON array should NOT contain any extra elements
+
+String expected = "[false, \"test\", 4, \"!.*\"]";
+String actual = "[4, false, \"test\", 1]";
+
+==>
+org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
+
+_________________________DIFF__________________________
+Expected condition "!.*" from position 4 was not met. Actual JSON array has extra elements.
+```
+
 # <a name="json-path"></a>Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
 The expected JSON can contain json path expressions delimited by __'#('__ and __')'__ together with the expected results:  

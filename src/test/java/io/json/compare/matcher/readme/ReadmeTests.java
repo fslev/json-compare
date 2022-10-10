@@ -128,4 +128,18 @@ public class ReadmeTests {
         String actual = "{\"ipsum\": \"valorem\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
+
+    @Test
+    public void matchJsonTweaksDoNotMatchAnyObjectFields() {
+        String expected = "{\"b\": \"val1\", \"!.*\": \".*\"}";
+        String actual = "{\"a\": \"val2\", \"b\": \"val1\"}";
+        JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
+    public void matchJsonTweaksDoNotMatchAnyArray() {
+        String expected = "[false, \"test\", 4, \"!.*\"]";
+        String actual = "[4, false, \"test\", 1]";
+        JSONCompare.assertMatches(expected, actual); //assertion fails
+    }
 }
