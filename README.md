@@ -209,7 +209,7 @@ String actual = "{\n" +
         "  \"broad\": \"invented\"\n" +
         "}";
         
-JSONCompare.assertMatches(expected, actual);
+JSONCompare.assertMatches(expected, actual); // assertion fails
 ```
 #### Output
 ```javascript
