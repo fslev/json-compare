@@ -12,7 +12,7 @@ The library has some tweaks which helps you make assertions without writing any 
 
 # Features
 - **[Compare modes](#compare-modes)**
-- **[Regular expression support](#regex)**
+- **[Regex support](#regex)**
 - **[Differences](#differences)**
 - **[Tweaks](#tweaks)**
 - **[Json Path support](#json-path)**
