@@ -51,9 +51,11 @@ actualMap.put("b", Arrays.asList("ipsum", 4, 5));
 actualMap.put("c", true);
 JSONCompare.assertMatches(expectedString, actualMap); // assertion passes
 
-// Failed assertion
+
 String anotherActualString = "{\"a\":2, \"b\":[4, \"lorem\", 5], \"c\":true}";
+// Negative assertion
 JSONCompare.assertNotMatches(expectedString, anotherActualString); // assertion passes
+// Failed assertion
 JSONCompare.assertMatches(expectedString, anotherActualString); // assertion fails
 
 ==>
@@ -88,8 +90,8 @@ JSONCompare.assertMatches(expected, actual); // assertion passes
 // JSON objects MUST have same sizes
 String expected1 = "{\"b\":\"val1\"}";
 String actual1 = "{\"a\":\"val2\", \"b\":\"val1\"}";
-JSONCompare.assertNotMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))); // assertion passes
-JSONCompare.assertMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))); // assertion fails
+JSONCompare.assertNotMatches(expected1, actual1, Set.of(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)); // assertion passes
+JSONCompare.assertMatches(expected1, actual1, Set.of(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)); // assertion fails
 
 ==>                             
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
