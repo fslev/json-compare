@@ -166,8 +166,8 @@ From Java _Pattern_ docs:
 
 However, you can ignore the default regular expression compare mode, by using a ***custom comparator***
 ```javascript
-String expected = "{\"a\":\".*me.*\"}";
-String actual = "{\"a\":\"some text\"}";
+String expected = "{\"a\": \".*me.*\"}";
+String actual = "{\"a\": \"some text\"}";
 JSONCompare.assertMatches(expected, actual, new JsonComparator() {
     public boolean compareValues(Object expected, Object actual) {
         return expected.equals(actual);
@@ -177,7 +177,14 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
         return expected.equals(actual);
     }
 });
-// should fail
+
+// should fail ==>
+
+org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
+
+_________________________DIFF__________________________
+a -> 
+Expected value: ".*me.*" But got: "some text"
 ```
 
 # <a name="differences"></a>Differences

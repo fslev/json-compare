@@ -2,6 +2,7 @@ package io.json.compare.matcher.readme;
 
 import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
+import io.json.compare.JsonComparator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -90,5 +91,20 @@ public class ReadmeTests {
         String expected = "{\"a\":\"\\\\Qd+\\\\E\"}";
         String actual = "{\"a\":\"d+\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
+    }
+
+    @Test
+    public void matchJsonRegexCustomComparator() {
+        String expected = "{\"a\": \".*me.*\"}";
+        String actual = "{\"a\": \"some text\"}";
+        JSONCompare.assertNotMatches(expected, actual, new JsonComparator() {
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        });
     }
 }
