@@ -1,6 +1,7 @@
 package io.json.compare.matcher;
 
 import io.json.compare.JSONCompare;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class JSONArrayCompareTests {
@@ -16,6 +17,14 @@ public class JSONArrayCompareTests {
     public void compareEmptyArrays_negative() {
         String expected = "[1]";
         String actual = "[]";
+        JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
+    public void compareEmptyArrays_negative1() {
+        String expected = "[{}]";
+        String actual = "[]";
+        Assertions.assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
