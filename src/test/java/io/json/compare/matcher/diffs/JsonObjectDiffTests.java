@@ -2,6 +2,7 @@ package io.json.compare.matcher.diffs;
 
 import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
+import io.json.compare.JsonComparator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -112,6 +113,16 @@ public class JsonObjectDiffTests {
     @Test
     public void compareJsonObjectsAndCheckForMatchAnyDifferences() {
         String expected = "{\"b\":2,\"a\":1,\"c\":{\"c1\":\"lorem2\",\".*\":\".*\"},\"!.*\":\".*\"}";
+        String actual = "{\"a\":1,\"b\":2,\"c\":{\"c1\":\"lorem2\"}}";
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                "c -> Field \\Q'.*'\\E was NOT FOUND.*"));
+        JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
+    public void compareJsonObjectsAndCheckForMatchAnyDifferences1() {
+        String expected = "{\"a\":1,\"c\":{\"c1\":\"lorem2\",\".*\":\".*\"},\"!.*\":\".*\"}";
         String actual = "{\"a\":1,\"b\":2,\"c\":{\"c1\":\"lorem2\"}}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
@@ -234,5 +245,36 @@ public class JsonObjectDiffTests {
                 "master ->.*Expected value: -1005804822.0610056 But got: 1005804822.0610056.*" +
                 "My custom message.*"));
         JSONCompare.assertNotMatches(expected, actual);
+    }
+
+    @Test
+    public void compareJsonObjectsWithJsonArraysAndDoNotMatchAny() {
+        String expected = "{\"name\":\"test\",\".*\":[4],\"!.*\":\".*\"}";
+        String actual = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                "Field '!.*' was FOUND.*"));
+
+        String expected1 = "{\"name\":\"test\",\".*\":[4],\"records\":[3],\"!.*\":\".*\"}";
+        String actual1 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        JSONCompare.assertMatches(expected1, actual1);
+    }
+
+    @Test
+    public void compareJsonObjectsWithCustomComparator() {
+        // use custom comparator
+        String expected = "{\"name\":\"test\",\"records\":[3],\"!.*\":\".*\"}";
+        String actual = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual, new JsonComparator() {
+            @Override
+            public boolean compareValues(Object expected, Object actual) {
+                return expected.equals(actual);
+            }
+
+            @Override
+            public boolean compareFields(String expected, String actual) {
+                return expected.equals(actual);
+            }
+        }));
     }
 }
