@@ -101,8 +101,8 @@ public class JsonObjectDiffTests {
         String actual = "{\"a\":1,\"b\":2,\"c\":{\"c1\":\"lorem1\",\"c2\":\"lorem2\"},\"d\":1}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "c -> Field \\Q'!.*'\\E was FOUND.*" +
-                "Field \\Q'!.*'\\E was FOUND.*"));
+                "c -> Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*" +
+                "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
         JSONCompare.assertNotMatches(expected, actual);
 
         String expected1 = "{\"b\":2,\"a\":1,\"c\":{\"c2\":\"lorem2\",\"!.*\":\".*\"},\"!.*\":\".*\"}";
@@ -115,8 +115,9 @@ public class JsonObjectDiffTests {
         String expected = "{\"b\":2,\"a\":1,\"c\":{\"c1\":\"lorem2\",\".*\":\".*\"},\"!.*\":\".*\"}";
         String actual = "{\"a\":1,\"b\":2,\"c\":{\"c1\":\"lorem2\"}}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "c -> Field \\Q'.*'\\E was NOT FOUND.*"));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
+                "c -> Field \\Q'.*'\\E was NOT FOUND.*" +
+                "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -127,7 +128,7 @@ public class JsonObjectDiffTests {
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "c -> Field \\Q'.*'\\E was NOT FOUND.*" +
-                "Field \\Q'!.*'\\E was FOUND.*"));
+                "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -139,8 +140,8 @@ public class JsonObjectDiffTests {
                 new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))));
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "a ->.*Expected value: 0 But got: 1.*" +
-                "c -> Actual JSON OBJECT has extra fields.*" +
-                "Actual JSON OBJECT has extra fields.*"));
+                "c -> Actual JSON OBJECT has unmatched fields.*" +
+                "Actual JSON OBJECT has unmatched fields.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -152,9 +153,9 @@ public class JsonObjectDiffTests {
                 new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))));
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "a ->.*Expected value: 0 But got: 1.*" +
-                "c -> Actual JSON OBJECT has extra fields.*" +
+                "c -> Actual JSON OBJECT has unmatched fields.*" +
                 "u ->.*Expected condition \\Q\"!.*\"\\E from position 3 was not met. Actual JSON array has extra elements.*" +
-                "Actual JSON OBJECT has extra fields.*"));
+                "Actual JSON OBJECT has unmatched fields.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -253,7 +254,7 @@ public class JsonObjectDiffTests {
         String actual = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "Field '!.*' was FOUND.*"));
+                "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
 
         String expected1 = "{\"name\":\"test\",\".*\":[4],\"records\":[3],\"!.*\":\".*\"}";
         String actual1 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
