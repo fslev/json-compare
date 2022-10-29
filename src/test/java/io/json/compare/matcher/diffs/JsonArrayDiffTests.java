@@ -41,7 +41,7 @@ public class JsonArrayDiffTests {
         String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual Json Array has no extra elements.*"));
+                "Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual JSON ARRAY has no extra elements.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -51,8 +51,8 @@ public class JsonArrayDiffTests {
         String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual Json Array has no extra elements.*" +
-                "Expected condition \"\\Q.*\\E\" from position 6 was not met. Actual Json Array has no extra elements.*"));
+                "Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual JSON ARRAY has no extra elements.*" +
+                "Expected condition \"\\Q.*\\E\" from position 6 was not met. Actual JSON ARRAY has no extra elements.*"));
         JSONCompare.assertNotMatches(expected, actual);
 
         // empty actual json array
@@ -61,11 +61,11 @@ public class JsonArrayDiffTests {
         AssertionError error1 = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1));
         assertTrue(error1.getMessage().matches("(?s).*FOUND 6 DIFFERENCE.*" +
                 "Expected element from position 1 was NOT FOUND.*\"a\".*" +
-                "Expected condition \".*\" from position 2 was not met. Actual Json Array has no extra elements.*" +
+                "Expected condition \".*\" from position 2 was not met. Actual JSON ARRAY has no extra elements.*" +
                 "Expected element from position 3 was NOT FOUND.*1.*" +
                 "Expected element from position 4 was NOT FOUND.*\"\\Q.*test\\E\".*" +
-                "Expected condition \".*\" from position 5 was not met. Actual Json Array has no extra elements.*" +
-                "Expected condition \".*\" from position 6 was not met. Actual Json Array has no extra elements.*"));
+                "Expected condition \".*\" from position 5 was not met. Actual JSON ARRAY has no extra elements.*" +
+                "Expected condition \".*\" from position 6 was not met. Actual JSON ARRAY has no extra elements.*"));
         JSONCompare.assertNotMatches(expected1, actual1);
     }
 
@@ -97,7 +97,7 @@ public class JsonArrayDiffTests {
         String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "Expected condition \"\\Q!.*\\E\" from position 3 was not met. Actual JSON array has extra elements.*"));
+                "Expected condition \"\\Q!.*\\E\" from position 3 was not met. Actual JSON ARRAY has extra elements.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -107,7 +107,7 @@ public class JsonArrayDiffTests {
         String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*"));
+                "Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON ARRAY has extra elements.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 

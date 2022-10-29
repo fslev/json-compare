@@ -153,7 +153,7 @@ public class JsonObjectDiffTests {
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "a ->.*Expected value: 0 But got: 1.*" +
                 "c -> Actual JSON OBJECT has unmatched fields.*" +
-                "u ->.*Expected condition \\Q\"!.*\"\\E from position 3 was not met. Actual JSON array has extra elements.*" +
+                "u ->.*Expected condition \\Q\"!.*\"\\E from position 3 was not met. Actual JSON ARRAY has extra elements.*" +
                 "Actual JSON OBJECT has unmatched fields.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
@@ -282,7 +282,7 @@ public class JsonObjectDiffTests {
                 "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q.*\\E ->.*Expected value: \"test\" But got: \"record\".*" +
-                "records ->.*Expected condition \"\\Q!.*\\E\" from position 4 was not met. Actual JSON array has extra elements.*" +
+                "records ->.*Expected condition \"\\Q!.*\\E\" from position 4 was not met. Actual JSON ARRAY has extra elements.*" +
                 "otherRecords ->.*Expected element from position 1 was NOT FOUND.*4.*" +
                 "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
 
@@ -291,8 +291,8 @@ public class JsonObjectDiffTests {
         error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected2, actual2));
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "Field 'name' was NOT FOUND.*" +
-                "records ->.*Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual Json Array has no extra elements.*" +
-                "otherRecords ->.*Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*"));
+                "records ->.*Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual JSON ARRAY has no extra elements.*" +
+                "otherRecords ->.*Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON ARRAY has extra elements.*"));
 
         String expected3 = "{\"name\":\"test\", \"records\":[1, \".*\", 3, 4, \".*\"], \"otherRecords\":[4, 2, \"!.*\"], \".*\":\".*\"}";
         String actual3 = "{\"name\":\"test\", \"records\":[2,1,5,4,3], \"otherRecords\":[2, 4]}";

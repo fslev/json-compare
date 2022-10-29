@@ -103,12 +103,12 @@ Actual JSON OBJECT has extra fields
 
 _Example of **JSON_ARRAY_STRICT_ORDER**:_
 ```javascript
-// JSON Array strict order is by default ignored
+// JSON array strict order is by default ignored
 String expected = "[\"lorem\", 2, false]";
 String actual = "[false, 2, \"lorem\", 5, 4]";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 
-// Check JSON Array strict order
+// Check JSON array strict order
 String expected1 = "[\"lorem\", 2, false]";
 String actual1 = "[false, 2, \"lorem\", 5, 4]";
 JSONCompare.assertNotMatches(expected1, actual1, Set.of(CompareMode.JSON_ARRAY_STRICT_ORDER)); // assertion passes
@@ -299,7 +299,7 @@ JSONCompare.assertNotMatches(expected, actual); // assertion fails
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
 _________________________DIFF__________________________
-Expected condition "!.*" from position 4 was not met. Actual JSON array has extra elements.
+Expected condition "!.*" from position 4 was not met. Actual JSON ARRAY has extra elements.
 ```
 
 ### MATCH ANY `.*`
@@ -326,7 +326,7 @@ JSONCompare.assertMatches(expected, actual); // assertion fails
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
 _________________________DIFF__________________________
-Expected condition ".*" from position 4 was not met. Actual Json Array has no extra elements.
+Expected condition ".*" from position 4 was not met. Actual JSON ARRAY has no extra elements.
 ```
 # <a name="json-path"></a>Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  

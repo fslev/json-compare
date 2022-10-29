@@ -69,7 +69,7 @@ public class JsonCustomComparatorDiffTests {
                 "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q.*\\E ->.*Expected value: \"test\" But got: \"record\".*" +
-                "records ->.*Expected condition \"\\Q!.*\\E\" from position 4 was not met. Actual JSON array has extra elements.*" +
+                "records ->.*Expected condition \"\\Q!.*\\E\" from position 4 was not met. Actual JSON ARRAY has extra elements.*" +
                 "otherRecords ->.*Expected element from position 1 was NOT FOUND.*4.*" +
                 "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
 
@@ -78,8 +78,8 @@ public class JsonCustomComparatorDiffTests {
         error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected2, actual2, new CustomComparator()));
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "Field 'name' was NOT FOUND.*" +
-                "records ->.*Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual Json Array has no extra elements.*" +
-                "otherRecords ->.*Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*"));
+                "records ->.*Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual JSON ARRAY has no extra elements.*" +
+                "otherRecords ->.*Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON ARRAY has extra elements.*"));
 
         String expected3 = "{\"name\":\"test\", \"records\":[1, \".*\", 3, 4, \".*\"], \"otherRecords\":[4, 2, \"!.*\"], \".*\":\".*\"}";
         String actual3 = "{\"name\":\"test\", \"records\":[2,1,5,4,3], \"otherRecords\":[2, 4]}";
