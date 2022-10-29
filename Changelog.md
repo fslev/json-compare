@@ -1,6 +1,11 @@
 # Changelog
 
 ## 5.2-SNAPSHOT
+- #### Changed
+  - refactor AssertionError messages
+- #### Fixed
+  - MATCH_ANY and DO_NOT_MATCH_ANY use cases didn't work while using custom comparator  
+  
 
 ## 5.1 (2022-10-05)
 - #### Changed
