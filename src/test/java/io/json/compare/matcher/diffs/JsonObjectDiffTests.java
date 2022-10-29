@@ -2,7 +2,6 @@ package io.json.compare.matcher.diffs;
 
 import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
-import io.json.compare.JsonComparator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -262,20 +261,43 @@ public class JsonObjectDiffTests {
     }
 
     @Test
-    public void compareJsonObjectsWithCustomComparator() {
-        // use custom comparator
-        String expected = "{\"name\":\"test\",\"records\":[3],\"!.*\":\".*\"}";
-        String actual = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual, new JsonComparator() {
-            @Override
-            public boolean compareValues(Object expected, Object actual) {
-                return expected.equals(actual);
-            }
+    public void compareJsonsWithUseCases() {
+        String expected = "{\"!name\":\"test\",\"records\":[1,2,3, \"!.*\"], \"otherRecords\":[4, \"!.*\"]}";
+        String actual = "{\"names\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        JSONCompare.assertMatches(expected, actual);
 
-            @Override
-            public boolean compareFields(String expected, String actual) {
-                return expected.equals(actual);
-            }
-        }));
+        expected = "{\"!name\":\"test\", \"records\":[1,2,3, \"!.*\"], \"otherRecords\":[4, \"!.*\"], \"!.*\":\".*\"}";
+        actual = "{\"records\":[1,2,3], \"otherRecords\":[4]}";
+        JSONCompare.assertMatches(expected, actual);
+
+        expected = "{\".*\":\"test\",\"records\":[1, \".*\", 3, \"!.*\"], \"otherRecords\":[4, \"!.*\"], \"!.*\":\".*\"}";
+        actual = "{\"names\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        JSONCompare.assertMatches(expected, actual);
+
+        String expected1 = "{\".*\":\"test\", \"records\":[1, \".*\", 3, \"!.*\"], \"otherRecords\":[4, \"!.*\"], \"!.*\":\".*\"}";
+        String actual1 = "{\"names\":\"test1\", \"records\":[2,1,4,3], \"otherRecords\":[1,2], \"another\":\"record\"}";
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 7 DIFFERENCE.*" +
+                "\\Q.*\\E ->.*Expected value: \"test\" But got: \"test1\".*" +
+                "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
+                "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
+                "\\Q.*\\E ->.*Expected value: \"test\" But got: \"record\".*" +
+                "records ->.*Expected condition \"\\Q!.*\\E\" from position 4 was not met. Actual JSON array has extra elements.*" +
+                "otherRecords ->.*Expected element from position 1 was NOT FOUND.*4.*" +
+                "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
+
+        String expected2 = "{\"name\":\"test\", \"records\":[1, \".*\", 3, 4, \".*\"], \"otherRecords\":[4, \"!.*\"], \".*\":\".*\"}";
+        String actual2 = "{\"names\":\"test1\", \"records\":[2,1,4,3], \"otherRecords\":[1,2, 4], \"another\":\"record\"}";
+        error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected2, actual2));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
+                "Field 'name' was NOT FOUND.*" +
+                "records ->.*Expected condition \"\\Q.*\\E\" from position 5 was not met. Actual Json Array has no extra elements.*" +
+                "otherRecords ->.*Expected condition \"\\Q!.*\\E\" from position 2 was not met. Actual JSON array has extra elements.*"));
+
+        String expected3 = "{\"name\":\"test\", \"records\":[1, \".*\", 3, 4, \".*\"], \"otherRecords\":[4, 2, \"!.*\"], \".*\":\".*\"}";
+        String actual3 = "{\"name\":\"test\", \"records\":[2,1,5,4,3], \"otherRecords\":[2, 4]}";
+        error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected3, actual3));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                "Field '\\Q.*\\E' was NOT FOUND.*"));
     }
 }
