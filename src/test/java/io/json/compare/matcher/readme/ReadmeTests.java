@@ -51,7 +51,7 @@ public class ReadmeTests {
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1,
                 new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))));
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "Actual JSON OBJECT has extra fields.*"));
+                "Actual JSON OBJECT has unmatched fields.*"));
     }
 
     @Test

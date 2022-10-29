@@ -24,14 +24,14 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
             Map.Entry<String, JsonNode> entry = it.next();
             String expectedField = entry.getKey();
             JsonNode expectedValue = entry.getValue();
-            UseCase useCase = getUseCase(expectedField);
+            UseCase fieldUseCase = getUseCase(expectedField);
             String expectedSanitizedField = sanitize(expectedField);
             Optional<String> jsonPathExpression = extractJsonPathExp(expectedSanitizedField);
             List<Map.Entry<String, JsonNode>> candidateEntries = null;
             if (!jsonPathExpression.isPresent()) {
-                candidateEntries = searchCandidatesByField(expectedSanitizedField, actual);
+                candidateEntries = searchCandidatesByField(fieldUseCase, expectedSanitizedField, actual);
             }
-            switch (useCase) {
+            switch (fieldUseCase) {
                 case MATCH_ANY:
                 case MATCH:
                     if (!jsonPathExpression.isPresent()) {
@@ -49,6 +49,10 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                     }
                     break;
                 case DO_NOT_MATCH_ANY:
+                    if (!candidateEntries.isEmpty()) {
+                        diffs.add(String.format("Expected condition '%s' was not met. Actual JSON OBJECT has unmatched fields", expectedField));
+                    }
+                    break;
                 case DO_NOT_MATCH:
                     if (!jsonPathExpression.isPresent()) {
                         if (!candidateEntries.isEmpty()) {
@@ -66,7 +70,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
             }
         }
         if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE) && expected.size() < actual.size()) {
-            diffs.add("Actual JSON OBJECT has extra fields");
+            diffs.add("Actual JSON OBJECT has unmatched fields");
         }
         return diffs;
     }
@@ -96,7 +100,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
         return diffs;
     }
 
-    private List<Map.Entry<String, JsonNode>> searchCandidatesByField(String fieldName, JsonNode target) {
+    private List<Map.Entry<String, JsonNode>> searchCandidatesByField(UseCase fieldUseCase, String fieldName, JsonNode target) {
         List<Map.Entry<String, JsonNode>> candidates = new ArrayList<>();
         Iterator<Map.Entry<String, JsonNode>> it = target.fields();
         while (it.hasNext()) {
@@ -105,7 +109,8 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
             if (matchedFieldNames.contains(key)) {
                 continue;
             }
-            if (comparator.compareFields(fieldName, key)) {
+            if (fieldUseCase.equals(UseCase.MATCH_ANY) || fieldUseCase.equals(UseCase.DO_NOT_MATCH_ANY)
+                    || comparator.compareFields(fieldName, key)) {
                 candidates.add(entry);
             }
         }

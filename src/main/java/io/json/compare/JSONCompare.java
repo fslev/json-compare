@@ -67,10 +67,10 @@ public class JSONCompare {
         if (!diffs.isEmpty()) {
             String defaultMessage = String.format("FOUND %s DIFFERENCE(S):" + System.lineSeparator() + "%s" + System.lineSeparator(),
                     diffs.size(), diffs.stream().map(diff ->
-                             System.lineSeparator() + System.lineSeparator() + "_________________________DIFF__________________________" +
+                            System.lineSeparator() + System.lineSeparator() + "_________________________DIFF__________________________" +
                                     System.lineSeparator() + diff).reduce(String::concat).get());
             if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
-                defaultMessage +=  System.lineSeparator() + System.lineSeparator() + ASSERTION_ERROR_HINT_MESSAGE + System.lineSeparator();
+                defaultMessage += System.lineSeparator() + System.lineSeparator() + ASSERTION_ERROR_HINT_MESSAGE + System.lineSeparator();
             }
             AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + System.lineSeparator() + message)
                     .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson)).buildAndThrow();
@@ -85,7 +85,7 @@ public class JSONCompare {
         if (!diffs.isEmpty()) {
             return;
         }
-        String defaultMessage =  System.lineSeparator() + "JSONs are equal";
+        String defaultMessage = System.lineSeparator() + "JSONs are equal";
         AssertionFailureBuilder.assertionFailure().message(message == null ? defaultMessage : defaultMessage + System.lineSeparator() + message)
                 .expected(prettyPrint(expectedJson)).actual(prettyPrint(actualJson))
                 .includeValuesInMessage(false).buildAndThrow();
