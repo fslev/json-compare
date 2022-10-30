@@ -59,6 +59,28 @@ abstract class AbstractJsonMatcher {
         return Optional.empty();
     }
 
+    protected static int getDoNotMatchUseCases(JsonNode jsonNode) {
+        int count = 0;
+        if (jsonNode.isArray()) {
+            for (int i = 0; i < jsonNode.size(); i++) {
+                if (getUseCase(jsonNode.get(i)).equals(UseCase.DO_NOT_MATCH_ANY) ||
+                        getUseCase(jsonNode.get(i)).equals(UseCase.DO_NOT_MATCH) || isJsonPathNode(jsonNode.get(i))) {
+                    count++;
+                }
+            }
+        } else if (jsonNode.isObject()) {
+            Iterator<String> it = jsonNode.fieldNames();
+            while (it.hasNext()) {
+                String field = it.next();
+                if (getUseCase(field).equals(UseCase.DO_NOT_MATCH_ANY) || getUseCase(field).equals(UseCase.DO_NOT_MATCH)
+                        || extractJsonPathExp(field).isPresent()) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     private static String removeEscapes(String value) {
         if (value == null) {
             return null;

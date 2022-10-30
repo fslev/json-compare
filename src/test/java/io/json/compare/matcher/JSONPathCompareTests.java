@@ -312,11 +312,11 @@ public class JSONPathCompareTests {
 
     @Test
     public void matchJsonObjectWithJsonPathAndCompareModes() {
-        String expected = "{\"b\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\".*\"}},\"a2\":290.11}}";
+        String expected = "{\"b\":false,\"a\":{\"a1\":\".*\", \"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\".*\"}},\"a2\":290.11}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
 
-        expected = "{\"b\":false,\"a\":{\"#($.a1)\":{\"a11\":{\"a\":\".*\"}},\"a2\":290.11}}";
+        expected = "{\"b\":false,\"a\":{\"a1\":\".*\", \"#($.a1)\":{\"a11\":{\"a\":\".*\"}},\"a2\":290.11}}";
         JSONCompare.assertNotMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
     }
 

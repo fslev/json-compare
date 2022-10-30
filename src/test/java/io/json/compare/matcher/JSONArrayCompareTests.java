@@ -78,10 +78,10 @@ public class JSONArrayCompareTests {
     }
 
     @Test
-    public void compareWithNoExtraElements_negative() {
+    public void compareWithNoExtraElements1() {
         String expected = "[1,\"test\",\"!.*\",4]";
         String actual = "[4,1,\"test\"]";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.assertMatches(expected, actual);
     }
 
     @Test

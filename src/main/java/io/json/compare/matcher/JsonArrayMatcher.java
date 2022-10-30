@@ -23,16 +23,13 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         for (int i = 0; i < expected.size(); i++) {
             JsonNode expElement = expected.get(i);
             UseCase useCase = getUseCase(expElement);
-            if (useCase.equals(UseCase.DO_NOT_MATCH_ANY) && !diffs.isEmpty()) {
-                continue;
-            }
             if (isJsonPathNode(expElement)) {
                 diffs.addAll(new JsonMatcher(expElement, actual, comparator, compareModes).match());
             } else {
                 diffs.addAll(matchWithJsonArray(i, expElement, useCase, actual));
             }
         }
-        if (diffs.isEmpty() && compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() < actual.size()) {
+        if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() - getDoNotMatchUseCases(expected) < actual.size()) {
             diffs.add("Actual JSON ARRAY has extra elements");
         }
         return diffs;
@@ -82,9 +79,11 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                     }
                     break;
                 case DO_NOT_MATCH_ANY:
-                    diffs.add(String.format("Expected condition %s from position %s was not met." +
-                                    " Actual JSON ARRAY has extra elements",
-                            expElement, expPosition + 1));
+                    if (expected.size() - getDoNotMatchUseCases(expected) < actual.size()) {
+                        diffs.add(String.format("Expected condition %s from position %s was not met." +
+                                        " Actual JSON ARRAY has extra elements",
+                                expElement, expPosition + 1));
+                    }
                     return diffs;
             }
         }
