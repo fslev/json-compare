@@ -3,6 +3,7 @@
 ## 5.2-SNAPSHOT
 - #### Changed
   - refactor AssertionError messages
+  - DO_NOT_MATCH_ANY is ignored if there are previous differences on same JSON level   
 - #### Fixed
   - MATCH_ANY and DO_NOT_MATCH_ANY use cases didn't work while using custom comparator  
   

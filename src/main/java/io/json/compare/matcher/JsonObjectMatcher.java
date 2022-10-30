@@ -49,8 +49,8 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                     }
                     break;
                 case DO_NOT_MATCH_ANY:
-                    if (!candidateEntries.isEmpty()) {
-                        diffs.add(String.format("Expected condition '%s' was not met. Actual JSON OBJECT has unmatched fields", expectedField));
+                    if (diffs.isEmpty() && !candidateEntries.isEmpty()) {
+                        diffs.add(String.format("Expected condition '%s' was not met. Actual JSON OBJECT has extra fields", expectedField));
                     }
                     break;
                 case DO_NOT_MATCH:
@@ -69,8 +69,8 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                     break;
             }
         }
-        if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE) && expected.size() < actual.size()) {
-            diffs.add("Actual JSON OBJECT has unmatched fields");
+        if (diffs.isEmpty() && compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE) && expected.size() < actual.size()) {
+            diffs.add("Actual JSON OBJECT has extra fields");
         }
         return diffs;
     }

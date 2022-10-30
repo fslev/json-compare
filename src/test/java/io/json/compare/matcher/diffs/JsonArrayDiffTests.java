@@ -147,10 +147,9 @@ public class JsonArrayDiffTests {
         String expected1 = "[{\"lorem\":\"ipsum\"},\"c\",\"!1\",true]";
         String actual1 = "[\"a\",true,1,{\"lorem\":\"ipsum\"},-10.02]";
         AssertionError error1 = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_NON_EXTENSIBLE))));
-        assertTrue(error1.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
+        assertTrue(error1.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "Expected element from position 2 was NOT FOUND.*\"c\".*" +
-                "Expected element from position 3 was FOUND.*\"!1\".*" +
-                "Actual JSON ARRAY has extra elements.*"));
+                "Expected element from position 3 was FOUND.*\"!1\".*"));
         JSONCompare.assertNotMatches(expected1, actual1, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)));
     }
 
@@ -160,15 +159,14 @@ public class JsonArrayDiffTests {
         String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"},-10.02]";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual,
                 new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER))));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 5 DIFFERENCE.*" +
+        assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "JSON ARRAY elements differ at position 1.*\"lorem\".*\"ipsum\".*diffs.*" +
                 "Different JSON types: expected ObjectNode but got TextNode.*" +
                 "JSON ARRAY elements differ at position 2.*" +
                 "\"c\".*diffs.*Expected value: \"c\" But got: true.*" +
                 "Expected element from position 3 was FOUND.*\"!1\".*" +
                 "JSON ARRAY elements differ at position 4.*true.*diffs.*" +
-                "Different JSON types: expected BooleanNode but got ObjectNode.*" +
-                "Actual JSON ARRAY has extra elements.*"));
+                "Different JSON types: expected BooleanNode but got ObjectNode.*"));
         JSONCompare.assertNotMatches(expected, actual,
                 new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER)));
     }

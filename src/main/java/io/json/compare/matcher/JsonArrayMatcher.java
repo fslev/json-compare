@@ -32,7 +32,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                 diffs.addAll(matchWithJsonArray(i, expElement, useCase, actual));
             }
         }
-        if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() < actual.size()) {
+        if (diffs.isEmpty() && compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() < actual.size()) {
             diffs.add("Actual JSON ARRAY has extra elements");
         }
         return diffs;

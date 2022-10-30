@@ -40,11 +40,25 @@ public class JsonCustomComparatorDiffTests {
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1, new CustomComparator(),
                 new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE,
                         CompareMode.JSON_ARRAY_STRICT_ORDER))));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
+        assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "records -> JSON ARRAY elements differ at position 1.*2.*Expected value: 2 But got: 1.*" +
-                "records -> JSON ARRAY elements differ at position 2.*1.*Expected value: 1 But got: 2.*" +
-                "records -> Actual JSON ARRAY has extra elements.*" +
-                "Actual JSON OBJECT has unmatched fields.*"));
+                "records -> JSON ARRAY elements differ at position 2.*1.*Expected value: 1 But got: 2.*"));
+
+        String expected2 = "{\"name\":\"test\",\"records\":[1,2]}";
+        String actual2 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected2, actual2, new CustomComparator(),
+                new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE,
+                        CompareMode.JSON_ARRAY_STRICT_ORDER))));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                "records -> Actual JSON ARRAY has extra elements.*"));
+
+        String expected3 = "{\"name\":\"test\",\"records\":[1,2,3]}";
+        String actual3 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected3, actual3, new CustomComparator(),
+                new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE,
+                        CompareMode.JSON_ARRAY_STRICT_ORDER))));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                "Actual JSON OBJECT has extra fields.*"));
     }
 
     @Test
@@ -64,14 +78,13 @@ public class JsonCustomComparatorDiffTests {
         String expected1 = "{\".*\":\"test\", \"records\":[1, \".*\", 3, \"!.*\"], \"otherRecords\":[4, \"!.*\"], \"!.*\":\".*\"}";
         String actual1 = "{\"names\":\"test1\", \"records\":[2,1,4,3], \"otherRecords\":[1,2], \"another\":\"record\"}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1, new CustomComparator()));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 7 DIFFERENCE.*" +
+        assertTrue(error.getMessage().matches("(?s).*FOUND 6 DIFFERENCE.*" +
                 "\\Q.*\\E ->.*Expected value: \"test\" But got: \"test1\".*" +
                 "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q.*\\E ->.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q.*\\E ->.*Expected value: \"test\" But got: \"record\".*" +
                 "records ->.*Expected condition \"\\Q!.*\\E\" from position 4 was not met. Actual JSON ARRAY has extra elements.*" +
-                "otherRecords ->.*Expected element from position 1 was NOT FOUND.*4.*" +
-                "Expected condition '\\Q!.*\\E' was not met. Actual JSON OBJECT has unmatched fields.*"));
+                "otherRecords ->.*Expected element from position 1 was NOT FOUND.*4.*"));
 
         String expected2 = "{\"name\":\"test\", \"records\":[1, \".*\", 3, 4, \".*\"], \"otherRecords\":[4, \"!.*\"], \".*\":\".*\"}";
         String actual2 = "{\"names\":\"test1\", \"records\":[2,1,4,3], \"otherRecords\":[1,2, 4], \"another\":\"record\"}";
