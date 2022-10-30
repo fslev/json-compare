@@ -109,8 +109,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
             if (matchedFieldNames.contains(key)) {
                 continue;
             }
-            if (fieldUseCase.equals(UseCase.MATCH_ANY) || fieldUseCase.equals(UseCase.DO_NOT_MATCH_ANY)
-                    || comparator.compareFields(fieldName, key)) {
+            if (fieldUseCase.equals(UseCase.MATCH_ANY) || comparator.compareFields(fieldName, key)) {
                 candidates.add(entry);
             }
         }
