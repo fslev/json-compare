@@ -16,7 +16,7 @@ The library has some tweaks which helps you make assertions without writing any 
 - **[Differences](#differences)**
 - **[Tweaks](#tweaks)**
 - **[Json Path support](#json-path)**
-
+- **[Extended matching](#extended-matching)**
 ## Based on
 
 1. Junit Jupiter API
@@ -376,6 +376,11 @@ ________diffs________
 Expected element from position 2 was NOT FOUND:
 "0-553-21311-1"
 ```
+
+# <a name="extended-matching"></a> Extended matching
+You might be also interested into [JTest-Utils](https://fslev.github.io/jtest-utils) which uses an extended version of JSONCompare with polling and data capture support:  
+https://fslev.github.io/jtest-utils
+
 
 ## Website
 https://fslev.github.io/json-compare  
