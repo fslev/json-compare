@@ -378,7 +378,7 @@ Expected element from position 2 was NOT FOUND:
 ```
 
 # <a name="extended-matching"></a> Extended matching
-You might be also interested into [JTest-Utils](https://fslev.github.io/jtest-utils) which uses an extended version of JSONCompare with polling and data capture support: https://fslev.github.io/jtest-utils
+You might be also interested into [JTest-Utils](https://github.com/fslev/jtest-utils) which uses an extended version of JSONCompare with polling and data capture support: https://fslev.github.io/jtest-utils
 
 
 ## Website
