@@ -16,7 +16,9 @@ The library has some tweaks which helps you make assertions without writing any 
 - **[Differences](#differences)**
 - **[Tweaks](#tweaks)**
 - **[Json Path support](#json-path)**
-- **[Extended matching](#extended-matching)**
+  
+
+**[Extended matching](#extended-matching)**
 ## Based on
 
 1. Junit Jupiter API
