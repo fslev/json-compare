@@ -34,9 +34,7 @@ abstract class AbstractJsonMatcher {
     }
 
     protected static UseCase getUseCase(String value) {
-        if (value == null || value.isEmpty()) {
-            return UseCase.MATCH;
-        } else if (value.equals(UseCase.MATCH_ANY.getValue())) {
+        if (value.equals(UseCase.MATCH_ANY.getValue())) {
             return UseCase.MATCH_ANY;
         } else if (value.equals(UseCase.DO_NOT_MATCH_ANY.getValue())) {
             return UseCase.DO_NOT_MATCH_ANY;
