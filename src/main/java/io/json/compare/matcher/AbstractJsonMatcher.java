@@ -27,7 +27,7 @@ abstract class AbstractJsonMatcher {
     protected abstract List<String> match();
 
     protected static UseCase getUseCase(JsonNode node) {
-        if (node.isValueNode()) {
+        if (node.isTextual()) {
             return getUseCase(node.asText());
         }
         return UseCase.MATCH;

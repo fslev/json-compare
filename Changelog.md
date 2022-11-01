@@ -1,7 +1,9 @@
 # Changelog
 
 ## 5.3-SNAPSHOT
-
+- #### Changed
+  - Extract use case from JsonNode only if it is textual  
+  
 ## 5.2 (2022-10-31)
 - #### Changed
   - refactor AssertionError messages
