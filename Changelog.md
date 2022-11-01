@@ -2,7 +2,7 @@
 
 ## 5.3-SNAPSHOT
 - #### Changed
-  - Extract use case from JsonNode only if it is textual  
+  - Small code refactoring
   
 ## 5.2 (2022-10-31)
 - #### Changed
