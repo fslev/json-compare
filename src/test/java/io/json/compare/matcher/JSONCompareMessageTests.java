@@ -2,12 +2,13 @@ package io.json.compare.matcher;
 
 import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JSONCompareMessageTests {
@@ -79,8 +80,6 @@ public class JSONCompareMessageTests {
     }
 
     @Test
-    @Disabled
-    //toDo Fix error message
     public void checkMessageFromFailedMatchingBetweenHighDepthJsons() {
         String expected = "{\n" +
                 "          \"@\": {\n" +
@@ -101,11 +100,14 @@ public class JSONCompareMessageTests {
                 "            \"groupIds\" : [ \"gr2\", \"gr1\" ]\n" +
                 "          }\n" +
                 "        }}";
-        try {
-            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
-        } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Field 'version' was NOT FOUND or cannot be matched <- @"));
-        }
+
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual,
+                new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
+                "@ -> instanceId2 -> Actual JSON OBJECT has extra fields.*" +
+                "@ -> Field 'version' was NOT FOUND.*"));
+        JSONCompare.assertNotMatches(expected, actual,
+                new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
     }
 
 }
