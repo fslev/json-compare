@@ -1,8 +1,11 @@
 # Changelog
 
-## 5.3-SNAPSHOT
+## 5.4-SNAPSHOT
+
+## 5.3 (2022-11-11)
 - #### Changed
   - Small code refactoring
+  - Jackson dependencies update
   
 ## 5.2 (2022-10-31)
 - #### Changed
