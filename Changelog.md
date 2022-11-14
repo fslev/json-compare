@@ -1,6 +1,10 @@
 # Changelog
 
-## 5.4-SNAPSHOT
+## 6.1-SNAPSHOT
+
+## 6.0 (2022-11-14)
+- #### Changed
+  - By default, matched JSONs are case-sensitive
 
 ## 5.3 (2022-11-11)
 - #### Changed

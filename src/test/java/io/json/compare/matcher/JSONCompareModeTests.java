@@ -333,6 +333,10 @@ public class JSONCompareModeTests {
     public void compareValuesViaCaseInsensitiveMode() {
         String expected = "{\"a\":\"Text To Match\",\"b\":[\"Some Text\"]}";
         String actual = "{\"a\":\"text to match\",\"b\":[\"some text\"]}";
+        JSONCompare.assertNotMatches(expected, actual);
+        expected = "{\"a\":\"text to match\",\"b\":[\"some text\"]}";
+        JSONCompare.assertMatches(expected, actual);
+        expected = "{\"a\":\"(?i)Text To Match(?-i)\",\"b\":[\"(?i)Some T(?-i)ext\"]}";
         JSONCompare.assertMatches(expected, actual);
     }
 
