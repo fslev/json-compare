@@ -326,6 +326,8 @@ public class JSONCompareModeTests {
     public void compareFieldsViaCaseInsensitiveMode() {
         String expected = "{\"firstname\":\"text to match\"}";
         String actual = "{\"firstName\":\"text to match\"}";
+        JSONCompare.assertNotMatches(expected, actual);
+        expected = "{\"(?i)firstname(?-i)\":\"text to match\"}";
         JSONCompare.assertMatches(expected, actual);
     }
 

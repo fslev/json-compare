@@ -16,7 +16,7 @@ public class DefaultJsonComparator implements JsonComparator {
 
     public boolean compareFields(String expected, String actual) {
         try {
-            Pattern pattern = Pattern.compile(expected, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+            Pattern pattern = Pattern.compile(expected, Pattern.DOTALL | Pattern.MULTILINE);
             return pattern.matcher(actual).matches();
         } catch (PatternSyntaxException e) {
             return expected.equalsIgnoreCase(actual);

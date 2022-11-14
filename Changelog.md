@@ -1,6 +1,11 @@
 # Changelog
 
-## 6.1-SNAPSHOT
+## 6.2-SNAPSHOT
+
+
+## 6.1 (2022-11-14)
+- #### Fixed
+  - Matched JSON fields are also case-sensitive, by default  
 
 ## 6.0 (2022-11-14)
 - #### Changed
