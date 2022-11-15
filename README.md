@@ -148,7 +148,7 @@ String actual = "{\"foobar\": \"some value\"}";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 
-[JSONCompare](https://github.com/fslev/json-compare) by default matches JSON fields and values using regular expressions.  
+[JSONCompare](https://github.com/fslev/json-compare) is by default case-sensitive and matches JSON fields and values using regular expressions.  
 If you have unintentional regex characters inside either expected values or expected fields, then you can quote them:  
 
 ```javascript
@@ -163,7 +163,7 @@ From Java _Pattern_ docs:
 \Q	Nothing, but quotes all characters until \E
 \E	Nothing, but ends quoting started by \Q
 ```
-
+If you want to enable case-insensitivity, then use `(?i)` and `(?-i)` modifiers.  
 However, you can ignore the default regular expression compare mode, by using a ***custom comparator***
 ```javascript
 String expected = "{\"a\": \"\\\\d+\"}";

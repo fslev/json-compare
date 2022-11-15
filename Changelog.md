@@ -1,8 +1,11 @@
 # Changelog
 
-## 6.2-SNAPSHOT
+## 6.3-SNAPSHOT
 
-
+## 6.2
+- #### Changed
+  - Describe the default case-sensitive matching behaviour inside the AssertionError Hint message  
+  
 ## 6.1 (2022-11-14)
 - #### Fixed
   - Matched JSON fields are also case-sensitive, by default  
