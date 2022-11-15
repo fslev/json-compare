@@ -2,7 +2,7 @@
 
 ## 6.3-SNAPSHOT
 
-## 6.2
+## 6.2 (2022-11-15)
 - #### Changed
   - Describe the default case-sensitive matching behaviour inside the AssertionError Hint message  
   
