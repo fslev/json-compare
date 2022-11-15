@@ -24,6 +24,7 @@ public class Issue13Test {
             JSONCompare.assertMatches(expected, actual, new DefaultJsonComparator());
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("unintentional regexes"));
+            assertTrue(e.getMessage().contains("disable case-sensitivity"));
         }
     }
 
@@ -36,6 +37,7 @@ public class Issue13Test {
             JSONCompare.assertMatches(expected, actual, new CustomComparator());
         } catch (AssertionError e) {
             assertFalse(e.getMessage().contains("unintentional regexes"));
+            assertFalse(e.getMessage().contains("disable case-sensitivity"));
         }
     }
 

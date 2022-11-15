@@ -16,8 +16,9 @@ import java.util.Set;
 
 public class JSONCompare {
 
-    private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching by default uses regular expressions." + System.lineSeparator() +
-            "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.";
+    private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching is by default case-sensitive and uses regular expressions." + System.lineSeparator() +
+            "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters or use a custom comparator.\n" +
+            "If you want to disable case-sensitivity, then use (?i) and (?-i) modifiers.";
 
     public static void assertMatches(Object expected, Object actual) {
         assertMatches(expected, actual, null, null, null);
