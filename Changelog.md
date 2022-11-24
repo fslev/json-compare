@@ -1,6 +1,10 @@
 # Changelog
 
-## 6.3-SNAPSHOT
+## 6.4-SNAPSHOT
+
+## 6.3 (2022-11-24)
+- #### Changed
+  - Update dependencies (Jackson 2.14.1)
 
 ## 6.2 (2022-11-15)
 - #### Changed
