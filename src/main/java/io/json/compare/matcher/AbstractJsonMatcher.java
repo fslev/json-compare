@@ -5,7 +5,11 @@ import io.json.compare.CompareMode;
 import io.json.compare.DefaultJsonComparator;
 import io.json.compare.JsonComparator;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 abstract class AbstractJsonMatcher {
 

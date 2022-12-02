@@ -5,7 +5,14 @@ import com.jayway.jsonpath.PathNotFoundException;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 class JsonObjectMatcher extends AbstractJsonMatcher {
 

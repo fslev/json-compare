@@ -1,7 +1,9 @@
 # Changelog
 
 ## 6.4-SNAPSHOT
-
+- #### Changed
+  - Refactoring - optimize imports  
+  
 ## 6.3 (2022-11-24)
 - #### Changed
   - Update dependencies (Jackson 2.14.1)

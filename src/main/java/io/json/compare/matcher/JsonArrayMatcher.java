@@ -6,7 +6,11 @@ import io.json.compare.JSONCompare;
 import io.json.compare.JsonComparator;
 import io.json.compare.util.MessageUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 class JsonArrayMatcher extends AbstractJsonMatcher {
 
