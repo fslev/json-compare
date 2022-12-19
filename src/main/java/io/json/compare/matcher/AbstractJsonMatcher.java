@@ -24,8 +24,8 @@ abstract class AbstractJsonMatcher {
     AbstractJsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         this.expected = expected;
         this.actual = actual;
-        this.comparator = comparator == null ? new DefaultJsonComparator() : comparator;
         this.compareModes = compareModes == null ? new HashSet<>() : compareModes;
+        this.comparator = comparator == null ? new DefaultJsonComparator(this.compareModes) : comparator;
     }
 
     protected abstract List<String> match();

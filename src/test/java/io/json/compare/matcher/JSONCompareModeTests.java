@@ -6,6 +6,7 @@ import io.json.compare.JsonComparator;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -132,6 +133,9 @@ public class JSONCompareModeTests {
                 return expected.equals(actual);
             }
         });
+
+        // OR
+        JSONCompare.assertMatches(expected, actual, new HashSet<>(Collections.singletonList(CompareMode.REGEX_DISABLED)));
     }
 
     @Test
@@ -284,7 +288,11 @@ public class JSONCompareModeTests {
     public void compareWithJsonArrayStrictOrderModeAndDoNotFindUseCase() {
         String expected = "[1,2,\"!4\"]";
         String actual = "[1,2,3,4]";
-        JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
+        JSONCompare.assertMatches(expected, actual,
+                new HashSet<>(Collections.singletonList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
+        JSONCompare.assertMatches(expected, actual,
+                new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER, CompareMode.REGEX_DISABLED)));
+
     }
 
     @Test
@@ -370,5 +378,13 @@ public class JSONCompareModeTests {
                 return expected.equals(actual);
             }
         });
+    }
+
+    @Test
+    public void compareJsonsWithRegexDisabledMode() {
+        String expected = "[1, \"(.*)\", 3, 4, \"!.*\"]";
+        String actual = "[4, \"(.*)\", 1, 3]";
+        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.assertMatches(expected, actual, new HashSet<>(Collections.singletonList(CompareMode.REGEX_DISABLED)));
     }
 }

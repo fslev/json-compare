@@ -64,7 +64,7 @@ public class JSONCompare {
         JsonNode expectedJson = toJson(expected);
         JsonNode actualJson = toJson(actual);
         List<String> diffs = new JsonMatcher(expectedJson, actualJson,
-                comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
+                comparator == null ? new DefaultJsonComparator(compareModes) : comparator, compareModes).match();
         if (!diffs.isEmpty()) {
             String defaultMessage = String.format("FOUND %s DIFFERENCE(S):" + System.lineSeparator() + "%s" + System.lineSeparator(),
                     diffs.size(), diffs.stream().map(diff ->
@@ -82,7 +82,7 @@ public class JSONCompare {
         JsonNode expectedJson = toJson(expected);
         JsonNode actualJson = toJson(actual);
         List<String> diffs = new JsonMatcher(expectedJson, actualJson,
-                comparator == null ? new DefaultJsonComparator() : comparator, compareModes).match();
+                comparator == null ? new DefaultJsonComparator(compareModes) : comparator, compareModes).match();
         if (!diffs.isEmpty()) {
             return;
         }

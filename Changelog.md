@@ -1,7 +1,11 @@
 # Changelog
 
-## 6.4-SNAPSHOT
+## 6.5-SNAPSHOT
+
+## 6.4 (2022-12-19)
 - #### Changed
+  - Added new compare mode: CompareMode.REGEX_DISABLED
+    - JSONs can be matched without using regular expressions: any present regexes will be considered as normal text   
   - Refactoring - optimize imports  
   
 ## 6.3 (2022-11-24)

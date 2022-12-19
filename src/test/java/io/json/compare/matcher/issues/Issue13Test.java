@@ -1,8 +1,11 @@
 package io.json.compare.matcher.issues;
 
+import io.json.compare.CompareMode;
 import io.json.compare.DefaultJsonComparator;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,7 +24,7 @@ public class Issue13Test {
             assertTrue(e.getMessage().contains("unintentional regexes"));
         }
         try {
-            JSONCompare.assertMatches(expected, actual, new DefaultJsonComparator());
+            JSONCompare.assertMatches(expected, actual, new DefaultJsonComparator(null));
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("unintentional regexes"));
             assertTrue(e.getMessage().contains("disabling case-sensitivity"));
@@ -34,7 +37,7 @@ public class Issue13Test {
         String expected = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
         String actual = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
         try {
-            JSONCompare.assertMatches(expected, actual, new CustomComparator());
+            JSONCompare.assertMatches(expected, actual, new CustomComparator(null));
         } catch (AssertionError e) {
             assertFalse(e.getMessage().contains("unintentional regexes"));
             assertFalse(e.getMessage().contains("disabling case-sensitivity"));
@@ -42,6 +45,8 @@ public class Issue13Test {
     }
 
     private static class CustomComparator extends DefaultJsonComparator {
-
+        public CustomComparator(Set<CompareMode> compareModes) {
+            super(compareModes);
+        }
     }
 }

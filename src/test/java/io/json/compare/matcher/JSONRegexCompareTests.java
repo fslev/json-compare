@@ -1,7 +1,13 @@
 package io.json.compare.matcher;
 
+import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JSONRegexCompareTests {
 
@@ -10,6 +16,18 @@ public class JSONRegexCompareTests {
         String expected = "{\"[a\":\"\\\\d+\"}";
         String actual = "{\"[a\":10}";
         JSONCompare.assertMatches(expected, actual);
+    }
+
+    @Test
+    public void compareWithInvalidFieldRegexWithCompareModeRegexDisabled() {
+        String expected = "{\"[a\":\"10\"}";
+        String actual = "{\"[a\":10}";
+        JSONCompare.assertMatches(expected, actual, new HashSet<>(Collections.singletonList(CompareMode.REGEX_DISABLED)));
+
+        String expected1 = "{\"[a\":\"\\\\d+\"}";
+        assertThrows(AssertionError.class, () ->
+                JSONCompare.assertMatches(expected1, actual, new HashSet<>(Collections.singletonList(CompareMode.REGEX_DISABLED))));
+        JSONCompare.assertNotMatches(expected1, actual, new HashSet<>(Collections.singletonList(CompareMode.REGEX_DISABLED)));
     }
 
     @Test
