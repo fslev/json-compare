@@ -163,13 +163,6 @@ From Java _Pattern_ docs:
 \Q	Nothing, but quotes all characters until \E
 \E	Nothing, but ends quoting started by \Q
 ```
-OR, use CompareMode.REGEX_DISABLED:  
-```javascript
-String expected = "{\"a\":\"(some value)\"}";
-String actual = "{\"a\":\"(some value)\"}";
-JSONCompare.assertMatches(expected, actual, new HashSet<>(Collections.singletonList(CompareMode.REGEX_DISABLED))); // assertion passes
-JSONCompare.assertMatches(expected, actual); // assertion fails
-```
 
 If you want to enable case-insensitivity, then use `(?i)` and `(?-i)` modifiers.  
 However, you can ignore the default regular expression compare mode, by using a ***custom comparator***
@@ -185,6 +178,13 @@ JSONCompare.assertMatches(expected, actual, new JsonComparator() {
         return expected.equals(actual);
     }
 }); // assertion passes
+```
+OR, use CompareMode.REGEX_DISABLED:
+```javascript
+String expected = "{\"a\":\"(some value)\"}";
+String actual = "{\"a\":\"(some value)\"}";
+JSONCompare.assertMatches(expected, actual, new HashSet<>(Collections.singletonList(CompareMode.REGEX_DISABLED))); // assertion passes
+JSONCompare.assertMatches(expected, actual); // assertion fails
 ```
 
 # <a name="differences"></a>Differences
