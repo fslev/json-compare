@@ -1,6 +1,10 @@
 # Changelog
 
-## 6.5-SNAPSHOT
+## 6.6-SNAPSHOT
+
+## 6.5 (2022-12-22)
+- #### Fixed
+  - Case-sensitive match of JSON values and fields containing invalid regexes  
 
 ## 6.4 (2022-12-19)
 - #### Changed

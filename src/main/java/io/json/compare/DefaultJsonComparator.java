@@ -14,26 +14,26 @@ public class DefaultJsonComparator implements JsonComparator {
 
     public boolean compareValues(Object expected, Object actual) {
         if (compareModes != null && compareModes.contains(CompareMode.REGEX_DISABLED)) {
-            return expected.toString().equalsIgnoreCase(actual.toString());
+            return expected.toString().equals(actual.toString());
         } else {
             try {
                 Pattern pattern = Pattern.compile(expected.toString(), Pattern.DOTALL | Pattern.MULTILINE);
                 return pattern.matcher(actual.toString()).matches();
             } catch (PatternSyntaxException e) {
-                return expected.toString().equalsIgnoreCase(actual.toString());
+                return expected.toString().equals(actual.toString());
             }
         }
     }
 
     public boolean compareFields(String expected, String actual) {
         if (compareModes != null && compareModes.contains(CompareMode.REGEX_DISABLED)) {
-            return expected.equalsIgnoreCase(actual);
+            return expected.equals(actual);
         } else {
             try {
                 Pattern pattern = Pattern.compile(expected, Pattern.DOTALL | Pattern.MULTILINE);
                 return pattern.matcher(actual).matches();
             } catch (PatternSyntaxException e) {
-                return expected.equalsIgnoreCase(actual);
+                return expected.equals(actual);
             }
         }
     }

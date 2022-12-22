@@ -19,6 +19,16 @@ public class JSONRegexCompareTests {
     }
 
     @Test
+    public void compareWithInvalidRegexAndDifferentCases() {
+        String expected = "{\"[a\":\"(test\"}";
+        String actual = "{\"[A\":\"(Test\"}";
+        JSONCompare.assertNotMatches(expected, actual);
+        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
+        String actual1 = "{\"[a\":\"(test\"}";
+        JSONCompare.assertMatches(expected, actual1);
+    }
+
+    @Test
     public void compareWithInvalidFieldRegexWithCompareModeRegexDisabled() {
         String expected = "{\"[a\":\"10\"}";
         String actual = "{\"[a\":10}";
