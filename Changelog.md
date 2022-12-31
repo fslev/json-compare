@@ -1,6 +1,8 @@
 # Changelog
 
-## 6.6-SNAPSHOT
+## 6.7-SNAPSHOT
+
+## 6.6 (2022-12-31)
 - #### Changed
   - Defined private constructors for utility classes  
   - Code refactoring  
