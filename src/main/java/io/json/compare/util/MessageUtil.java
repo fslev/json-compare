@@ -2,6 +2,10 @@ package io.json.compare.util;
 
 public final class MessageUtil {
 
+    private MessageUtil() {
+
+    }
+
     private static final int AFTER_CROP_SIZE = 2048;
     private static final int S = 4096;
     private static final int M = 8192;

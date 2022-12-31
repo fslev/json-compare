@@ -46,8 +46,12 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
             if (matchedPositions.contains(j)) {
                 continue;
             }
-            if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) && j != expPosition) {
-                continue;
+            if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
+                if (j < expPosition) {
+                    continue;
+                } else if (j > expPosition) {
+                    break;
+                }
             }
             List<String> elementDiffs;
             switch (useCase) {

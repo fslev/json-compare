@@ -16,6 +16,9 @@ import java.util.Set;
 
 public class JSONCompare {
 
+    private JSONCompare() {
+    }
+
     private static final String ASSERTION_ERROR_HINT_MESSAGE = "Json matching is by default case-sensitive and uses regular expressions." + System.lineSeparator() +
             "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters.\n" +
             "For disabling case-sensitivity, use (?i) and (?-i) modifiers. Or, use a custom comparator.";
@@ -66,10 +69,10 @@ public class JSONCompare {
         List<String> diffs = new JsonMatcher(expectedJson, actualJson,
                 comparator == null ? new DefaultJsonComparator(compareModes) : comparator, compareModes).match();
         if (!diffs.isEmpty()) {
-            String defaultMessage = String.format("FOUND %s DIFFERENCE(S):" + System.lineSeparator() + "%s" + System.lineSeparator(),
-                    diffs.size(), diffs.stream().map(diff ->
+            String defaultMessage = String.format("FOUND %s DIFFERENCE(S):%s%s%s",
+                    diffs.size(), System.lineSeparator(), diffs.stream().map(diff ->
                             System.lineSeparator() + System.lineSeparator() + "_________________________DIFF__________________________" +
-                                    System.lineSeparator() + diff).reduce(String::concat).get());
+                                    System.lineSeparator() + diff).reduce(String::concat).get(), System.lineSeparator());
             if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
                 defaultMessage += System.lineSeparator() + System.lineSeparator() + ASSERTION_ERROR_HINT_MESSAGE + System.lineSeparator();
             }
@@ -104,7 +107,7 @@ public class JSONCompare {
         try {
             return JsonUtils.toJson(obj);
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Invalid JSON" + System.lineSeparator() + "%s" + System.lineSeparator(), e));
+            throw new RuntimeException(String.format("Invalid JSON%s%s%s", System.lineSeparator(), e, System.lineSeparator()));
         }
     }
 }

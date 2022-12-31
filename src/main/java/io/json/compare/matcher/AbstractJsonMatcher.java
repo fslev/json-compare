@@ -13,8 +13,8 @@ import java.util.Set;
 
 abstract class AbstractJsonMatcher {
 
-    protected final static String JSON_PATH_EXP_PREFIX = "#(";
-    protected final static String JSON_PATH_EXP_SUFFIX = ")";
+    protected static final String JSON_PATH_EXP_PREFIX = "#(";
+    protected static final String JSON_PATH_EXP_SUFFIX = ")";
 
     protected final JsonComparator comparator;
     protected final Set<CompareMode> compareModes;
