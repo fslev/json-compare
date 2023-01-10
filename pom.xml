@@ -23,7 +23,7 @@
 
     <groupId>com.github.fslev</groupId>
     <artifactId>json-compare</artifactId>
-    <version>6.7</version>
+    <version>6.8-SNAPSHOT</version>
 
     <dependencies>
         <!--jackson-->
@@ -227,7 +227,7 @@
         <connection>scm:git:ssh://git@github.com/fslev/json-compare.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/fslev/json-compare.git</developerConnection>
         <url>https://github.com/fslev/json-compare/tree/main</url>
-        <tag>json-compare-6.7</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
