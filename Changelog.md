@@ -1,6 +1,10 @@
 # Changelog
 
-## 6.7-SNAPSHOT
+## 6.8-SNAPSHOT
+
+## 6.7 (2023-01-10)
+- #### Changed
+  - Update dependencies (junit jupiter 5.9.2)
 
 ## 6.6 (2022-12-31)
 - #### Changed
