@@ -134,13 +134,13 @@ Expected boolean: false But got: "lorem"
 
 # <a name="regex"></a> Regular expression support
 
-You can use regular expressions on JSON values:
+You can use regular expressions on expected JSON values:
 ```javascript
 String expected = "{\"a\": \".*me.*\"}";
 String actual = "{\"a\": \"some text\"}";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
-, but also on JSON object fields:
+, but also on expected JSON object fields:
 
 ```javascript
 String expected = "{\".*oba.*\": \"some value\"}";
