@@ -40,6 +40,7 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 
 ### Match any JSON convertible Java objects
 ```javascript
+// expected with regex
 String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
 String actualString = "{\"a\":1, \"b\":[\"ipsum\", 4, 5], \"c\":true}";
 JSONCompare.assertMatches(expectedString, actualString); // assertion passes
