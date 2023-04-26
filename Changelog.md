@@ -2,6 +2,8 @@
 
 ## 6.8-SNAPSHOT
 
+## 6.8 (2023-04-26)
+  - Update dependencies (junit jupiter 5.9.3, Jackson 2.15.0, JsonPath 2.8.0) 
 ## 6.7 (2023-01-10)
 - #### Changed
   - Update dependencies (junit jupiter 5.9.2)
