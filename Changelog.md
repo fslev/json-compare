@@ -1,6 +1,11 @@
 # Changelog
 
-## 6.9-SNAPSHOT
+## 6.10-SNAPSHOT
+
+
+## 6.9 (2023-04-27)
+- #### Changed
+  - Use Integer.MAX_VALUE for ObjectMapper max number, nesting and String length  
 
 ## 6.8 (2023-04-26)
 - #### Changed
