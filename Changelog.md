@@ -1,6 +1,12 @@
 # Changelog
 
-## 6.10-SNAPSHOT
+## 6.11-SNAPSHOT
+
+## 6.10 (2023-06-03)
+- #### Changed
+  - Added support to retrieve the differences as a List of Strings
+    - `List<String> diffs = JSONCompare.diffs(expected, actual);`
+  - Update dependencies (Jackson 2.15.2)
 
 
 ## 6.9 (2023-04-27)
