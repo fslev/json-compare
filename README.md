@@ -249,7 +249,7 @@ In case expected json contains any unintentional regexes, then quote them betwee
  ==> 
 <Click to see difference>
 ```
-## Differences as a list of Strings:  
+## Differences as a list of Strings  
 ```
 List<String> diffs=JSONCompare.diffs(expected, actual);
 ```
