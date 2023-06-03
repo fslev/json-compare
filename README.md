@@ -191,6 +191,7 @@ JSONCompare.assertMatches(expected, actual); // assertion fails
 # <a name="differences"></a>Differences
 Matching is based on soft assertion. It does not stop at first encountered difference, but it continues until expected JSON is depleted. 
 All differences are displayed via the AssertionError message from `JSONCompare.assertMatches()` or can be obtained as a List of Strings by using `JSONCompare.diffs()`:    
+## Differences inside AssertionError message
 ```javascript
 String expected = "{\n" +
         "  \"caught\": false,\n" +
