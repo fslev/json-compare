@@ -189,7 +189,8 @@ JSONCompare.assertMatches(expected, actual); // assertion fails
 ```
 
 # <a name="differences"></a>Differences
-Matching is based on soft assertion. It does not stop at first encountered difference, but it continues until expected JSON is depleted. Finally, all differences are displayed via an AssertionError message:    
+Matching is based on soft assertion. It does not stop at first encountered difference, but it continues until expected JSON is depleted. 
+All differences are displayed via the AssertionError message from `JSONCompare.assertMatches()` or can be obtained as a List of Strings by using `JSONCompare.diffs()`:    
 ```javascript
 String expected = "{\n" +
         "  \"caught\": false,\n" +
@@ -247,6 +248,10 @@ Json matching by default uses regular expressions.
 In case expected json contains any unintentional regexes, then quote them between \Q and \E delimiters or use a custom comparator.
  ==> 
 <Click to see difference>
+```
+Differences as a list of Strings:  
+```
+List<String> diffs=JSONCompare.diffs(expected, actual);
 ```
 
 # <a name="tweaks"></a>Matching with some tweaks

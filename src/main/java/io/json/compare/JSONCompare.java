@@ -95,6 +95,25 @@ public class JSONCompare {
                 .includeValuesInMessage(false).buildAndThrow();
     }
 
+    public static List<String> diffs(Object expected, Object actual) {
+        return diffs(expected, actual, null, null);
+    }
+
+    public static List<String> diffs(Object expected, Object actual, Set<CompareMode> compareModes) {
+        return diffs(expected, actual, null, compareModes);
+    }
+
+    public static List<String> diffs(Object expected, Object actual, JsonComparator comparator) {
+        return diffs(expected, actual, comparator, null);
+    }
+
+    public static List<String> diffs(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes) {
+        JsonNode expectedJson = toJson(expected);
+        JsonNode actualJson = toJson(actual);
+        return new JsonMatcher(expectedJson, actualJson,
+                comparator == null ? new DefaultJsonComparator(compareModes) : comparator, compareModes).match();
+    }
+
     public static String prettyPrint(JsonNode jsonNode) {
         try {
             return JsonUtils.prettyPrint(jsonNode);

@@ -121,7 +121,7 @@ public class JsonCustomComparatorDiffTests {
                 "records ->.*Expected element from position 2 was NOT FOUND.*\"\\Q\\\\d+\\E\".*"));
     }
 
-    private static class CustomComparator implements JsonComparator {
+    public static class CustomComparator implements JsonComparator {
         @Override
         public boolean compareValues(Object expected, Object actual) {
             return expected.equals(actual);
