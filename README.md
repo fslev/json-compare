@@ -149,7 +149,7 @@ String actual = "{\"foobar\": \"some value\"}";
 JSONCompare.assertMatches(expected, actual); // assertion passes
 ```
 
-[JSONCompare](https://github.com/fslev/json-compare) is by default case-sensitive and matches JSON fields and values using regular expressions.  
+[JSONCompare](https://github.com/fslev/json-compare) is by default case-sensitive and supports regular expressions on JSON fields and values.  
 If you have unintentional regex characters inside either expected values or expected fields, then you can quote them:  
 
 ```javascript
