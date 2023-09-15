@@ -1,7 +1,11 @@
 # Changelog
 
-## 6.11-SNAPSHOT
+## 6.12-SNAPSHOT
 
+## 6.11 (2023-09-15)
+- #### Changed
+  - Update dependencies (junit-jupiter-api to v5.10.0)  
+  
 ## 6.10 (2023-06-03)
 - #### Changed
   - Added support to retrieve the differences as a List of Strings
