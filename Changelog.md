@@ -2,6 +2,10 @@
 
 ## 6.12-SNAPSHOT
 
+## 6.12 (2023-11-15)
+- #### Changed
+  - Update dependencies
+
 ## 6.11 (2023-09-15)
 - #### Changed
   - Update dependencies (junit-jupiter-api to v5.10.0)  
