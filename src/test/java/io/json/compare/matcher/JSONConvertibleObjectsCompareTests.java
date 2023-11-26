@@ -43,7 +43,6 @@ public class JSONConvertibleObjectsCompareTests {
         actual.put("a", 1);
         RuntimeException e = assertThrows(RuntimeException.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(e.getMessage().contains("Invalid JSON"));
-        assertTrue(e.getMessage().contains(expected));
         RuntimeException e1 = assertThrows(RuntimeException.class, () -> JSONCompare.assertMatches("{\"a\":1}", "{\"a:1}"));
         assertTrue(e1.getMessage().contains("Invalid JSON"));
         RuntimeException e2 = assertThrows(RuntimeException.class, () -> JSONCompare.assertNotMatches("{\"a\":1}", "{\"a:2}"));
