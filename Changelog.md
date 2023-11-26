@@ -1,6 +1,10 @@
 # Changelog
 
-## 6.13-SNAPSHOT
+## 6.14-SNAPSHOT
+
+## 6.13 (2023-11-26)
+- #### Changed
+  - Update dependencies (Jackson)
 
 ## 6.12 (2023-11-15)
 - #### Changed
