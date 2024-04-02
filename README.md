@@ -393,8 +393,8 @@ Expected element from position 2 was NOT FOUND:
 ```
 
 # <a name="extended"></a> Extended
-You might be also interested in looking into [JTest-Utils](https://github.com/fslev/jtest-utils) which uses JSONCompare with data capture support: https://github.com/fslev/jtest-utils
-
+You might be also interested in looking into [JTest-Utils](https://github.com/fslev/jtest-utils) which uses JSONCompare with data capture support: 
+https://github.com/fslev/jtest-utils?tab=readme-ov-file#17-match-and-capture
 
 ## Website
 https://fslev.github.io/json-compare  
