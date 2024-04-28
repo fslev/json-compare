@@ -41,7 +41,7 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ### Match any JSON convertible Java objects
 JSONCompare will automatically try to convert any given expected or actual Java objects to Jackson JsonNodes and match them.  
 ```javascript
-// expected with regex
+// expected as String with regex
 String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
 String actualString = "{\"a\":1, \"b\":[\"ipsum\", 4, 5], \"c\":true}";
 JSONCompare.assertMatches(expectedString, actualString); // assertion passes
