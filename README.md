@@ -39,7 +39,7 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
 ### Match any JSON convertible Java objects
-Json-Compare will automatically try to convert any given expected or actual Java objects to Jackson JsonNodes and match them.  
+JSONCompare will automatically try to convert any given expected or actual Java objects to Jackson JsonNodes and match them.  
 ```javascript
 // expected with regex
 String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
