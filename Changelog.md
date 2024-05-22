@@ -1,6 +1,10 @@
 # Changelog
 
-## 6.15-SNAPSHOT
+## 6.16-SNAPSHOT
+
+## 6.15 (2024-05-22)
+- #### Changed
+  - Updated dependencies
 
 ## 6.14 (2024-03-22)
 - #### Changed
