@@ -1,6 +1,10 @@
 # Changelog
 
-## 6.18-SNAPSHOT
+## 6.19-SNAPSHOT
+
+## 6.18 (2024-09-26)
+- #### Changed
+  - Aligned Jackson dependencies versions via Jackson BOM
 
 ## 6.17 (2024-09-26)
 - #### Changed
