@@ -1,6 +1,11 @@
 # Changelog
 
-## 6.17-SNAPSHOT
+## 6.18-SNAPSHOT
+
+## 6.17 (2024-09-26)
+- #### Changed
+  - Updated Junit 5
+  - Aligned Junit 5 dependencies versions via the JUnit Platform BOM
 
 ## 6.16 (2024-09-20)
 - #### Changed
