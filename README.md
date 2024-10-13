@@ -4,7 +4,7 @@
 ![Build status](https://github.com/fslev/json-compare/workflows/Java%20CI%20with%20Maven/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/fslev/json-compare/badge.svg?branch=main)](https://coveralls.io/github/fslev/json-compare?branch=main)
 
-A Java library for comparing JSONs, with some tweaks !
+A Java library for matching JSONs, with some tweaks !
 
 ## Brief
 Compare any JSON convertible Java objects and check the differences between them when matching fails.  
