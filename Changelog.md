@@ -2,7 +2,7 @@
 
 ## 7.0 (2025-03-28)
 - #### Changed
-  - Enhanced style for JSON diffs
+  - Changed style for JSON diffs
 
 ## 6.18 (2024-09-26)
 - #### Changed
