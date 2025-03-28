@@ -75,7 +75,7 @@ public class JSONCompareMessageTests {
         try {
             JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Field 'a' was NOT FOUND"));
+            assertTrue(e.getMessage().contains("$.a was not found"));
         }
     }
 
@@ -104,8 +104,8 @@ public class JSONCompareMessageTests {
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual,
                 new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "@ -> instanceId2 -> Actual JSON OBJECT has extra fields.*" +
-                "@ -> Field 'version' was NOT FOUND.*"));
+                "\\Q$.@.instanceId2\\E -> Actual JSON OBJECT has extra fields.*" +
+                "\\Q$.@.version\\E was not found.*"));
         JSONCompare.assertNotMatches(expected, actual,
                 new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
     }

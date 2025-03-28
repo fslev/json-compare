@@ -13,10 +13,10 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ReadmeTests {
+class ReadmeTests {
 
     @Test
-    public void matchJsonConvertibleJavaObjects() {
+    void matchJsonConvertibleJavaObjects() {
         String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
         String actualString = "{\"a\":1, \"b\":[\"ipsum\", 4, 5], \"c\":true}";
         JSONCompare.assertMatches(expectedString, actualString); // assertion passes
@@ -33,12 +33,12 @@ public class ReadmeTests {
         JSONCompare.assertNotMatches(expectedString, anotherActualString); // assertion passes
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expectedString, anotherActualString));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "a ->.*Expected value: 1 But got: 2.*" +
-                "b ->.*Expected element from position 2 was NOT FOUND.*"));
+                "\\Q$.a\\E.*Expected value: 1 But got: 2.*" +
+                "\\Q$.b[1]\\E was not found.*"));
     }
 
     @Test
-    public void checkJsonInclusion() {
+    void checkJsonInclusion() {
         // Check JSON object inclusion
         String expected = "{\"b\":\"val1\"}";
         String actual = "{\"a\":\"val2\",\"b\":\"val1\"}";
@@ -55,7 +55,7 @@ public class ReadmeTests {
     }
 
     @Test
-    public void checkJsonElementsOrder() {
+    void checkJsonElementsOrder() {
         // JSON Array strict order is by default ignored
         String expected = "[\"lorem\", 2, false]";
         String actual = "[false, 2, \"lorem\", 5, 4]";
@@ -68,33 +68,33 @@ public class ReadmeTests {
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected1, actual1,
                 new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER))));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "JSON ARRAY elements differ at position 1.*" +
-                "JSON ARRAY elements differ at position 3.*"));
+                "\\Q$[0]\\E.*" +
+                "\\Q$[2]\\E.*"));
     }
 
     @Test
-    public void matchJsonRegexValues() {
+    void matchJsonRegexValues() {
         String expected = "{\"a\": \".*me.*\"}";
         String actual = "{\"a\": \"some text\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
 
     @Test
-    public void matchJsonRegexFields() {
+    void matchJsonRegexFields() {
         String expected = "{\".*oba.*\": \"some value\"}";
         String actual = "{\"foobar\": \"some value\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
 
     @Test
-    public void matchJsonRegexQuote() {
+    void matchJsonRegexQuote() {
         String expected = "{\"a\":\"\\\\Qd+\\\\E\"}";
         String actual = "{\"a\":\"d+\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
 
     @Test
-    public void matchJsonRegexCustomComparator() {
+    void matchJsonRegexCustomComparator() {
         String expected = "{\"a\": \"\\\\d+\"}";
         String actual = "{\"a\": \"\\\\d+\"}";
         JSONCompare.assertMatches(expected, actual, new JsonComparator() {
@@ -109,56 +109,56 @@ public class ReadmeTests {
     }
 
     @Test
-    public void matchJsonTweaksDoNotMatchValues() {
+    void matchJsonTweaksDoNotMatchValues() {
         String expected = "{\"a\": \"!test\"}";
         String actual = "{\"a\": \"testing\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
 
     @Test
-    public void matchJsonTweaksDoNotMatchFields() {
+    void matchJsonTweaksDoNotMatchFields() {
         String expected = "{\"!a\": \"value does not matter\"}";
         String actual = "{\"b\": \"of course value does not matter\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
 
     @Test
-    public void matchJsonTweaksNegativeLookaround() {
+    void matchJsonTweaksNegativeLookaround() {
         String expected = "{\"(?!lorem.*).*\": \"valorem\"}";
         String actual = "{\"ipsum\": \"valorem\"}";
         JSONCompare.assertMatches(expected, actual); // assertion passes
     }
 
     @Test
-    public void matchJsonTweaksDoNotMatchAnyObjectFields() {
+    void matchJsonTweaksDoNotMatchAnyObjectFields() {
         String expected = "{\"b\": \"val1\", \"!.*\": \".*\"}";
         String actual = "{\"a\": \"val2\", \"b\": \"val1\"}";
         JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
-    public void matchJsonTweaksDoNotMatchAnyArray() {
+    void matchJsonTweaksDoNotMatchAnyArray() {
         String expected = "[false, \"test\", 4, \"!.*\"]";
         String actual = "[4, false, \"test\", 1]";
         JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
-    public void matchJsonTweaksMatchAnyObjectFields() {
+    void matchJsonTweaksMatchAnyObjectFields() {
         String expected = "{\"b\": \"val1\", \".*\": \".*\"}";
         String actual = "{\"b\": \"val1\"}";
         JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
-    public void matchJsonTweaksMatchAnyArray() {
+    void matchJsonTweaksMatchAnyArray() {
         String expected = "[false, \"test\", 4, \".*\"]";
         String actual = "[4, false, \"test\"]";
         JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
-    public void matchJsonTweaksJsonPath() {
+    void matchJsonTweaksJsonPath() {
         String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
         String actual = "{\n" +
                 "    \"store\": {\n" +

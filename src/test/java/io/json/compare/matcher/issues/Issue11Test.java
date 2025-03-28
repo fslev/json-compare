@@ -9,21 +9,21 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class Issue11Test {
+class Issue11Test {
 
     @Test
-    public void testSimpleJsonArrayStrictOrderWithRegexFieldsThrowsCorrectMessage() {
+    void testSimpleJsonArrayStrictOrderWithRegexFieldsThrowsCorrectMessage() {
         String expected = "{\".*\":{\"eventLogs\":[{\"id\":2},{\"id\":4},{\"id\":1},{\"id\":3}]}}";
         String actual = "{\"_embedded\":{\"eventLogs\":[{\"id\":1},{\"id\":2},{\"id\":3},{\"id\":4}]}}";
         try {
             JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("elements differ at position"));
+            assertTrue(e.getMessage().contains("$..*.eventLogs[0].id"));
         }
     }
 
     @Test
-    public void testJsonArrayStrictOrderThrowsCorrectMessage() {
+    void testJsonArrayStrictOrderThrowsCorrectMessage() {
         String expected = "{\"_embedded\":{\"eventLogs\":[{\"id\":2},{\"id\":4},{\"id\":1},{\"id\":3}]}}";
         String actual = "{\n" +
                 "  \"_embedded\": {\n" +
@@ -125,12 +125,12 @@ public class Issue11Test {
         try {
             JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("elements differ at position"));
+            assertTrue(e.getMessage().contains("$._embedded.eventLogs[0].id"));
         }
     }
 
     @Test
-    public void testJsonArrayStrictOrderWithRegexFieldsThrowsCorrectMessage() {
+    void testJsonArrayStrictOrderWithRegexFieldsThrowsCorrectMessage() {
         String expected = "{\".*\":{\"eventLogs\":[{\"id\":2},{\"id\":4},{\"id\":1},{\"id\":3}]}}";
         String actual = "{\n" +
                 "  \"_embedded\": {\n" +
@@ -232,8 +232,7 @@ public class Issue11Test {
         try {
             JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("was NOT FOUND"));
+            assertTrue(e.getMessage().contains("was not found"));
         }
     }
-
 }

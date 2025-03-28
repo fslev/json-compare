@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class JsonRealWorldDiffTests {
+class JsonRealWorldDiffTests {
 
     @Test
-    public void compareJsonObjectsAndCheckForDifferences() {
+    void compareJsonObjectsAndCheckForDifferences() {
         String expected = "{\n" +
                 "  \"caught\": false,\n" +
                 "  \"pain\": {\n" +
@@ -37,10 +37,10 @@ public class JsonRealWorldDiffTests {
                 "}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
-                "caught ->.*Expected value: false But got: true.*" +
-                "pain -> range ->.*Expected element from position 2 was NOT FOUND.*\"blue\".*" +
-                "pain -> range ->.*Expected element from position 3 was NOT FOUND.*-2059921070.*" +
-                "pain -> Field 'not_anyone' was NOT FOUND.*"));
+                "\\Q$.caught\\E.*Expected value: false But got: true.*" +
+                "\\Q$.pain.range[1]\\E was not found.*\"blue\".*" +
+                "\\Q$.pain.range[2]\\E was not found.*-2059921070.*" +
+                "\\Q$.pain.not_anyone\\E was not found.*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 

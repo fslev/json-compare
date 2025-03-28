@@ -9,24 +9,24 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JSONPathCompareTests {
+class JSONPathCompareTests {
 
     @Test
-    public void compareJsonObjectsWithEscapedJsonPath() {
+    void compareJsonObjectsWithEscapedJsonPath() {
         String expected = "{\"\\\\#\\\\Q(\\\\Elorem ipsum\\\\Q)\\\\E\":\"val1\"}";
         String actual = "{\"b\":\"val2\",\"#(lorem ipsum)\":\"val1\"}";
         JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
-    public void compareJsonObjectsWithEscapedJsonPath_negative() {
+    void compareJsonObjectsWithEscapedJsonPath_negative() {
         String expected = "{\"\\\\#\\\\Q(\\\\Elorem ipsum\\\\Q)\\\\E\":\"val1\"}";
         String actual = "{\"b\":\"val2\",\"#(lorem ipsum2)\":\"val1\"}";
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 
     @Test
-    public void compareJsonObjectsWithJsonPathPointingToValueNode() {
+    void compareJsonObjectsWithJsonPathPointingToValueNode() {
         String expected = "{\"#($.a)\":\"val1\"}";
         String actual = "{\"b\":\"val2\",\"a\":\"val1\"}";
         JSONCompare.assertMatches(expected, actual);
@@ -45,7 +45,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void compareJsonObjectsWithJsonPathPointingToValueNode_negative() {
+    void compareJsonObjectsWithJsonPathPointingToValueNode_negative() {
         String expected = "{\"#($.a)\":\"val1\"}";
         String actual = "{\"b\":\"val2\",\"a\":\"val2\"}";
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
@@ -64,7 +64,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void compareJsonObjectWithJsonPathAgainstOtherJsonType() {
+    void compareJsonObjectWithJsonPathAgainstOtherJsonType() {
         String expected = "{\"#($.length())\":4}";
         String actual = "[5,true,null,\"lorem ipsum\"]";
         JSONCompare.assertMatches(expected, actual);
@@ -93,7 +93,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void compareJsonObjectWithJsonPathAgainstOtherJsonType_negative() {
+    void compareJsonObjectWithJsonPathAgainstOtherJsonType_negative() {
         String expected = "{\"#($.length())\":1}";
         String actual = "[5,true,null,\"lorem ipsum\"]";
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
@@ -108,21 +108,21 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void compareJsonObjectsWithRelativeJsonPath() {
+    void compareJsonObjectsWithRelativeJsonPath() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"lorem\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
-    public void compareJsonObjectsWithRelativeJsonPath_negative() {
+    void compareJsonObjectsWithRelativeJsonPath_negative() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":true}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 
     @Test
-    public void compareJsonObjectsWithRegexJsonPathExpression() {
+    void compareJsonObjectsWithRegexJsonPathExpression() {
         String expected = "{\"accounts\":[ {\n" +
                 "        \"#($.[?(@.note =~ /.*does not exist.*/)])\": [\n" +
                 "          \"!.*\"\n" +
@@ -156,7 +156,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void compareJsonObjectsWithNegativeRegexJsonPathExpression() {
+    void compareJsonObjectsWithNegativeRegexJsonPathExpression() {
         String expected = "{\"accounts\":[ {\n" +
                 "        \"#($.[?(@.note =~ /(?!Second.*).*/)])\": [\n" +
                 "          \"!.*\"\n" +
@@ -190,7 +190,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void checkInvalidOrNotFoundJsonPathErrorMessage() {
+    void checkInvalidOrNotFoundJsonPathErrorMessage() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.idontexist)\":\"lorem\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         try {
@@ -198,27 +198,27 @@ public class JSONPathCompareTests {
         } catch (AssertionError e) {
             assertTrue(e.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                     "____DIFF_____.*" +
-                    "a -> a1 -> a11 -> Json path \\Q'$.idontexist'\\E.*->.*No results for path.*idontexist.*"));
+                    "\\Q$.a.a1.a11.#($.idontexist)\\E.*->.*No results for path.*idontexist.*"));
             return;
         }
         fail("No error thrown");
     }
 
     @Test
-    public void incompleteDelimitationOfJsonPathExpression() {
+    void incompleteDelimitationOfJsonPathExpression() {
         String expected = "{\"#(a\":1}";
         String actual = "{\"#(a\":1}";
         JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
-    public void checkJsonPathAssertionErrorMessage() {
+    void checkJsonPathAssertionErrorMessage() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"lorem1\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().matches("(?s).*a -> a1 -> a11 -> \\QJson path '$.a' -> Expected json path result\\E.*" +
+            assertTrue(e.getMessage().matches("(?s).*\\Q$.a.a1.a11.#($.a)\\E.*Expected json path result.*" +
                     "\"lorem1\".*" +
                     "But got:.*" +
                     "\"lorem\".*"));
@@ -228,7 +228,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonObjectWithJsonPath_do_not_match_use_case() {
+    void matchJsonObjectWithJsonPath_do_not_match_use_case() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"!lorem1\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertMatches(expected, actual);
@@ -251,41 +251,41 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonObjectWithJsonPath_do_not_match_use_case_negative() {
+    void matchJsonObjectWithJsonPath_do_not_match_use_case_negative() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"!lorem1\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 
     @Test
-    public void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field() {
+    void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.b)\":\".*\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
         JSONCompare.assertMatches(expected, actual);
     }
 
     @Test
-    public void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field_negative() {
+    void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field_negative() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.a)\":\".*\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
         try {
             JSONCompare.assertMatches(expected, actual);
         } catch (AssertionError e) {
-            assertTrue(e.getMessage().contains("Json path") && e.getMessage().contains("was FOUND"));
+            assertTrue(e.getMessage().contains("Json path") && e.getMessage().contains("was found"));
             return;
         }
         fail("JSONs match");
     }
 
     @Test
-    public void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field_negative1() {
+    void matchJsonObjectWithJsonPath_do_not_match_use_case_on_field_negative1() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"!#($.a)\":\".*\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem1\"}}}}";
         JSONCompare.assertNotMatches(expected, actual);
     }
 
     @Test
-    public void matchJsonObjectWithJsonPathAndRegex() {
+    void matchJsonObjectWithJsonPathAndRegex() {
         String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\".*\"}}}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertMatches(expected, actual);
@@ -304,14 +304,14 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonObjectWithJsonPathAndRegex_negative() {
+    void matchJsonObjectWithJsonPathAndRegex_negative() {
         final String expected = "{\"a\":{\"a1\":{\"a11\":{\"#($.a)\":\"lol.*\"}}}}";
         final String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
     }
 
     @Test
-    public void matchJsonObjectWithJsonPathAndCompareModes() {
+    void matchJsonObjectWithJsonPathAndCompareModes() {
         String expected = "{\"b\":false,\"a\":{\"a1\":\".*\", \"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\".*\"}},\"a2\":290.11}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
@@ -321,7 +321,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonArrayWithJsonPath() {
+    void matchJsonArrayWithJsonPath() {
         String expected = "[false,{\"#($.length())\":3},1]";
         String actual = "[1,[false,245.2,null,\"test\"],false]";
         JSONCompare.assertMatches(expected, actual);
@@ -346,7 +346,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonObjectWithMultipleJsonPaths() {
+    void matchJsonObjectWithMultipleJsonPaths() {
         String expected = "{\"#($.b)\":false,\"a\":{\"#($.a1)\":{\"b11\":null,\"a11\":{\"a\":\".*\"}},\"#($.a2)\":290.11}}";
         String actual = "{\"b\":false,\"a\":{\"a2\":290.11,\"a1\":{\"b11\":null,\"a11\":{\"a\":\"lorem\"}}}}";
         JSONCompare.assertMatches(expected, actual);
@@ -361,7 +361,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonObjectWithDifferentJsonPaths() {
+    void matchJsonObjectWithDifferentJsonPaths() {
         String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
         String actual = "{\n" +
                 "    \"store\": {\n" +
@@ -425,7 +425,7 @@ public class JSONPathCompareTests {
     }
 
     @Test
-    public void matchJsonObjectWithDifferentJsonPaths_negative() {
+    void matchJsonObjectWithDifferentJsonPaths_negative() {
         final String expected = "{\"#($.store..z)\":[\"0-395-19395-8\",\"0-553-21311-3\",\"!.*\"]}";
         final String actual = "{\n" +
                 "    \"store\": {\n" +

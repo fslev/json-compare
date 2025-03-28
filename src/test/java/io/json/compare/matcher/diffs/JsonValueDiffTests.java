@@ -13,7 +13,7 @@ public class JsonValueDiffTests {
         String expected = "{\"a\":null}";
         String actual = "{\"a\":\"null\"}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*a ->.*Expected null:  But got: \"null\".*"));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*\\Q$.a\\E.*Expected null:  But got: \"null\".*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -22,7 +22,7 @@ public class JsonValueDiffTests {
         String expected = "{\"a\":false}";
         String actual = "{\"a\":\"false\"}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*a ->.*Expected boolean: false But got: \"false\".*"));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*\\Q$.a\\E.*Expected boolean: false But got: \"false\".*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -31,7 +31,7 @@ public class JsonValueDiffTests {
         String expected = "{\"a\":2}";
         String actual = "{\"a\":\"2\"}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
-        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*a ->.*Expected number: 2 But got: \"2\".*"));
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*\\Q$.a\\E.*Expected number: 2 But got: \"2\".*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
@@ -41,11 +41,11 @@ public class JsonValueDiffTests {
         String actual = "{\"a\":\"null\",\"b\":\"1\",\"c\":\"false\",\"d\":false,\"e\":false,\"f\":13432.543,\"f1\":\"13432.543\"}";
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 5 DIFFERENCE.*" +
-                "a ->.*Expected null:  But got: \"null\".*" +
-                "b ->.*Expected number: 1 But got: \"1\".*" +
-                "c ->.*Expected boolean: false But got: \"false\".*" +
-                "e ->.*Expected value: \"text\" But got: false.*" +
-                "f1 ->.*Expected number: 13432.543 But got: \"13432.543\".*"));
+                "\\Q$.a\\E.*Expected null:  But got: \"null\".*" +
+                "\\Q$.b\\E.*Expected number: 1 But got: \"1\".*" +
+                "\\Q$.c\\E.*Expected boolean: false But got: \"false\".*" +
+                "\\Q$.e\\E.*Expected value: \"text\" But got: false.*" +
+                "\\Q$.f1\\E.*Expected number: 13432.543 But got: \"13432.543\".*"));
         JSONCompare.assertNotMatches(expected, actual);
     }
 
