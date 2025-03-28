@@ -1,6 +1,8 @@
 # Changelog
 
-## 6.19-SNAPSHOT
+## 7.0 (2025-03-28)
+- #### Changed
+  - Changed style for JSON diffs
 
 ## 6.18 (2024-09-26)
 - #### Changed

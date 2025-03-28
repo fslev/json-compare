@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AssertionFailureBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -72,7 +73,7 @@ public class JSONCompare {
             String defaultMessage = String.format("FOUND %s DIFFERENCE(S):%s%s%s",
                     diffs.size(), System.lineSeparator(), diffs.stream().map(diff ->
                             System.lineSeparator() + System.lineSeparator() + "_________________________DIFF__________________________" +
-                                    System.lineSeparator() + diff).reduce(String::concat).get(), System.lineSeparator());
+                                    System.lineSeparator() + "$" + diff).reduce(String::concat).get(), System.lineSeparator());
             if (comparator == null || comparator.getClass().equals(DefaultJsonComparator.class)) {
                 defaultMessage += System.lineSeparator() + System.lineSeparator() + ASSERTION_ERROR_HINT_MESSAGE + System.lineSeparator();
             }
@@ -110,8 +111,9 @@ public class JSONCompare {
     public static List<String> diffs(Object expected, Object actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         JsonNode expectedJson = toJson(expected);
         JsonNode actualJson = toJson(actual);
-        return new JsonMatcher(expectedJson, actualJson,
+        List<String> diffs = new JsonMatcher(expectedJson, actualJson,
                 comparator == null ? new DefaultJsonComparator(compareModes) : comparator, compareModes).match();
+        return diffs.stream().map(diff -> "$" + diff).collect(Collectors.toList());
     }
 
     public static String prettyPrint(JsonNode jsonNode) {

@@ -43,7 +43,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 case MATCH:
                     if (!jsonPathExpression.isPresent()) {
                         if (candidateEntries.isEmpty()) {
-                            diffs.add(String.format("Field '%s' was NOT FOUND", expectedField));
+                            diffs.add(String.format(".%s was not found", expectedField));
                         } else {
                             diffs.addAll(matchWithCandidates(expectedSanitizedField, expectedValue, candidateEntries));
                         }
@@ -51,19 +51,19 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                         try {
                             diffs.addAll(new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match());
                         } catch (PathNotFoundException e) {
-                            diffs.add(String.format("Json path '%s' -> %s", jsonPathExpression.get(), e.getMessage()));
+                            diffs.add(String.format("." + JSON_PATH_EXP_PREFIX + "%s" + JSON_PATH_EXP_SUFFIX + " -> Json path -> %s", jsonPathExpression.get(), e.getMessage()));
                         }
                     }
                     break;
                 case DO_NOT_MATCH_ANY:
                     if (expected.size() - getDoNotMatchUseCases(expected) < actual.size()) {
-                        diffs.add(String.format("Expected condition '%s' was not met. Actual JSON OBJECT has extra fields", expectedField));
+                        diffs.add(String.format(".\"%s\" condition was not met. Actual JSON OBJECT has extra fields", expectedField));
                     }
                     break;
                 case DO_NOT_MATCH:
                     if (!jsonPathExpression.isPresent()) {
                         if (!candidateEntries.isEmpty()) {
-                            diffs.add(String.format("Field '%s' was FOUND", expectedField));
+                            diffs.add(String.format(".\"%s\" was found", expectedField));
                         }
                     } else {
                         try {
@@ -71,13 +71,13 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                         } catch (PathNotFoundException e) {
                             break;
                         }
-                        diffs.add(String.format("Json path '%s' was FOUND", expectedField));
+                        diffs.add(String.format("." + JSON_PATH_EXP_PREFIX + "%s" + JSON_PATH_EXP_SUFFIX + " -> Json path was found", expectedField));
                     }
                     break;
             }
         }
         if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE) && expected.size() - getDoNotMatchUseCases(expected) < actual.size()) {
-            diffs.add("Actual JSON OBJECT has extra fields");
+            diffs.add(" -> Actual JSON OBJECT has extra fields");
         }
         return diffs;
     }
@@ -101,7 +101,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 matchedFieldNames.add(candidateField);
                 return Collections.emptyList();
             } else {
-                candidateDiffs.forEach(diff -> diffs.add(String.format("%s -> %s", expectedField, diff)));
+                candidateDiffs.forEach(diff -> diffs.add(String.format(".%s%s", expectedField, diff)));
             }
         }
         return diffs;

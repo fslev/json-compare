@@ -34,7 +34,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
             }
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE) && expected.size() - getDoNotMatchUseCases(expected) < actual.size()) {
-            diffs.add("Actual JSON ARRAY has extra elements");
+            diffs.add(" -> Actual JSON ARRAY has extra elements");
         }
         return diffs;
     }
@@ -63,11 +63,9 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                         return Collections.emptyList();
                     } else {
                         if (compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER)) {
-                            diffs.add(String.format("JSON ARRAY elements differ at position %s:" +
-                                            System.lineSeparator() + "%s" + System.lineSeparator() +
-                                            "________diffs________" + System.lineSeparator() + "%s", expPosition + 1,
-                                    MessageUtil.cropL(JSONCompare.prettyPrint(expElement)), String.join(
-                                            System.lineSeparator() + "_____________________" + System.lineSeparator(), elementDiffs)));
+                            elementDiffs.forEach(elementDiff ->
+                                    diffs.add(String.format("[%s]%s", expPosition, elementDiff))
+                            );
                             return diffs;
                         }
                     }
@@ -80,27 +78,26 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                     if (areOfSameType(expElement, actElement)) {
                         elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
                         if (!elementDiffs.isEmpty()) {
-                            diffs.add("Expected element from position " + (expPosition + 1)
-                                    + " was FOUND:" + System.lineSeparator() + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
+                            diffs.add("[" + expPosition + "]"
+                                    + " was found:" + System.lineSeparator() + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
                             return diffs;
                         }
                     }
                     break;
                 case DO_NOT_MATCH_ANY:
                     if (expected.size() - getDoNotMatchUseCases(expected) < actual.size()) {
-                        diffs.add(String.format("Expected condition %s from position %s was not met." +
-                                        " Actual JSON ARRAY has extra elements",
-                                expElement, expPosition + 1));
+                        diffs.add(String.format("[%s] -> Expected condition %s was not met." +
+                                " Actual JSON ARRAY has extra elements", expPosition, expElement));
                     }
                     return diffs;
             }
         }
         if (useCase == UseCase.MATCH) {
-            diffs.add(System.lineSeparator() + "Expected element from position " + (expPosition + 1) + " was NOT FOUND:" + System.lineSeparator()
+            diffs.add("[" + expPosition + "] was not found:" + System.lineSeparator()
                     + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
         } else if (useCase == UseCase.MATCH_ANY) {
-            diffs.add(String.format("Expected condition %s from position %s was not met." +
-                    " Actual JSON ARRAY has no extra elements", expElement, expPosition + 1));
+            diffs.add(String.format("[%s] -> Expected condition %s was not met." +
+                    " Actual JSON ARRAY has no extra elements", expPosition, expElement));
         }
         return diffs;
     }
