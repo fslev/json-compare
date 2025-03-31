@@ -18,40 +18,42 @@ class ReadmeTests {
     @Test
     void matchJsonConvertibleJavaObjects() {
         String expectedString = """
-            {
-              "string": "I'm on a seafood diet. I see food and I eat it!",
-              "number": "\\\\d+.\\\\d+",
-              "object": {
-                "pun": "\\\\QWhy don't skeletons fight each other? They don't have the guts!\\\\E"
-              },
-              "array": [".*", "\\\\d+", true, null],
-              "boolean": "true|false"
-            }
-        """;
+                    {
+                      "string": "I'm on a seafood diet. I see food and I eat it!",
+                      "number": "\\\\d+.\\\\d+",
+                      "object": {
+                        "pun": "\\\\QWhy don't skeletons fight each other? They don't have the guts!\\\\E"
+                      },
+                      "array": [".*", "\\\\d+", true, null],
+                      "boolean": "true|false"
+                    }
+                """;
         String actualString = """
-            {
-              "string": "I'm on a seafood diet. I see food and I eat it!",
-              "number": 0.99,
-              "object": {
-                "pun": "Why don't skeletons fight each other? They don't have the guts!"
-              },
-              "array": ["pancake", 18, true, null],
-              "boolean": true
-            }
-        """;
+                    {
+                      "string": "I'm on a seafood diet. I see food and I eat it!",
+                      "number": 0.99,
+                      "object": {
+                        "pun": "Why don't skeletons fight each other? They don't have the guts!"
+                      },
+                      "array": ["pancake", 18, true, null],
+                      "boolean": true
+                    }
+                """;
         JSONCompare.assertMatches(expectedString, actualString); // assertion passes
+
+        String anotherExpectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
 
         // actual represented as Map
         Map<String, Object> actualMap = new HashMap<>();
         actualMap.put("a", 1);
         actualMap.put("b", Arrays.asList("ipsum", 4, 5));
         actualMap.put("c", true);
-        JSONCompare.assertMatches(expectedString, actualMap); // assertion passes
+        JSONCompare.assertMatches(anotherExpectedString, actualMap); // assertion passes
 
         // Failed assertion
         String anotherActualString = "{\"a\":2, \"b\":[4, \"lorem\", 5], \"c\":true}";
-        JSONCompare.assertNotMatches(expectedString, anotherActualString); // assertion passes
-        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expectedString, anotherActualString));
+        JSONCompare.assertNotMatches(anotherExpectedString, anotherActualString); // assertion passes
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(anotherExpectedString, anotherActualString));
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "\\Q$.a\\E.*Expected value: 1 But got: 2.*" +
                 "\\Q$.b[1]\\E was not found.*"));
