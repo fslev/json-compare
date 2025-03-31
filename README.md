@@ -319,8 +319,9 @@ JSONCompare.assertMatches(expected, actual); //assertion fails
 ==>
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
+
 _________________________DIFF__________________________
-Expected condition '!.*' was not met. Actual JSON OBJECT has extra fields
+$."!.*" condition was not met. Actual JSON OBJECT has extra fields
 ```
 ```javascript
 // actual JSON array should NOT contain any extra elements
