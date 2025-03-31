@@ -331,8 +331,9 @@ JSONCompare.assertNotMatches(expected, actual); // assertion fails
 ==>
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
+
 _________________________DIFF__________________________
-Expected condition "!.*" from position 4 was not met. Actual JSON ARRAY has extra elements.
+$[3] -> Expected condition "!.*" was not met. Actual JSON ARRAY has extra elements
 ```
 
 ### MATCH ANY `.*`
