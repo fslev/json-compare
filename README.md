@@ -40,7 +40,7 @@ compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 
 ### Match JSONs
 JSONCompare will automatically try to convert any given expected or actual Java objects to [Jackson JsonNode](https://fasterxml.github.io/jackson-databind/javadoc/2.7/com/fasterxml/jackson/databind/JsonNode.html)s and match them.  
-```java
+```javascript
 // expected as String with regex
 String expectedString = """
     {
@@ -69,7 +69,7 @@ JSONCompare.assertMatches(expectedString, actualString); // assertion passes
 ```
 
 Data can be represented as any JSON convertible object:  
-```java
+```javascript
 String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
 
 // actual represented as Map
