@@ -38,13 +38,38 @@ The library has some tweaks which helps you make assertions without writing any 
 compile 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
-### Match any JSON convertible Java objects
+### Match JSONs
 JSONCompare will automatically try to convert any given expected or actual Java objects to [Jackson JsonNode](https://fasterxml.github.io/jackson-databind/javadoc/2.7/com/fasterxml/jackson/databind/JsonNode.html)s and match them.  
 ```javascript
 // expected as String with regex
-String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
-String actualString = "{\"a\":1, \"b\":[\"ipsum\", 4, 5], \"c\":true}";
+String expectedString = """
+    {
+      "string": "I'm on a seafood diet. I see food and I eat it!",
+      "number": "\\\\d+.\\\\d+",
+      "object": {
+        "pun": "\\\\QWhy don't skeletons fight each other? They don't have the guts!\\\\E"
+      },
+      "array": [".*", "\\\\d+", true, null],
+      "boolean": "true|false"
+    }
+""";
+String actualString = """
+    {
+      "string": "I'm on a seafood diet. I see food and I eat it!",
+      "number": 0.99,
+      "object": {
+        "pun": "Why don't skeletons fight each other? They don't have the guts!"
+      },
+      "array": ["pancake", 18, true, null],
+      "boolean": true
+    }
+""";
 JSONCompare.assertMatches(expectedString, actualString); // assertion passes
+```
+
+Data can be represented as any JSON convertible object:  
+```
+String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
 
 // actual represented as Map
 Map<String, Object> actualMap = new HashMap<>();
@@ -52,26 +77,6 @@ actualMap.put("a", 1);
 actualMap.put("b", Arrays.asList("ipsum", 4, 5));
 actualMap.put("c", true);
 JSONCompare.assertMatches(expectedString, actualMap); // assertion passes
-
-
-String anotherActualString = "{\"a\":2, \"b\":[4, \"lorem\", 5], \"c\":true}";
-// Negative assertion
-JSONCompare.assertNotMatches(expectedString, anotherActualString); // assertion passes
-// Failed assertion
-JSONCompare.assertMatches(expectedString, anotherActualString); // assertion fails
-
-==>
-
-org.opentest4j.AssertionFailedError: FOUND 2 DIFFERENCE(S):
-
-_________________________DIFF__________________________
-a -> 
-Expected value: 1 But got: 2
-
-_________________________DIFF__________________________
-b -> 
-Expected element from position 2 was NOT FOUND:
-"ipsum"
 ```
 
 # <a name="compare-modes"></a>Compare modes

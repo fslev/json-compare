@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <name>JSON Compare</name>
@@ -215,7 +216,7 @@
                 <version>3.14.0</version>
                 <configuration>
                     <release>8</release>
-                    <testRelease>11</testRelease>
+                    <testRelease>17</testRelease>
                 </configuration>
             </plugin>
             <plugin>
@@ -229,8 +230,8 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Description>${project.description}</Bundle-Description>
                         <Import-Package>*</Import-Package>
-                        <Export-Package />
-                        <Bundle-RequiredExecutionEnvironment />
+                        <Export-Package/>
+                        <Bundle-RequiredExecutionEnvironment/>
                         <_removeheaders>Bnd-LastModified</_removeheaders>
                     </instructions>
                 </configuration>
