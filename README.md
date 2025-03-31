@@ -50,7 +50,7 @@ String expectedString =
       "object": {
         "pun": "\\\\QWhy don't skeletons fight each other? They don't have the guts!\\\\E"
       },
-      "array": [".*", "\\\\d+", true, null],
+      "array": [".*", "\\\\d+"],
       "boolean": "true|false"
     }
 """;
