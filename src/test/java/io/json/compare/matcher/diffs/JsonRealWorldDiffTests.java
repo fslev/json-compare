@@ -10,31 +10,36 @@ class JsonRealWorldDiffTests {
 
     @Test
     void compareJsonObjectsAndCheckForDifferences() {
-        String expected = "{\n" +
-                "  \"caught\": false,\n" +
-                "  \"pain\": {\n" +
-                "    \"range\": [\n" +
-                "      \"bell\",\n" +
-                "      \"blue\",\n" +
-                "      -2059921070\n" +
-                "    ],\n" +
-                "    \"not_anyone\": -1760889549.4041045,\n" +
-                "    \"flat\": -2099670336\n" +
-                "  }\n" +
-                "}";
-        String actual = "{\n" +
-                "  \"caught\": true,\n" +
-                "  \"pain\": {\n" +
-                "    \"range\": [\n" +
-                "      \"bell\",\n" +
-                "      \"red\",\n" +
-                "      -2059921075\n" +
-                "    ],\n" +
-                "    \"anyone\": -1760889549.4041045,\n" +
-                "    \"flat\": -2099670336\n" +
-                "  },\n" +
-                "  \"broad\": \"invented\"\n" +
-                "}";
+        String expected = """
+                {
+                  "caught": false,
+                  "pain": {
+                    "range": [
+                      "bell",
+                      "blue",
+                      -2059921070
+                    ],
+                    "not_anyone": -1760889549.4041045,
+                    "flat": -2099670336
+                  }
+                }
+                """;
+        String actual = """
+                        {
+                          "caught": true,
+                          "pain": {
+                            "range": [
+                              "bell",
+                              "red",
+                              -2059921075
+                            ],
+                            "anyone": -1760889549.4041045,
+                            "flat": -2099670336
+                          },
+                          "broad": "invented"
+                        }
+                """;
+
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "\\Q$.caught\\E.*Expected value: false But got: true.*" +
