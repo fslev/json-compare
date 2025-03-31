@@ -17,8 +17,28 @@ class ReadmeTests {
 
     @Test
     void matchJsonConvertibleJavaObjects() {
-        String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
-        String actualString = "{\"a\":1, \"b\":[\"ipsum\", 4, 5], \"c\":true}";
+        String expectedString = """
+            {
+              "string": "I'm on a seafood diet. I see food and I eat it!",
+              "number": "\\\\d+.\\\\d+",
+              "object": {
+                "pun": "\\\\QWhy don't skeletons fight each other? They don't have the guts!\\\\E"
+              },
+              "array": [".*", "\\\\d+", true, null],
+              "boolean": "true|false"
+            }
+        """;
+        String actualString = """
+            {
+              "string": "I'm on a seafood diet. I see food and I eat it!",
+              "number": 0.99,
+              "object": {
+                "pun": "Why don't skeletons fight each other? They don't have the guts!"
+              },
+              "array": ["pancake", 18, true, null],
+              "boolean": true
+            }
+        """;
         JSONCompare.assertMatches(expectedString, actualString); // assertion passes
 
         // actual represented as Map
