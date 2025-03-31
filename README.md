@@ -109,8 +109,9 @@ JSONCompare.assertMatches(expected1, actual1, Set.of(CompareMode.JSON_OBJECT_NON
 ==>                             
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
+
 _________________________DIFF__________________________
-Actual JSON OBJECT has extra fields
+$ -> Actual JSON OBJECT has extra fields
 ```
 ...same for **JSON_ARRAY_NON_EXTENSIBLE**  
 
@@ -130,18 +131,13 @@ JSONCompare.assertMatches(expected1, actual1, Set.of(CompareMode.JSON_ARRAY_STRI
 ==>
 org.opentest4j.AssertionFailedError: FOUND 2 DIFFERENCE(S):
 
-_________________________DIFF__________________________
-JSON ARRAY elements differ at position 1:
-"lorem"
-________diffs________
 
+_________________________DIFF__________________________
+$[0]
 Expected value: "lorem" But got: false
 
 _________________________DIFF__________________________
-JSON ARRAY elements differ at position 3:
-false
-________diffs________
-
+$[2]
 Expected boolean: false But got: "lorem"
 ```
 
