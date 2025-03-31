@@ -64,6 +64,7 @@ String actualString = """
       "boolean": true
     }
 """;
+
 JSONCompare.assertMatches(expectedString, actualString); // assertion passes
 ```
 
@@ -76,6 +77,7 @@ Map<String, Object> actualMap = new HashMap<>();
 actualMap.put("a", 1);
 actualMap.put("b", Arrays.asList("ipsum", 4, 5));
 actualMap.put("c", true);
+
 JSONCompare.assertMatches(expectedString, actualMap); // assertion passes
 ```
 
