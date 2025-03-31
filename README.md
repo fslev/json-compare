@@ -360,8 +360,9 @@ JSONCompare.assertMatches(expected, actual); // assertion fails
 ==>
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
+
 _________________________DIFF__________________________
-Expected condition ".*" from position 4 was not met. Actual JSON ARRAY has no extra elements.
+$[3] -> Expected condition ".*" was not met. Actual JSON ARRAY has no extra elements
 ```
 # <a name="json-path"></a>Embedded json path expression
 Powered by [JsonPath](https://github.com/json-path/JsonPath)  
