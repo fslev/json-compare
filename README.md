@@ -54,6 +54,8 @@ String expectedString =
       "boolean": "true|false"
     }
 """;
+
+// actual as String
 String actualString = 
 """
     {
@@ -70,7 +72,7 @@ String actualString =
 JSONCompare.assertMatches(expectedString, actualString); // assertion passes
 ```
 
-Data can be represented as any JSON convertible object:  
+Both expected and actual can be represented as any JSON convertible object:  
 ```javascript
 String expectedString = "{\"a\":1, \"b\": [4, \"ipsum\", \"\\\\d+\"]}";
 
@@ -203,33 +205,39 @@ Matching is based on soft assertion. It does not stop at first encountered diffe
 All differences are displayed via the AssertionError message from `JSONCompare.assertMatches()` or can be obtained as a List of Strings by using `JSONCompare.diffs()`:    
 ## Differences inside AssertionError message
 ```javascript
-String expected = "{\n" +
-        "  \"caught\": false,\n" +
-        "  \"pain\": {\n" +
-        "    \"range\": [\n" +
-        "      \"bell\",\n" +
-        "      \"blue\",\n" +
-        "      -2059921070\n" +
-        "    ],\n" +
-        "    \"not_anyone\": -1760889549.4041045,\n" +
-        "    \"flat\": -2099670336\n" +
-        "  }\n" +
-        "}";
+String expected = 
+    """
+    {
+      "caught": false,
+      "pain": {
+        "range": [
+          "bell",
+          "blue",
+          -2059921070
+        ],
+        "not_anyone": -1760889549.4041045,
+        "flat": -2099670336
+      }
+    }
+    """;
         
-String actual = "{\n" +
-        "  \"caught\": true,\n" +
-        "  \"pain\": {\n" +
-        "    \"range\": [\n" +
-        "      \"bell\",\n" +
-        "      \"red\",\n" +
-        "      -2059921075\n" +
-        "    ],\n" +
-        "    \"anyone\": -1760889549.4041045,\n" +
-        "    \"flat\": -2099670336\n" +
-        "  },\n" +
-        "  \"broad\": \"invented\"\n" +
-        "}";
-        
+String actual = 
+    """
+    {
+      "caught": true,
+      "pain": {
+        "range": [
+          "bell",
+          "red",
+          -2059921075
+        ],
+        "anyone": -1760889549.4041045,
+        "flat": -2099670336
+      },
+      "broad": "invented"
+    }
+    """;
+
 JSONCompare.assertMatches(expected, actual); // assertion fails
 ```
 #### Output
@@ -238,21 +246,19 @@ org.opentest4j.AssertionFailedError: FOUND 4 DIFFERENCE(S):
 
 
 _________________________DIFF__________________________
-caught -> 
+$.caught
 Expected value: false But got: true
 
 _________________________DIFF__________________________
-pain -> range -> 
-Expected element from position 2 was NOT FOUND:
+$.pain.range[1] was not found:
 "blue"
 
 _________________________DIFF__________________________
-pain -> range -> 
-Expected element from position 3 was NOT FOUND:
+$.pain.range[2] was not found:
 -2059921070
 
 _________________________DIFF__________________________
-pain -> Field 'not_anyone' was NOT FOUND
+$.pain.not_anyone was not found
 
 
 Json matching by default uses regular expressions.
