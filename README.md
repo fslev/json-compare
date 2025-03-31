@@ -345,8 +345,9 @@ JSONCompare.assertMatches(expected, actual); // assertion fails
 ==>
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
+
 _________________________DIFF__________________________
-Field '.*' was NOT FOUND
+$..* was not found
 ```
 ```javascript
 // Actual JSON array should have extra elements
