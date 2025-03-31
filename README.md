@@ -397,15 +397,14 @@ JSONCompare.assertMatches(expected, actual); // assertion fails
 ==>
 org.opentest4j.AssertionFailedError: FOUND 1 DIFFERENCE(S):
 
+
 _________________________DIFF__________________________
-Json path '$.store..isbn' -> Expected json path result:
+$.#($.store..isbn)[1] was not found:
+"0-553-21311-1"
+Expected json path result:
 ["0-395-19395-8","0-553-21311-1","!.*"]
 But got:
 ["0-553-21311-3","0-395-19395-8"]
-________diffs________
-
-Expected element from position 2 was NOT FOUND:
-"0-553-21311-1"
 ```
 
 # <a name="extended"></a> Extended
