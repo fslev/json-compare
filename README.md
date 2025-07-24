@@ -368,6 +368,7 @@ The expected JSON can contain json path expressions delimited by `#(` and `)` to
 ```javascript
 // Select the 'isbn' values of store books and match with expected ones  
 String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\", \"0-553-21311-1\", \"!.*\"]}";
+
 String actual = "{\n" +
     "    \"store\": {\n" +
     "        \"book\": [\n" +
