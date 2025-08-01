@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.1 (2025-08-01)
+- #### Changed
+  - Updated dependencies  
+
 ## 7.0 (2025-03-28)
 - #### Changed
   - Changed style for JSON diffs
