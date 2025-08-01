@@ -201,7 +201,7 @@ JSONCompare.assertMatches(expected, actual); // assertion fails
 # <a name="differences"></a>Differences
 Matching is based on soft assertion. It does not stop at first encountered difference, but it continues until expected JSON is depleted. 
 All differences are displayed via the AssertionError message from `JSONCompare.assertMatches()` or can be obtained as a List of Strings by using `JSONCompare.diffs()`:    
-## Differences inside AssertionError message
+## AssertionError message
 ```javascript
 String expected = 
     """
@@ -368,6 +368,7 @@ The expected JSON can contain json path expressions delimited by `#(` and `)` to
 ```javascript
 // Select the 'isbn' values of store books and match with expected ones  
 String expected = "{\"#($.store..isbn)\":[\"0-395-19395-8\", \"0-553-21311-1\", \"!.*\"]}";
+
 String actual = "{\n" +
     "    \"store\": {\n" +
     "        \"book\": [\n" +
