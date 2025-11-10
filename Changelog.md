@@ -1,5 +1,9 @@
 # Changelog
 
+## 7.2 (2025-11-10)
+- #### Changed
+    - Updated dependencies
+
 ## 7.1 (2025-08-01)
 - #### Changed
   - Updated dependencies  
