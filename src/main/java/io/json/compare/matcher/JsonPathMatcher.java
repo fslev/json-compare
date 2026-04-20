@@ -21,11 +21,19 @@ class JsonPathMatcher extends AbstractJsonMatcher {
 
     static {
         MAPPER.getFactory().setStreamReadConstraints(StreamReadConstraints.builder()
-                .maxNestingDepth(Integer.MAX_VALUE).maxNumberLength(Integer.MAX_VALUE).maxStringLength(Integer.MAX_VALUE).build());
+                .maxNestingDepth(Integer.MAX_VALUE)
+                .maxNumberLength(Integer.MAX_VALUE)
+                .maxStringLength(Integer.MAX_VALUE)
+                .build());
     }
 
     private static final ParseContext PARSE_CONTEXT = JsonPath.using(new Configuration.ConfigurationBuilder()
             .jsonProvider(new JacksonJsonNodeJsonProvider()).build());
+
+    private static final String WRAP_FORMAT =
+            "." + UseCase.JSON_PATH_EXP_PREFIX + "%s" + UseCase.JSON_PATH_EXP_SUFFIX + "%s"
+                    + LS + "Expected json path result:" + LS + "%s"
+                    + LS + "But got:" + LS + "%s" + LS;
 
     private final String jsonPath;
 
@@ -36,12 +44,12 @@ class JsonPathMatcher extends AbstractJsonMatcher {
 
     @Override
     public List<String> match() {
-        List<String> diffs = new ArrayList<>();
         JsonNode result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
         List<String> jsonPathDiffs = new JsonMatcher(expected, result, comparator, compareModes).match();
-        jsonPathDiffs.forEach(diff -> diffs.add(String.format("." + JSON_PATH_EXP_PREFIX + "%s" + JSON_PATH_EXP_SUFFIX + "%s" + System.lineSeparator() + "Expected json path result:" +
-                        System.lineSeparator() + "%s" + System.lineSeparator() + "But got:" + System.lineSeparator() + "%s" + System.lineSeparator(),
-                jsonPath, diff, expected, result)));
+        List<String> diffs = new ArrayList<>(jsonPathDiffs.size());
+        for (String diff : jsonPathDiffs) {
+            diffs.add(String.format(WRAP_FORMAT, jsonPath, diff, expected, result));
+        }
         return diffs;
     }
 }

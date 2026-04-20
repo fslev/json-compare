@@ -4,11 +4,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Top-level dispatcher: decides which concrete matcher should handle a pair of
+ * nodes based on their Jackson node kinds. Kept thin on purpose — all
+ * comparison logic lives inside {@link JsonObjectMatcher},
+ * {@link JsonArrayMatcher}, {@link JsonValueMatcher}, or
+ * {@link JsonPathMatcher}.
+ */
 public class JsonMatcher extends AbstractJsonMatcher {
 
     public JsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
@@ -17,20 +23,22 @@ public class JsonMatcher extends AbstractJsonMatcher {
 
     @Override
     public List<String> match() {
-        if (isJsonObject(expected) && isJsonObject(actual)) {
+        if (NodeInspect.isJsonObject(expected) && NodeInspect.isJsonObject(actual)) {
             return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
-        } else if (isJsonArray(expected) && isJsonArray(actual)) {
-            return new JsonArrayMatcher(expected, actual, comparator, compareModes).match();
-        } else if (isValueNode(expected) && isValueNode(actual)) {
-            return new JsonValueMatcher(expected, actual, comparator, compareModes).match();
-        } else if (isJsonPathNode(expected)) {
-            return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
-        } else if (isMissingNode(expected) && isMissingNode(actual)) {
-            return Collections.emptyList();
-        } else {
-            List<String> diffs = new ArrayList<>();
-            diffs.add(" -> Different JSON types: expected " + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
-            return diffs;
         }
+        if (NodeInspect.isJsonArray(expected) && NodeInspect.isJsonArray(actual)) {
+            return new JsonArrayMatcher(expected, actual, comparator, compareModes).match();
+        }
+        if (NodeInspect.isValueNode(expected) && NodeInspect.isValueNode(actual)) {
+            return new JsonValueMatcher(expected, actual, comparator, compareModes).match();
+        }
+        if (NodeInspect.isJsonPathNode(expected)) {
+            return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
+        }
+        if (NodeInspect.isMissingNode(expected) && NodeInspect.isMissingNode(actual)) {
+            return Collections.emptyList();
+        }
+        return Collections.singletonList(" -> Different JSON types: expected "
+                + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
     }
 }

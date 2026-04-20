@@ -1,5 +1,24 @@
 # Changelog
 
+## 8.0 (unreleased)
+- #### Added
+  - New fluent builder API: `JSONCompare.compare(expected, actual).modes(...).comparator(...).message(...).assertMatches()`
+  - New structured result type: `ComparisonResult` with a typed `List<Diff>`, `matches()`, `diffCount()`, and `diffsOfKind(DiffKind)`
+  - New `io.json.compare.result` package: `Diff` (record), `DiffKind` (enum), `ComparisonResult` (record)
+- #### Changed
+  - **Java baseline raised from 8 to 17** (required for records, pattern matching and `Map.entry`)
+  - Main classpath no longer depends on `junit-jupiter-api`; assertion failures now use `org.opentest4j:opentest4j` directly. `junit-jupiter-api` has moved to test scope.
+  - Compiled regex patterns are cached per comparator instance — large or deeply nested payloads can see 10× or more speedup on repeated patterns
+  - Object field lookup uses an O(1) fast path when the expected field name is a plain literal and the default comparator is active
+  - Array match tracking switched from `Set<Integer>` to `BitSet` (no autoboxing)
+  - Internal classes split for single responsibility: `UseCase`, `NodeInspect`
+  - Extensive Javadoc added to the public API
+- #### Deprecated
+  - The 11 static overloads on `JSONCompare` (`assertMatches`, `assertNotMatches`, `diffs`) in favor of the builder returned by `JSONCompare.compare(...)`. The overloads still work; they now delegate to the builder.
+- #### Fixed
+  - `areOfSameType` used bitwise `&` where logical `&&` was intended
+  - Several `.equals()` calls on enums replaced with `==` for clarity and micro-perf
+
 ## 7.2 (2025-11-10)
 - #### Changed
     - Updated dependencies
