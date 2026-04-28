@@ -11,8 +11,6 @@ import java.util.Set;
 
 class JsonValueMatcher extends AbstractJsonMatcher {
 
-    private static final String DIFF_FORMAT = LS + "Expected %s: %s But got: %s";
-
     JsonValueMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         super(expected, actual, comparator, compareModes);
     }
@@ -37,7 +35,7 @@ class JsonValueMatcher extends AbstractJsonMatcher {
 
         if (matches != (useCase == UseCase.MATCH)) {
             List<String> out = new ArrayList<>(1);
-            out.add(String.format(DIFF_FORMAT, "value", expected, actual));
+            out.add(diffMsg("value", expected, actual));
             return out;
         }
         return Collections.emptyList();
@@ -45,17 +43,24 @@ class JsonValueMatcher extends AbstractJsonMatcher {
 
     private static String detectTypeMismatch(JsonNode expected, JsonNode actual) {
         if (expected.isNull() && !actual.isNull()) {
-            return String.format(DIFF_FORMAT, "null", "", actual);
+            // Preserves the long-standing message shape (double space after the colon
+            // because the legacy template was "Expected %s: %s But got: %s" with the
+            // middle %s left empty for null).
+            return LS + "Expected null:  But got: " + actual;
         }
         if (expected.isNumber() && !actual.isNumber()) {
-            return String.format(DIFF_FORMAT, "number", expected, actual);
+            return diffMsg("number", expected, actual);
         }
         if (expected.isBoolean() && !actual.isBoolean()) {
-            return String.format(DIFF_FORMAT, "boolean", expected, actual);
+            return diffMsg("boolean", expected, actual);
         }
         if (actual.isTextual() && !expected.isTextual()) {
-            return String.format(DIFF_FORMAT, "text", expected, actual);
+            return diffMsg("text", expected, actual);
         }
         return null;
+    }
+
+    private static String diffMsg(String kind, Object expected, Object actual) {
+        return LS + "Expected " + kind + ": " + expected + " But got: " + actual;
     }
 }
