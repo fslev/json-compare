@@ -68,7 +68,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                         } catch (PathNotFoundException e) {
                             break;
                         }
-                        diffs.add("." + UseCase.JSON_PATH_EXP_PREFIX + expectedField + UseCase.JSON_PATH_EXP_SUFFIX + " -> Json path was found");
+                        diffs.add("." + expectedField + " -> Json path was found");
                     } else {
                         List<Map.Entry<String, JsonNode>> candidateEntries = searchCandidatesByField(fieldUseCase, expectedSanitizedField, actual);
                         if (!candidateEntries.isEmpty()) {
@@ -139,9 +139,20 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
     private static boolean isPlainLiteral(String s) {
         for (int i = 0, n = s.length(); i < n; i++) {
             switch (s.charAt(i)) {
-                case '.': case '*': case '+': case '?': case '^': case '$':
-                case '{': case '}': case '(': case ')': case '|':
-                case '[': case ']': case '\\':
+                case '.':
+                case '*':
+                case '+':
+                case '?':
+                case '^':
+                case '$':
+                case '{':
+                case '}':
+                case '(':
+                case ')':
+                case '|':
+                case '[':
+                case ']':
+                case '\\':
                     return false;
                 default:
             }
