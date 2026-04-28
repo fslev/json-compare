@@ -37,9 +37,6 @@ class JsonValueMatcher extends AbstractJsonMatcher {
 
     private static String detectTypeMismatch(JsonNode expected, JsonNode actual) {
         if (expected.isNull() && !actual.isNull()) {
-            // Preserves the long-standing message shape (double space after the colon
-            // because the legacy template was "Expected %s: %s But got: %s" with the
-            // middle %s left empty for null).
             return LS + "Expected null:  But got: " + actual;
         }
         if (expected.isNumber() && !actual.isNumber()) {
