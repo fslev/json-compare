@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -19,14 +17,12 @@ class JsonValueMatcher extends AbstractJsonMatcher {
     public List<String> match() {
         String typeDiff = detectTypeMismatch(expected, actual);
         if (typeDiff != null) {
-            List<String> out = new ArrayList<>(1);
-            out.add(typeDiff);
-            return out;
+            return List.of(typeDiff);
         }
 
         UseCase useCase = UseCase.of(expected.asText());
         if (useCase == UseCase.MATCH_ANY) {
-            return Collections.emptyList();
+            return List.of();
         }
 
         String expectedText = UseCase.sanitize(expected.asText());
@@ -34,11 +30,9 @@ class JsonValueMatcher extends AbstractJsonMatcher {
         boolean matches = comparator.compareValues(expectedText, actualText);
 
         if (matches != (useCase == UseCase.MATCH)) {
-            List<String> out = new ArrayList<>(1);
-            out.add(diffMsg("value", expected, actual));
-            return out;
+            return List.of(diffMsg("value", expected, actual));
         }
-        return Collections.emptyList();
+        return List.of();
     }
 
     private static String detectTypeMismatch(JsonNode expected, JsonNode actual) {
