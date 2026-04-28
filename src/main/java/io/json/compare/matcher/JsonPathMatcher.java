@@ -30,11 +30,6 @@ class JsonPathMatcher extends AbstractJsonMatcher {
     private static final ParseContext PARSE_CONTEXT = JsonPath.using(new Configuration.ConfigurationBuilder()
             .jsonProvider(new JacksonJsonNodeJsonProvider()).build());
 
-    private static final String WRAP_FORMAT =
-            "." + UseCase.JSON_PATH_EXP_PREFIX + "%s" + UseCase.JSON_PATH_EXP_SUFFIX + "%s"
-                    + LS + "Expected json path result:" + LS + "%s"
-                    + LS + "But got:" + LS + "%s" + LS;
-
     private final String jsonPath;
 
     JsonPathMatcher(String jsonPath, JsonNode expectedValue, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
@@ -48,7 +43,9 @@ class JsonPathMatcher extends AbstractJsonMatcher {
         List<String> jsonPathDiffs = new JsonMatcher(expected, result, comparator, compareModes).match();
         List<String> diffs = new ArrayList<>(jsonPathDiffs.size());
         for (String diff : jsonPathDiffs) {
-            diffs.add(String.format(WRAP_FORMAT, jsonPath, diff, expected, result));
+            diffs.add("." + UseCase.JSON_PATH_EXP_PREFIX + jsonPath + UseCase.JSON_PATH_EXP_SUFFIX + diff
+                    + LS + "Expected json path result:" + LS + expected
+                    + LS + "But got:" + LS + result + LS);
         }
         return diffs;
     }
