@@ -2,7 +2,6 @@ package io.json.compare;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.matcher.JsonMatcher;
-import io.json.compare.result.ComparisonResult;
 import io.json.compare.util.JsonUtils;
 import org.opentest4j.AssertionFailedError;
 
@@ -19,8 +18,8 @@ import java.util.Set;
  * {@link JSONCompare#compare(Object, Object)}.
  *
  * <p>Configuration methods return {@code this} for chaining; terminal methods
- * ({@link #assertMatches()}, {@link #assertNotMatches()}, {@link #diffs()},
- * {@link #result()}) trigger the actual comparison.
+ * ({@link #assertMatches()}, {@link #assertNotMatches()}, {@link #diffs()})
+ * trigger the actual comparison.
  *
  * <p>Example:
  * <pre>{@code
@@ -111,20 +110,14 @@ public final class ComparisonBuilder {
     }
 
     /**
-     * Returns the differences as a list of JSONPath-prefixed strings (legacy
-     * format). Prefer {@link #result()} for new code — it gives you the same
-     * information in a filterable, typed form.
+     * Returns the differences as a list of JSONPath-prefixed strings. The
+     * returned list is empty iff the comparison matched.
      */
     public List<String> diffs() {
         JsonNode expectedJson = toJson(expected);
         JsonNode actualJson = toJson(actual);
         List<String> diffs = runMatch(expectedJson, actualJson);
         return diffs.stream().map(d -> "$" + d).toList();
-    }
-
-    /** Returns a structured {@link ComparisonResult} — never throws. */
-    public ComparisonResult result() {
-        return ComparisonResult.of(diffs());
     }
 
     private List<String> runMatch(JsonNode expectedJson, JsonNode actualJson) {

@@ -17,8 +17,7 @@ import java.util.Set;
  *       .modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)
  *       .assertMatches();
  *
- *   ComparisonResult result = JSONCompare.compare(expected, actual).result();
- *   result.diffsOfKind(DiffKind.MISSING_FIELD).forEach(System.out::println);
+ *   List<String> diffs = JSONCompare.compare(expected, actual).diffs();
  * }</pre>
  *
  * <p>The previous telescoping static methods are preserved for backward
@@ -127,7 +126,7 @@ public final class JSONCompare {
         compare(expected, actual).comparator(comparator).modes(compareModes).message(message).assertNotMatches();
     }
 
-    /** @deprecated Use {@code JSONCompare.compare(expected, actual).diffs()} or {@code .result()}. */
+    /** @deprecated Use {@code JSONCompare.compare(expected, actual).diffs()}. */
     @Deprecated(since = "8.0")
     public static List<String> diffs(Object expected, Object actual) {
         return compare(expected, actual).diffs();

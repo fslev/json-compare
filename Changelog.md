@@ -3,8 +3,6 @@
 ## 8.0 (unreleased)
 - #### Added
   - New fluent builder API: `JSONCompare.compare(expected, actual).modes(...).comparator(...).message(...).assertMatches()`
-  - New structured result type: `ComparisonResult` with a typed `List<Diff>`, `matches()`, `diffCount()`, and `diffsOfKind(DiffKind)`
-  - New `io.json.compare.result` package: `Diff` (record), `DiffKind` (enum), `ComparisonResult` (record)
 - #### Changed
   - **Java baseline raised from 8 to 17** (required for records, pattern matching and `Map.entry`)
   - Main classpath no longer depends on `junit-jupiter-api`; assertion failures now use `org.opentest4j:opentest4j` directly. `junit-jupiter-api` has moved to test scope.
