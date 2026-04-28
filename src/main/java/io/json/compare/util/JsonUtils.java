@@ -32,12 +32,6 @@ public final class JsonUtils {
     private JsonUtils() {
     }
 
-    /**
-     * Converts any JSON-convertible object into a Jackson {@link JsonNode}.
-     * Accepted inputs: {@link JsonNode} (returned as-is), JSON {@link String}
-     * (parsed), or any POJO / {@link java.util.Map} / {@link java.util.List}
-     * (serialized then re-read).
-     */
     public static JsonNode toJson(Object obj) throws IOException {
         if (obj instanceof JsonNode) {
             return (JsonNode) obj;
@@ -48,9 +42,6 @@ public final class JsonUtils {
         return MAPPER.convertValue(obj, JsonNode.class);
     }
 
-    /**
-     * Pretty-prints the given content. Empty strings are returned as-is.
-     */
     public static String prettyPrint(Object content) throws IOException {
         if (content instanceof String && ((String) content).isEmpty()) {
             return "";
