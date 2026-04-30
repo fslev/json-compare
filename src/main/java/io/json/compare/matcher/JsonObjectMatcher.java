@@ -7,7 +7,6 @@ import io.json.compare.DefaultJsonComparator;
 import io.json.compare.JsonComparator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +37,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
             Optional<String> jsonPathExpression = UseCase.extractJsonPathExp(expectedSanitizedField);
 
             switch (fieldUseCase) {
-                case MATCH_ANY:
-                case MATCH:
+                case MATCH_ANY, MATCH -> {
                     if (jsonPathExpression.isPresent()) {
                         try {
                             diffs.addAll(new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match());
@@ -55,27 +53,31 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                             diffs.addAll(matchWithCandidates(expectedSanitizedField, expectedValue, candidateEntries));
                         }
                     }
-                    break;
-                case DO_NOT_MATCH_ANY:
+                }
+                case DO_NOT_MATCH_ANY -> {
                     if (expected.size() - expectedDoNotMatchCount < actual.size()) {
                         diffs.add(".\"" + expectedField + "\" condition was not met. Actual JSON OBJECT has extra fields");
                     }
-                    break;
-                case DO_NOT_MATCH:
+                }
+                case DO_NOT_MATCH -> {
                     if (jsonPathExpression.isPresent()) {
+                        boolean pathFound;
                         try {
                             new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match();
+                            pathFound = true;
                         } catch (PathNotFoundException e) {
-                            break;
+                            pathFound = false;
                         }
-                        diffs.add("." + expectedField + " -> Json path was found");
+                        if (pathFound) {
+                            diffs.add("." + expectedField + " -> Json path was found");
+                        }
                     } else {
                         List<Map.Entry<String, JsonNode>> candidateEntries = searchCandidatesByField(fieldUseCase, expectedSanitizedField, actual);
                         if (!candidateEntries.isEmpty()) {
                             diffs.add(".\"" + expectedField + "\" was found");
                         }
                     }
-                    break;
+                }
             }
         }
         if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)
@@ -94,14 +96,14 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
 
             if (expectedValueUseCase == UseCase.MATCH_ANY) {
                 matchedFieldNames.add(candidateField);
-                return Collections.emptyList();
+                return List.of();
             }
 
             JsonNode candidateValue = candidateEntry.getValue();
             List<String> candidateDiffs = new JsonMatcher(expectedValue, candidateValue, comparator, compareModes).match();
             if (candidateDiffs.isEmpty()) {
                 matchedFieldNames.add(candidateField);
-                return Collections.emptyList();
+                return List.of();
             }
             for (String diff : candidateDiffs) {
                 diffs.add("." + expectedField + diff);
@@ -118,9 +120,9 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 && (compareModes.contains(CompareMode.REGEX_DISABLED) || isPlainLiteral(fieldName))) {
             JsonNode direct = target.get(fieldName);
             if (direct == null || matchedFieldNames.contains(fieldName)) {
-                return Collections.emptyList();
+                return List.of();
             }
-            return Collections.singletonList(Map.entry(fieldName, direct));
+            return List.of(Map.entry(fieldName, direct));
         }
 
         List<Map.Entry<String, JsonNode>> candidates = new ArrayList<>();
