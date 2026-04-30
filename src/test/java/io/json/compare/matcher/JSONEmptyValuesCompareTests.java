@@ -9,27 +9,27 @@ public class JSONEmptyValuesCompareTests {
     public void compareWithEmptyValue() {
         String expected = "{\"a\":\"\"}";
         String actual = "{\"a\":\"\"}";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void compareWithEmptyValue_negative() {
         String expected = "{\"a\":\"not empty\"}";
         String actual = "{\"a\":\"\"}";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void compareEmptyWithEmptyValue_negative() {
         String expected = "{\"a\":\"!\"}";
         String actual = "{\"a\":\"\"}";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void compareEmptyAndNullValue_negative() {
         String expected = "{\"a\":\"\"}";
         String actual = "{\"a\":null}";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 }

@@ -177,7 +177,7 @@ public class Issue3Test {
                         "    \"ttl\" : 3600\n" +
                         "  } ]\n" +
                         "}";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
@@ -363,6 +363,6 @@ public class Issue3Test {
                         "    \"ttl\" : 3600\n" +
                         "  } ]\n" +
                         "}";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
     }
 }

@@ -47,7 +47,7 @@ public class JSONMixedCompareTests {
                 "  \"h\": \"text again\"\n" +
                 "}" +
                 "";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
@@ -92,7 +92,7 @@ public class JSONMixedCompareTests {
                 "  \"h\": \"text again\"\n" +
                 "}" +
                 "";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
@@ -137,7 +137,7 @@ public class JSONMixedCompareTests {
                 "  \"h\": \"text again\"\n" +
                 "}" +
                 "";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
@@ -182,6 +182,6 @@ public class JSONMixedCompareTests {
                 "  \"h\": \"text again\"\n" +
                 "}" +
                 "";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 }

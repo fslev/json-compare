@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,30 +15,43 @@ class JsonValueMatcher extends AbstractJsonMatcher {
 
     @Override
     public List<String> match() {
-        List<String> diffs = new ArrayList<>();
-        String diff = System.lineSeparator() + "Expected %s: %s But got: %s";
-
-        if (expected.isNull() && !actual.isNull()) {
-            diffs.add(String.format(diff, "null", "", actual));
-            return diffs;
-        } else if (expected.isNumber() && !actual.isNumber()) {
-            diffs.add(String.format(diff, "number", expected, actual));
-            return diffs;
-        } else if (expected.isBoolean() && !actual.isBoolean()) {
-            diffs.add(String.format(diff, "boolean", expected, actual));
-            return diffs;
-        } else if (actual.isTextual() && !expected.isTextual()) {
-            diffs.add(String.format(diff, "text", expected, actual));
-            return diffs;
-        } else {
-            UseCase useCase = getUseCase(expected.asText());
-            String expectedText = sanitize(expected.asText());
-            String actualText = actual.asText();
-
-            if (!useCase.equals(UseCase.MATCH_ANY) && comparator.compareValues(expectedText, actualText) != useCase.equals(UseCase.MATCH)) {
-                diffs.add(String.format(diff, "value", expected, actual));
-            }
-            return diffs;
+        String typeDiff = detectTypeMismatch(expected, actual);
+        if (typeDiff != null) {
+            return List.of(typeDiff);
         }
+
+        UseCase useCase = UseCase.of(expected.asText());
+        if (useCase == UseCase.MATCH_ANY) {
+            return List.of();
+        }
+
+        String expectedText = UseCase.sanitize(expected.asText());
+        String actualText = actual.asText();
+        boolean matches = comparator.compareValues(expectedText, actualText);
+
+        if (matches != (useCase == UseCase.MATCH)) {
+            return List.of(diffMsg("value", expected, actual));
+        }
+        return List.of();
+    }
+
+    private static String detectTypeMismatch(JsonNode expected, JsonNode actual) {
+        if (expected.isNull() && !actual.isNull()) {
+            return LS + "Expected null:  But got: " + actual;
+        }
+        if (expected.isNumber() && !actual.isNumber()) {
+            return diffMsg("number", expected, actual);
+        }
+        if (expected.isBoolean() && !actual.isBoolean()) {
+            return diffMsg("boolean", expected, actual);
+        }
+        if (actual.isTextual() && !expected.isTextual()) {
+            return diffMsg("text", expected, actual);
+        }
+        return null;
+    }
+
+    private static String diffMsg(String kind, Object expected, Object actual) {
+        return LS + "Expected " + kind + ": " + expected + " But got: " + actual;
     }
 }

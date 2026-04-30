@@ -1145,7 +1145,7 @@ public class JSONLargeCompareTests {
                 "  }\n" +
                 "]" +
                 "";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
@@ -2283,19 +2283,17 @@ public class JSONLargeCompareTests {
                 "  }\n" +
                 "]" +
                 "";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void testVeryLargeJsonCompare() throws IOException {
-        JSONCompare.assertMatches(readFromRelativePath("bigJsons/expectedLargeJson.json"),
-                readFromRelativePath("bigJsons/actualLargeJson.json"));
+        JSONCompare.compare(readFromRelativePath("bigJsons/expectedLargeJson.json"), readFromRelativePath("bigJsons/actualLargeJson.json")).assertMatches();
     }
 
     @Test
     public void testVeryLargeJsonCompare_negative() throws IOException {
-        JSONCompare.assertNotMatches(readFromRelativePath("bigJsons/expectedWrongLargeJson.json"),
-                readFromRelativePath("bigJsons/actualLargeJson.json"));
+        JSONCompare.compare(readFromRelativePath("bigJsons/expectedWrongLargeJson.json"), readFromRelativePath("bigJsons/actualLargeJson.json")).assertNotMatches();
 
     }
 

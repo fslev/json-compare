@@ -4,8 +4,6 @@ import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,7 +14,7 @@ class Issue11Test {
         String expected = "{\".*\":{\"eventLogs\":[{\"id\":2},{\"id\":4},{\"id\":1},{\"id\":3}]}}";
         String actual = "{\"_embedded\":{\"eventLogs\":[{\"id\":1},{\"id\":2},{\"id\":3},{\"id\":4}]}}";
         try {
-            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
+            JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("$..*.eventLogs[0].id"));
         }
@@ -123,7 +121,7 @@ class Issue11Test {
                 "  }\n" +
                 "}";
         try {
-            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
+            JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("$._embedded.eventLogs[0].id"));
         }
@@ -230,7 +228,7 @@ class Issue11Test {
                 "  }\n" +
                 "}";
         try {
-            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_ARRAY_STRICT_ORDER)));
+            JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("was not found"));
         }

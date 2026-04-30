@@ -49,6 +49,6 @@ public class Issue12Test {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 }

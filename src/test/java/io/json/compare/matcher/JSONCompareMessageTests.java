@@ -4,9 +4,6 @@ import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +15,7 @@ public class JSONCompareMessageTests {
         String expected = "{\"a\":true}";
         String actual = "{\"ab\":true}";
         try {
-            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)), "JSONs do match");
+            JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).message("JSONs do match").assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("JSONs do match"));
         }
@@ -29,7 +26,7 @@ public class JSONCompareMessageTests {
         String expected = "{\"a\":true}";
         String actual = "{\"ab\":true}";
         try {
-            JSONCompare.assertMatches(expected, actual, null, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)), "JSONs do match");
+            JSONCompare.compare(expected, actual).comparator(null).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).message("JSONs do match").assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("JSONs do match"));
         }
@@ -40,7 +37,7 @@ public class JSONCompareMessageTests {
         String expected = "{\"a\":true,\"b\":0}";
         String actual = "{\"a\":true,\"b\":0}";
         try {
-            JSONCompare.assertNotMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)), "JSONs do match");
+            JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).message("JSONs do match").assertNotMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("JSONs do match") && e.getMessage().contains("JSONs are equal"));
         }
@@ -51,7 +48,7 @@ public class JSONCompareMessageTests {
         String expected = "{\"a\":true,\"b\":0}";
         String actual = "{\"a\":true,\"b\":0}";
         try {
-            JSONCompare.assertNotMatches(expected, actual, null, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)), "JSONs do match");
+            JSONCompare.compare(expected, actual).comparator(null).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).message("JSONs do match").assertNotMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("JSONs do match") && e.getMessage().contains("JSONs are equal"));
         }
@@ -62,7 +59,7 @@ public class JSONCompareMessageTests {
         String expected = "{\"a\":true}";
         String actual = "{\"a\":true}";
         try {
-            JSONCompare.assertNotMatches(expected, actual);
+            JSONCompare.compare(expected, actual).assertNotMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("JSONs are equal"));
         }
@@ -73,7 +70,7 @@ public class JSONCompareMessageTests {
         String expected = "{\"a\":true}";
         String actual = "{\"ab\":true}";
         try {
-            JSONCompare.assertMatches(expected, actual, new HashSet<>(Arrays.asList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
+            JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("$.a was not found"));
         }
@@ -101,13 +98,11 @@ public class JSONCompareMessageTests {
                 "          }\n" +
                 "        }}";
 
-        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual,
-                new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE))));
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "\\Q$.@.instanceId2\\E -> Actual JSON OBJECT has extra fields.*" +
                 "\\Q$.@.version\\E was not found.*"));
-        JSONCompare.assertNotMatches(expected, actual,
-                new HashSet<>(Collections.singletonList(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)));
+        JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).assertNotMatches();
     }
 
 }
