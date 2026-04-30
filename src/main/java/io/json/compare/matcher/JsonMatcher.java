@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -36,9 +35,9 @@ public class JsonMatcher extends AbstractJsonMatcher {
             return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
         }
         if (NodeInspect.isMissingNode(expected) && NodeInspect.isMissingNode(actual)) {
-            return Collections.emptyList();
+            return List.of();
         }
-        return Collections.singletonList(" -> Different JSON types: expected "
+        return List.of(" -> Different JSON types: expected "
                 + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
     }
 }
