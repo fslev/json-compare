@@ -8,7 +8,6 @@ import io.json.compare.util.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -57,12 +56,12 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                 if (j > expPosition) break;
             }
             switch (useCase) {
-                case MATCH: {
+                case MATCH -> {
                     JsonNode actElement = actualArray.get(j);
                     List<String> elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
                     if (elementDiffs.isEmpty()) {
                         matchedPositions.set(j);
-                        return Collections.emptyList();
+                        return List.of();
                     }
                     if (strictOrder) {
                         for (String elementDiff : elementDiffs) {
@@ -70,12 +69,12 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                         }
                         return diffs;
                     }
-                    break;
                 }
-                case MATCH_ANY:
+                case MATCH_ANY -> {
                     matchedPositions.set(j);
-                    return Collections.emptyList();
-                case DO_NOT_MATCH: {
+                    return List.of();
+                }
+                case DO_NOT_MATCH -> {
                     JsonNode actElement = actualArray.get(j);
                     if (NodeInspect.areOfSameType(expElement, actElement)) {
                         List<String> elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
@@ -85,14 +84,14 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                             return diffs;
                         }
                     }
-                    break;
                 }
-                case DO_NOT_MATCH_ANY:
+                case DO_NOT_MATCH_ANY -> {
                     if (expected.size() - expectedDoNotMatchCount < actual.size()) {
                         diffs.add("[" + expPosition + "] -> Expected condition " + expElement
                                 + " was not met. Actual JSON ARRAY has extra elements");
                     }
                     return diffs;
+                }
             }
         }
         if (useCase == UseCase.MATCH) {
