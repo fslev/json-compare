@@ -18,9 +18,6 @@ public class DefaultJsonComparator implements JsonComparator {
     private static final int PATTERN_FLAGS = Pattern.DOTALL | Pattern.MULTILINE;
 
     private final Set<CompareMode> compareModes;
-    //Compiled patterns are cached for the lifetime of this comparator,
-    // * which substantially reduces cost for JSONs that repeat the same expected values or
-    // * field names.
     private final ConcurrentMap<String, Optional<Pattern>> patternCache = new ConcurrentHashMap<>();
 
     public DefaultJsonComparator(Set<CompareMode> compareModes) {
