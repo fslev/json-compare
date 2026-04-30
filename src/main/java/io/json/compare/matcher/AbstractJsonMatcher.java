@@ -5,7 +5,6 @@ import io.json.compare.CompareMode;
 import io.json.compare.DefaultJsonComparator;
 import io.json.compare.JsonComparator;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +26,7 @@ abstract class AbstractJsonMatcher {
     AbstractJsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
         this.expected = expected;
         this.actual = actual;
-        this.compareModes = compareModes == null ? new HashSet<>() : compareModes;
+        this.compareModes = compareModes == null ? Set.of() : compareModes;
         this.comparator = comparator == null ? new DefaultJsonComparator(this.compareModes) : comparator;
     }
 

@@ -7,9 +7,7 @@ import org.opentest4j.AssertionFailedError;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +18,11 @@ import java.util.Set;
  * <p>Configuration methods return {@code this} for chaining; terminal methods
  * ({@link #assertMatches()}, {@link #assertNotMatches()}, {@link #diffs()})
  * trigger the actual comparison.
+ *
+ * <p><b>Mutation contract.</b> The builder stores {@code expected},
+ * {@code actual}, {@code comparator} and {@code modes} as plain references and
+ * does not defensively copy them. Mutating any of these between a configuration
+ * call and a terminal call produces undefined behavior.
  *
  * <p>Example:
  * <pre>{@code
@@ -49,29 +52,33 @@ public final class ComparisonBuilder {
         this.actual = actual;
     }
 
-    /** Sets a custom comparator (defaults to {@link DefaultJsonComparator}). */
+    /**
+     * Sets a custom comparator (defaults to {@link DefaultJsonComparator}).
+     */
     public ComparisonBuilder comparator(JsonComparator comparator) {
         this.comparator = comparator;
         return this;
     }
 
-    /** Sets compare modes (replaces any previously set modes). */
+    /**
+     * Sets compare modes (replaces any previously set modes).
+     */
     public ComparisonBuilder modes(Set<CompareMode> modes) {
-        this.modes = modes == null ? null : Collections.unmodifiableSet(new LinkedHashSet<>(modes));
+        this.modes = modes;
         return this;
     }
 
-    /** Sets compare modes (replaces any previously set modes). Null-safe. */
+    /**
+     * Sets compare modes (replaces any previously set modes). Null-safe.
+     */
     public ComparisonBuilder modes(CompareMode... modes) {
-        if (modes == null || modes.length == 0) {
-            this.modes = null;
-            return this;
-        }
-        this.modes = Collections.unmodifiableSet(EnumSet.copyOf(Arrays.asList(modes)));
+        this.modes = (modes == null || modes.length == 0) ? null : EnumSet.copyOf(Arrays.asList(modes));
         return this;
     }
 
-    /** Appends a user-supplied message to the assertion failure output. */
+    /**
+     * Appends a user-supplied message to the assertion failure output.
+     */
     public ComparisonBuilder message(String message) {
         this.message = message;
         return this;
@@ -106,12 +113,12 @@ public final class ComparisonBuilder {
         }
         String defaultMessage = LS + "JSONs are equal";
         String finalMessage = message == null ? defaultMessage : defaultMessage + LS + message;
-        throw new AssertionFailedError(finalMessage);
+        throw new AssertionFailedError(finalMessage, prettyPrint(expectedJson), prettyPrint(actualJson));
     }
 
     /**
      * Returns the differences as a list of JSONPath-prefixed strings. The
-     * returned list is empty iff the comparison matched.
+     * returned list is empty if the comparison matched.
      */
     public List<String> diffs() {
         JsonNode expectedJson = toJson(expected);

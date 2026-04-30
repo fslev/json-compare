@@ -11,15 +11,16 @@ import java.util.regex.PatternSyntaxException;
  * Default {@link JsonComparator}: treats expected strings as Java regular expressions
  * (with {@link Pattern#DOTALL} and {@link Pattern#MULTILINE}), falling back to literal
  * equality either when {@link CompareMode#REGEX_DISABLED} is set or when the pattern
- * fails to compile. Compiled patterns are cached for the lifetime of this comparator,
- * which substantially reduces cost for JSONs that repeat the same expected values or
- * field names.
+ * fails to compile.
  */
 public class DefaultJsonComparator implements JsonComparator {
 
     private static final int PATTERN_FLAGS = Pattern.DOTALL | Pattern.MULTILINE;
 
     private final Set<CompareMode> compareModes;
+    //Compiled patterns are cached for the lifetime of this comparator,
+    // * which substantially reduces cost for JSONs that repeat the same expected values or
+    // * field names.
     private final ConcurrentMap<String, Optional<Pattern>> patternCache = new ConcurrentHashMap<>();
 
     public DefaultJsonComparator(Set<CompareMode> compareModes) {

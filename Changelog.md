@@ -4,7 +4,7 @@
 - #### Added
   - New fluent builder API: `JSONCompare.compare(expected, actual).modes(...).comparator(...).message(...).assertMatches()`
 - #### Changed
-  - **Java baseline raised from 8 to 17** (required for records, pattern matching and `Map.entry`)
+  - **Java baseline raised from 8 to 17** 
   - Main classpath no longer depends on `junit-jupiter-api`; assertion failures now use `org.opentest4j:opentest4j` directly. `junit-jupiter-api` has moved to test scope.
   - Compiled regex patterns are cached per comparator instance — large or deeply nested payloads can see 10× or more speedup on repeated patterns
   - Object field lookup uses an O(1) fast path when the expected field name is a plain literal and the default comparator is active

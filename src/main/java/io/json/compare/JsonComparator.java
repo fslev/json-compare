@@ -16,17 +16,15 @@ package io.json.compare;
 public interface JsonComparator {
 
     /**
-     * @return {@code true} iff {@code actual} is considered a match for
-     *         {@code expected}. Both values are the raw scalar contents as
-     *         Jackson would stringify them ({@code null}, numbers, booleans,
-     *         and text all reach this method as their string forms).
+     * @return {@code true} if {@code actual} is considered a match for
+     * {@code expected}.
      */
     boolean compareValues(Object expected, Object actual);
 
     /**
-     * @return {@code true} iff the actual JSON object field name {@code actual}
-     *         is considered a match for the expected field name
-     *         {@code expected}.
+     * @return {@code true} if the actual JSON object field name {@code actual}
+     * is considered a match for the expected field name
+     * {@code expected}.
      */
     boolean compareFields(String expected, String actual);
 }
