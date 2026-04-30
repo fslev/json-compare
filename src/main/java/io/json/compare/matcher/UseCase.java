@@ -110,9 +110,6 @@ enum UseCase {
     }
 
     private static String removeEscapes(String value) {
-        if (value == null) {
-            return null;
-        }
         if (value.startsWith("\\" + DO_NOT_MATCH.value)
                 || value.equals("\\" + DO_NOT_MATCH_ANY.value)
                 || value.equals("\\" + MATCH_ANY.value)
