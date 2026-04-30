@@ -9,21 +9,21 @@ public class Issue10Test {
     public void testMultipleNegationInJsonArray() {
         String expected = "{\"statuses\":[ \"!a.*\",\"!b.*\" ]}";
         String actual = "{\"statuses\":[\"abc\",\"cde\"]}";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void testFieldNameDoesntExist() {
         String expected = "{\"(?!autoRenew).*\":true}";
         String actual = "{\"autoRene\": true}";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void testFieldNameDoesntExist_negative() {
         String expected = "{\"(?!autoRenew).*\":true}";
         String actual = "{\"autoRenew\": true}";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
@@ -74,6 +74,6 @@ public class Issue10Test {
                 "    \"id\" : \"74e7cacd-7062-7f0d-36a6-7f0b6d3a733c\"\n" +
                 "  } ]\n" +
                 "}";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 }

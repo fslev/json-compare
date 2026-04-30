@@ -25,7 +25,7 @@ public class Issue6Test {
                 "  \"name\" : \"division2\",\n" +
                 "  \"vlan\" : \"117\"" +
                 "}]";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
 
@@ -47,7 +47,7 @@ public class Issue6Test {
                 "  \"a\" : \"division2\",\n" +
                 "  \"b\" : \"114\"\n" +
                 "}]";
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
@@ -68,7 +68,7 @@ public class Issue6Test {
                 "  \"a\" : \"division2\",\n" +
                 "  \"vlan\" : \"114\"\n" +
                 "}]";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
@@ -89,7 +89,7 @@ public class Issue6Test {
                 "  \"name\" : \"division1\",\n" +
                 "  \"vlan\" : \"115\"\n" +
                 "}]";
-        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
     }
 
 
@@ -104,6 +104,6 @@ public class Issue6Test {
                 "  \"names\" : \"division1\",\n" +
                 "  \"vlan\" : \"116\"\n" +
                 "}]";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 }

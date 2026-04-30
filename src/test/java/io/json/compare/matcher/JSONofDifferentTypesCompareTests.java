@@ -12,21 +12,21 @@ public class JSONofDifferentTypesCompareTests {
     public void compareObjectWithArray() {
         String expected = "{\"a\":\"!test\"}";
         String actual = "[\"a\",\"b\"]";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void compareArrayWithObject() {
         String expected = "[\"a\",\"b\"]";
         String actual = "{\"a\":\"!test\"}";
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void compareStrangeValues() {
         String expected = "\"1\"Fds\"\"";
         String actual = "1";
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> JSONCompare.assertNotMatches(expected, actual));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> JSONCompare.compare(expected, actual).assertNotMatches());
         assertTrue(exception.getMessage().contains("Invalid JSON"));
     }
 }

@@ -40,13 +40,13 @@ class JsonRealWorldDiffTests {
                         }
                 """;
 
-        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "\\Q$.caught\\E.*Expected value: false But got: true.*" +
                 "\\Q$.pain.range[1]\\E was not found.*\"blue\".*" +
                 "\\Q$.pain.range[2]\\E was not found.*-2059921070.*" +
                 "\\Q$.pain.not_anyone\\E was not found.*"));
-        JSONCompare.assertNotMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
 

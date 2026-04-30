@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -16,42 +17,42 @@ public class JSONValueNodeCompareTests {
     public void compareTextNodes() {
         TextNode expected = new TextNode("some val");
         TextNode actual = new TextNode("some val");
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void compareEmptyTextNodes() {
         TextNode expected = new TextNode("");
         TextNode actual = new TextNode("");
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void compareMissingNodes() {
         JsonNode expected = new ObjectMapper().missingNode();
         JsonNode actual = new ObjectMapper().missingNode();
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void compareMissingNodes_negative() {
         JsonNode expected = new ObjectMapper().missingNode();
         JsonNode actual = new TextNode("");
-        assertThrows(AssertionError.class, () -> JSONCompare.assertMatches(expected, actual));
+        assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
     }
 
     @Test
     public void compareStringWithTextNode() {
         String expectedAsString = "\"some val\"";
         TextNode actual = new TextNode("some val");
-        JSONCompare.assertMatches(expectedAsString, actual, null, null, null);
+        JSONCompare.compare(expectedAsString, actual).comparator(null).message(null).assertMatches();
     }
 
     @Test
     public void compareUnquotedStringWithTextNodeFails() {
         String expectedAsString = "some val";
         TextNode actual = new TextNode("some val");
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> JSONCompare.assertMatches(expectedAsString, actual));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> JSONCompare.compare(expectedAsString, actual).assertMatches());
         assertTrue(exception.getMessage().contains("Invalid JSON"));
     }
 
@@ -59,6 +60,6 @@ public class JSONValueNodeCompareTests {
     public void compareIntNodes() {
         IntNode expected = new IntNode(1000000);
         IntNode actual = new IntNode(1000000);
-        JSONCompare.assertMatches(expected, actual);
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 }
