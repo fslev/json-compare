@@ -828,4 +828,36 @@ public class JSONCompareModeTests {
         JSONCompare.compare(expected, actual).assertNotMatches();
         JSONCompare.compare(expected, actual).modes(CompareMode.REGEX_DISABLED).assertMatches();
     }
+
+    @Test
+    public void modesVarargsWithNoArgsBehavesAsNoMode() {
+        String expected = """
+                {
+                  "a": true
+                }
+                """;
+        String actual = """
+                {
+                  "a": true,
+                  "b": false
+                }
+                """;
+        JSONCompare.compare(expected, actual).modes().assertMatches();
+    }
+
+    @Test
+    public void modesVarargsWithNullArrayBehavesAsNoMode() {
+        String expected = """
+                {
+                  "a": true
+                }
+                """;
+        String actual = """
+                {
+                  "a": true,
+                  "b": false
+                }
+                """;
+        JSONCompare.compare(expected, actual).modes((CompareMode[]) null).assertMatches();
+    }
 }
