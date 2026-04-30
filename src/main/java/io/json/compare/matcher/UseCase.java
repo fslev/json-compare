@@ -29,10 +29,6 @@ enum UseCase {
         this.value = value;
     }
 
-    String getValue() {
-        return value;
-    }
-
     /**
      * Resolves the use-case for a JSON node. Non-textual nodes are always
      * {@link #MATCH} since the DSL markers only apply to strings.
@@ -111,7 +107,6 @@ enum UseCase {
 
     private static String removeEscapes(String value) {
         if (value.startsWith("\\" + DO_NOT_MATCH.value)
-                || value.equals("\\" + DO_NOT_MATCH_ANY.value)
                 || value.equals("\\" + MATCH_ANY.value)
                 || value.startsWith("\\" + JSON_PATH_EXP_PREFIX)) {
             return value.replaceFirst("\\\\", "");
