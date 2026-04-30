@@ -9,101 +9,140 @@ public class Issue6Test {
 
     @Test
     public void testIssue1() {
-        String expected = "[" +
-                "{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}," +
-                "{\n" +
-                "  \"name\" : \"!division1\",\n" +
-                "  \"vlan\" : \"!115\"\n" +
-                "}]";
-        String actual = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}, {" +
-                "  \"name\" : \"division2\",\n" +
-                "  \"vlan\" : \"117\"" +
-                "}]";
+        String expected = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "name": "!division1",
+                    "vlan": "!115"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "name": "division2",
+                    "vlan": "117"
+                  }
+                ]
+                """;
         JSONCompare.compare(expected, actual).assertMatches();
     }
 
 
     @Test
     public void testIssue1a() {
-        String expected = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}," +
-                "{\n" +
-                "  \"!name\" : \"division1\",\n" +
-                "  \"!vlan\" : \"115\"\n" +
-                "}]";
-        String actual = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}," +
-                "{\n" +
-                "  \"a\" : \"division2\",\n" +
-                "  \"b\" : \"114\"\n" +
-                "}]";
+        String expected = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "!name": "division1",
+                    "!vlan": "115"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "a": "division2",
+                    "b": "114"
+                  }
+                ]
+                """;
         JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void testIssue1a_negative() {
-        String expected = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}," +
-                "{\n" +
-                "  \"!name\" : \"division1\",\n" +
-                "  \"!vlan\" : \"115\"\n" +
-                "}]";
-        String actual = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}," +
-                "{\n" +
-                "  \"a\" : \"division2\",\n" +
-                "  \"vlan\" : \"114\"\n" +
-                "}]";
+        String expected = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "!name": "division1",
+                    "!vlan": "115"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "a": "division2",
+                    "vlan": "114"
+                  }
+                ]
+                """;
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void testIssue1_negative() {
-        String expected = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}," +
-                "{\n" +
-                "  \"!name\" : \"division1\",\n" +
-                "  \"!vlan\" : \"115\"\n" +
-                "}]";
-        String actual = "[{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}," +
-                "{\n" +
-                "  \"name\" : \"division1\",\n" +
-                "  \"vlan\" : \"115\"\n" +
-                "}]";
+        String expected = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "!name": "division1",
+                    "!vlan": "115"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "division1",
+                    "vlan": "116"
+                  },
+                  {
+                    "name": "division1",
+                    "vlan": "115"
+                  }
+                ]
+                """;
         assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
     }
 
 
     @Test
     public void testIssue2() {
-        String expected = "[" +
-                "{\n" +
-                "  \"!name\" : \"division1\",\n" +
-                "  \"!vlan\" : \"115\"\n" +
-                "}]";
-        String actual = "[{\n" +
-                "  \"names\" : \"division1\",\n" +
-                "  \"vlan\" : \"116\"\n" +
-                "}]";
+        String expected = """
+                [
+                  {
+                    "!name": "division1",
+                    "!vlan": "115"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "names": "division1",
+                    "vlan": "116"
+                  }
+                ]
+                """;
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
 }

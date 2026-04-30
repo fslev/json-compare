@@ -16,8 +16,22 @@ public class Issue13Test {
     @Test
     // Check for hint message from failed comparison of jsons with unintentional regexes
     public void compareJsonWithUnintentionalRegexAndDefaultComparator() {
-        String expected = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
-        String actual = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
+        String expected = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
         try {
             JSONCompare.compare(expected, actual).assertMatches();
         } catch (AssertionError e) {
@@ -34,8 +48,22 @@ public class Issue13Test {
     @Test
     // Check hint message is missing from failed comparison with custom comparator
     public void compareJsonWithUnintentionalRegexAndCustomComparator() {
-        String expected = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
-        String actual = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
+        String expected = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
         try {
             JSONCompare.compare(expected, actual).comparator(new CustomComparator(null)).assertMatches();
         } catch (AssertionError e) {

@@ -10,15 +10,33 @@ public class JSONofDifferentTypesCompareTests {
 
     @Test
     public void compareObjectWithArray() {
-        String expected = "{\"a\":\"!test\"}";
-        String actual = "[\"a\",\"b\"]";
+        String expected = """
+                {
+                  "a": "!test"
+                }
+                """;
+        String actual = """
+                [
+                  "a",
+                  "b"
+                ]
+                """;
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void compareArrayWithObject() {
-        String expected = "[\"a\",\"b\"]";
-        String actual = "{\"a\":\"!test\"}";
+        String expected = """
+                [
+                  "a",
+                  "b"
+                ]
+                """;
+        String actual = """
+                {
+                  "a": "!test"
+                }
+                """;
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
 

@@ -17,7 +17,16 @@ public class JSONConvertibleObjectsCompareTests {
 
     @Test
     public void compareMaps() {
-        String expected = "{\"a\":1,\"b\":[4,2,\"\\\\d+\"]}";
+        String expected = """
+                {
+                  "a": 1,
+                  "b": [
+                    4,
+                    2,
+                    "\\\\d+"
+                  ]
+                }
+                """;
         Map<String, Object> actual = new HashMap<>();
         actual.put("a", 1);
         actual.put("b", Arrays.asList(1, 2, 3, 4));

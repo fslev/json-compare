@@ -7,48 +7,52 @@ public class Issue12Test {
 
     @Test
     public void testNegation() {
-        String expected = "{\n" +
-                "    \"domainConnect\": {\n" +
-                "      \"ionos.com\": {\n" +
-                "        \"temporaryRedirectWithwww\": {\n" +
-                "          \"@\": {\n" +
-                "            \"startDate\": \"\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z\",\n" +
-                "            \"endDate\": \"\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z\"\n" +
-                "          },\n" +
-                "          \"host\": {\n" +
-                "            \"startDate\": \"\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z\",\n" +
-                "            \"!endDate\": \".*\"\n" +
-                "          }\n" +
-                "        },\n" +
-                "        \"frameRedirectWithwww\": {\n" +
-                "          \"@\": {\n" +
-                "            \"startDate\": \"\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z\",\n" +
-                "            \"!endDate\": \".*\"\n" +
-                "          }\n" +
-                "        }\n" +
-                "      }\n" +
-                "    }\n" +
-                "  }";
-        String actual = "{\n" +
-                "  \"domainConnect\" : {\n" +
-                "    \"ionos.com\" : {\n" +
-                "      \"temporaryRedirectWithwww\" : {\n" +
-                "        \"@\" : {\n" +
-                "          \"startDate\" : \"2020-04-21T09:56:18.960Z\",\n" +
-                "          \"endDate\" : \"2020-04-21T09:56:23.609Z\"\n" +
-                "        },\n" +
-                "        \"host\" : {\n" +
-                "          \"startDate\" : \"2020-04-21T09:56:18.960Z\"\n" +
-                "        }\n" +
-                "      },\n" +
-                "      \"frameRedirectWithwww\" : {\n" +
-                "        \"@\" : {\n" +
-                "          \"startDate\" : \"2020-04-21T09:56:23.576Z\"\n" +
-                "        }\n" +
-                "      }\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
+        String expected = """
+                {
+                  "domainConnect": {
+                    "ionos.com": {
+                      "temporaryRedirectWithwww": {
+                        "@": {
+                          "startDate": "\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z",
+                          "endDate": "\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z"
+                        },
+                        "host": {
+                          "startDate": "\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z",
+                          "!endDate": ".*"
+                        }
+                      },
+                      "frameRedirectWithwww": {
+                        "@": {
+                          "startDate": "\\\\d{4}-\\\\d{2}-\\\\d{2}T\\\\d{2}:\\\\d{2}:\\\\d{2}.\\\\d{3}Z",
+                          "!endDate": ".*"
+                        }
+                      }
+                    }
+                  }
+                }
+                """;
+        String actual = """
+                {
+                  "domainConnect": {
+                    "ionos.com": {
+                      "temporaryRedirectWithwww": {
+                        "@": {
+                          "startDate": "2020-04-21T09:56:18.960Z",
+                          "endDate": "2020-04-21T09:56:23.609Z"
+                        },
+                        "host": {
+                          "startDate": "2020-04-21T09:56:18.960Z"
+                        }
+                      },
+                      "frameRedirectWithwww": {
+                        "@": {
+                          "startDate": "2020-04-21T09:56:23.576Z"
+                        }
+                      }
+                    }
+                  }
+                }
+                """;
         JSONCompare.compare(expected, actual).assertMatches();
     }
 }

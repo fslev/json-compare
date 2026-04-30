@@ -13,12 +13,51 @@ class JsonCustomComparatorDiffTests {
 
     @Test
     void compareJsons() {
-        String expected = "{\"name\":\"test\",\"records\":[3]}";
-        String actual = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected = """
+                {
+                  "name": "test",
+                  "records": [
+                    3
+                  ]
+                }
+                """;
+        String actual = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         JSONCompare.compare(expected, actual).comparator(new CustomComparator()).assertMatches();
 
-        String expected1 = "{\"name\":\"test1\",\"records\":[3,4]}";
-        String actual1 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected1 = """
+                {
+                  "name": "test1",
+                  "records": [
+                    3,
+                    4
+                  ]
+                }
+                """;
+        String actual1 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).comparator(new CustomComparator()).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "\\Q$.name\\E.*Expected value: \"test1\" But got: \"test\".*" +
@@ -27,12 +66,56 @@ class JsonCustomComparatorDiffTests {
 
     @Test
     void compareJsonsWithCompareModes() {
-        String expected = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
-        String actual = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
+        String actual = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         JSONCompare.compare(expected, actual).comparator(new CustomComparator()).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches();
 
-        String expected1 = "{\"name\":\"test\",\"records\":[2,1]}";
-        String actual1 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected1 = """
+                {
+                  "name": "test",
+                  "records": [
+                    2,
+                    1
+                  ]
+                }
+                """;
+        String actual1 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).comparator(new CustomComparator()).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "\\Q$.records[0]\\E.*Expected value: 2 But got: 1.*" +
@@ -40,15 +123,56 @@ class JsonCustomComparatorDiffTests {
                 "\\Qrecords\\E -> Actual JSON ARRAY has extra elements.*" +
                 "\\Q$\\E -> Actual JSON OBJECT has extra fields.*"));
 
-        String expected2 = "{\"name\":\"test\",\"records\":[1,2]}";
-        String actual2 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected2 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2
+                  ]
+                }
+                """;
+        String actual2 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected2, actual2).comparator(new CustomComparator()).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "\\Q$.records\\E -> Actual JSON ARRAY has extra elements.*" +
                 "\\Q$\\E -> Actual JSON OBJECT has extra fields.*"));
 
-        String expected3 = "{\"name\":\"test\",\"records\":[1,2,3]}";
-        String actual3 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected3 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ]
+                }
+                """;
+        String actual3 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected3, actual3).comparator(new CustomComparator()).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$\\E -> Actual JSON OBJECT has extra fields.*"));
@@ -56,8 +180,34 @@ class JsonCustomComparatorDiffTests {
 
     @Test
     void compareJsonsWithUseCases() {
-        String expected = "{\"!name\":\"test\",\"records\":[1,2,3, \"!.*\"], \"otherRecords\":[4, \"!.*\"]}";
-        String actual = "{\"names\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected = """
+                {
+                  "!name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3,
+                    "!.*"
+                  ],
+                  "otherRecords": [
+                    4,
+                    "!.*"
+                  ]
+                }
+                """;
+        String actual = """
+                {
+                  "names": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         JSONCompare.compare(expected, actual).comparator(new CustomComparator()).assertMatches();
 
         expected = "{\"!name\":\"test\", \"records\":[1,2,3, \"!.*\"], \"otherRecords\":[4, \"!.*\"], \"!.*\":\".*\"}";
@@ -68,8 +218,38 @@ class JsonCustomComparatorDiffTests {
         actual = "{\"names\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
         JSONCompare.compare(expected, actual).comparator(new CustomComparator()).assertMatches();
 
-        String expected1 = "{\".*\":\"test\", \"records\":[1, \".*\", 3, \"!.*\"], \"otherRecords\":[4, \"!.*\"], \"!.*\":\".*\"}";
-        String actual1 = "{\"names\":\"test1\", \"records\":[2,1,4,3], \"otherRecords\":[1,2], \"another\":\"record\"}";
+        String expected1 = """
+                {
+                  ".*": "test",
+                  "records": [
+                    1,
+                    ".*",
+                    3,
+                    "!.*"
+                  ],
+                  "otherRecords": [
+                    4,
+                    "!.*"
+                  ],
+                  "!.*": ".*"
+                }
+                """;
+        String actual1 = """
+                {
+                  "names": "test1",
+                  "records": [
+                    2,
+                    1,
+                    4,
+                    3
+                  ],
+                  "otherRecords": [
+                    1,
+                    2
+                  ],
+                  "another": "record"
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).comparator(new CustomComparator()).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 8 DIFFERENCE.*" +
                 "\\Q$..*\\E.*Expected value: \"test\" But got: \"test1\".*" +
@@ -81,16 +261,80 @@ class JsonCustomComparatorDiffTests {
                 "\\Q$.otherRecords[1]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
                 "\\Q$.\"!.*\"\\E condition was not met. Actual JSON OBJECT has extra fields.*"));
 
-        String expected2 = "{\"name\":\"test\", \"records\":[1, \".*\", 3, 4, \".*\"], \"otherRecords\":[4, \"!.*\"], \".*\":\".*\"}";
-        String actual2 = "{\"names\":\"test1\", \"records\":[2,1,4,3], \"otherRecords\":[1,2, 4], \"another\":\"record\"}";
+        String expected2 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    ".*",
+                    3,
+                    4,
+                    ".*"
+                  ],
+                  "otherRecords": [
+                    4,
+                    "!.*"
+                  ],
+                  ".*": ".*"
+                }
+                """;
+        String actual2 = """
+                {
+                  "names": "test1",
+                  "records": [
+                    2,
+                    1,
+                    4,
+                    3
+                  ],
+                  "otherRecords": [
+                    1,
+                    2,
+                    4
+                  ],
+                  "another": "record"
+                }
+                """;
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected2, actual2).comparator(new CustomComparator()).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$.name\\E was not found.*" +
                 "\\Q$.records[4]\\E ->.*Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
                 "\\Q$.otherRecords[1]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
 
-        String expected3 = "{\"name\":\"test\", \"records\":[1, \".*\", 3, 4, \".*\"], \"otherRecords\":[4, 2, \"!.*\"], \".*\":\".*\"}";
-        String actual3 = "{\"name\":\"test\", \"records\":[2,1,5,4,3], \"otherRecords\":[2, 4]}";
+        String expected3 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    ".*",
+                    3,
+                    4,
+                    ".*"
+                  ],
+                  "otherRecords": [
+                    4,
+                    2,
+                    "!.*"
+                  ],
+                  ".*": ".*"
+                }
+                """;
+        String actual3 = """
+                {
+                  "name": "test",
+                  "records": [
+                    2,
+                    1,
+                    5,
+                    4,
+                    3
+                  ],
+                  "otherRecords": [
+                    2,
+                    4
+                  ]
+                }
+                """;
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected3, actual3).comparator(new CustomComparator()).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$..*\\E was not found.*"));
@@ -99,12 +343,56 @@ class JsonCustomComparatorDiffTests {
 
     @Test
     void compareJsonsWithRegexes() {
-        String expected = "{\"na.*\":\"test\",\"records\":[1,\"\\\\d+\",3], \"otherRecords\":[4]}";
-        String actual = "{\"na.*\":\"test\",\"records\":[\"\\\\d+\",3,1], \"otherRecords\":[4]}";
+        String expected = """
+                {
+                  "na.*": "test",
+                  "records": [
+                    1,
+                    "\\\\d+",
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
+        String actual = """
+                {
+                  "na.*": "test",
+                  "records": [
+                    "\\\\d+",
+                    3,
+                    1
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         JSONCompare.compare(expected, actual).comparator(new CustomComparator()).assertMatches();
 
-        String expected1 = "{\"na.*\":\"test\",\"records\":[2,\"\\\\d+\"]}";
-        String actual1 = "{\"name\":\"test\",\"records\":[1,2,3], \"otherRecords\":[4]}";
+        String expected1 = """
+                {
+                  "na.*": "test",
+                  "records": [
+                    2,
+                    "\\\\d+"
+                  ]
+                }
+                """;
+        String actual1 = """
+                {
+                  "name": "test",
+                  "records": [
+                    1,
+                    2,
+                    3
+                  ],
+                  "otherRecords": [
+                    4
+                  ]
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).comparator(new CustomComparator()).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "\\Q$.na.*\\E was not found.*" +

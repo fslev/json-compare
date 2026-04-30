@@ -12,8 +12,30 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForFor1ElementNotFoundDifference() {
-        String expected = "[\"a\",\"c\",1,2,true,false,12.091,null]";
-        String actual = "[\"a\",\"b\",1,2,true,false,12.091,null]";
+        String expected = """
+                [
+                  "a",
+                  "c",
+                  1,
+                  2,
+                  true,
+                  false,
+                  12.091,
+                  null
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  "b",
+                  1,
+                  2,
+                  true,
+                  false,
+                  12.091,
+                  null
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*\\Q$[1]\\E was not found.*\"c\".*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
@@ -21,8 +43,37 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForMultipleElementNotFoundDifferences() {
-        String expected = "[\"a\",\"c\",1,200,true,false,12.092,null,{\"lorem\":\"ipsum\"}]";
-        String actual = "[12.091,10,\"b\",1,\"a\",2,true,{\"lorem\":\"ipsum-updated\"},\"some text\",false]";
+        String expected = """
+                [
+                  "a",
+                  "c",
+                  1,
+                  200,
+                  true,
+                  false,
+                  12.092,
+                  null,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  12.091,
+                  10,
+                  "b",
+                  1,
+                  "a",
+                  2,
+                  true,
+                  {
+                    "lorem": "ipsum-updated"
+                  },
+                  "some text",
+                  false
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 5 DIFFERENCE.*" +
                 "\\Q$[1]\\E was not found.*\"c\".*" +
@@ -35,8 +86,25 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForOneMatchAnyDifferences() {
-        String expected = "[\"a\",\".*\",1,\".*\",\".*\"]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  "a",
+                  ".*",
+                  1,
+                  ".*",
+                  ".*"
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$[4]\\E -> Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*"));
@@ -45,8 +113,26 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForMultipleMatchAnyDifferences() {
-        String expected = "[\"a\",\".*\",1,\".*\",\".*\",\".*\"]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  "a",
+                  ".*",
+                  1,
+                  ".*",
+                  ".*",
+                  ".*"
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "\\Q$[4]\\E -> Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
@@ -54,8 +140,19 @@ class JsonArrayDiffTests {
         JSONCompare.compare(expected, actual).assertNotMatches();
 
         // empty actual json array
-        String expected1 = "[\"a\",\".*\",1,\".*test\",\".*\",\".*\"]";
-        String actual1 = "[]";
+        String expected1 = """
+                [
+                  "a",
+                  ".*",
+                  1,
+                  ".*test",
+                  ".*",
+                  ".*"
+                ]
+                """;
+        String actual1 = """
+                []
+                """;
         AssertionError error1 = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).assertMatches());
         assertTrue(error1.getMessage().matches("(?s).*FOUND 6 DIFFERENCE.*" +
                 "\\Q$[0]\\E was not found.*\"a\".*" +
@@ -69,8 +166,23 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForOneDoNotMatchDifferences() {
-        String expected = "[1,\"!a\",true]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  1,
+                  "!a",
+                  true
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$[1]\\E was found.*\"!a\".*"));
@@ -79,8 +191,26 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForMultipleDoNotMatchDifferences() {
-        String expected = "[{\"lorem\":\"ipsum\"},\"!1\",\"!a\",\"!true\"]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "!1",
+                  "!a",
+                  "!true"
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$[1]\\E was found.*\"!1\".*" +
@@ -91,8 +221,25 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForOneDoNotMatchAnyDifferences() {
-        String expected = "[{\"lorem\":\"ipsum\"},\"1\",\"!.*\"]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "1",
+                  "!.*"
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$[2]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
@@ -101,8 +248,27 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForMultipleDoNotMatchAnyDifferences() {
-        String expected = "[{\"lorem\":\"ipsum\"},\"!.*\",\"1\",\"!.*\",\"!.*\"]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "!.*",
+                  "1",
+                  "!.*",
+                  "!.*"
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$[1]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
@@ -113,8 +279,29 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForJsonStrictOrderDifferences() {
-        String expected = "[{\"lorem\":\"ipsum\"},\"!.*\",\"1\",{\"lorem2\":\"ipsum2\",\"lorem3\":\"ipsum3\"}]";
-        String actual = "[\"a\",true,1,{\"lorem2\":\"ipsum-updated\"}]";
+        String expected = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "!.*",
+                  "1",
+                  {
+                    "lorem2": "ipsum2",
+                    "lorem3": "ipsum3"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem2": "ipsum-updated"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "\\Q$[0]\\E -> Different JSON types: expected ObjectNode but got TextNode.*" +
@@ -126,8 +313,24 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForJsonNonExtensibleDifferences() {
-        String expected = "[{\"lorem\":\"ipsum\"},\"a\"]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "a"
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "Actual JSON ARRAY has extra elements.*"));
@@ -136,8 +339,26 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForJsonNonExtensibleAndOtherDifferences() {
-        String expected = "[{\"lorem\":\"ipsum\"},\"c\",\"!1\",true]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"}]";
+        String expected = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "c",
+                  "!1",
+                  true
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$[1]\\E was not found.*\"c\".*" +
@@ -145,8 +366,27 @@ class JsonArrayDiffTests {
                 "\\Q$\\E -> Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertNotMatches();
 
-        String expected1 = "[{\"lorem\":\"ipsum\"},\"c\",\"!1\",true]";
-        String actual1 = "[\"a\",true,1,{\"lorem\":\"ipsum\"},-10.02]";
+        String expected1 = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "c",
+                  "!1",
+                  true
+                ]
+                """;
+        String actual1 = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  },
+                  -10.02
+                ]
+                """;
         AssertionError error1 = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertMatches());
         assertTrue(error1.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$[1]\\E was not found.*\"c\".*" +
@@ -157,8 +397,27 @@ class JsonArrayDiffTests {
 
     @Test
     void compareJsonArraysAndCheckForJsonNonExtensibleAndAndJsonStrictOrderDifferences() {
-        String expected = "[{\"lorem\":\"ipsum\"},\"c\",\"!1\",true]";
-        String actual = "[\"a\",true,1,{\"lorem\":\"ipsum\"},-10.02]";
+        String expected = """
+                [
+                  {
+                    "lorem": "ipsum"
+                  },
+                  "c",
+                  "!1",
+                  true
+                ]
+                """;
+        String actual = """
+                [
+                  "a",
+                  true,
+                  1,
+                  {
+                    "lorem": "ipsum"
+                  },
+                  -10.02
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 5 DIFFERENCE.*" +
                 "\\Q$[0]\\E -> Different JSON types: expected ObjectNode but got TextNode.*" +

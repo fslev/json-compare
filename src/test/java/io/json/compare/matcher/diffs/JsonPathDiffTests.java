@@ -10,10 +10,57 @@ class JsonPathDiffTests {
 
     @Test
     void checkMultipleJsonPathDifferences() {
-        String expected = "{\"#($.a.length())\":3,\"b\":\"val1\",\"x\":{\"x1\":{\"y11\":{\"#($.www)\":\"lorem1\"}}},\"z\":[{\"#($.length())\":1}]," +
-                "\"u\":{\"#($.u1)\":{\"u11\":20209}}}";
-        String actual = "{\"z\":[2,3,4],\"x\":{\"x2\":290.11,\"x1\":{\"x11\":null,\"y11\":{\"a\":\"lorem2\"}}},\"b\":\"val2\",\"a\":[4,5]," +
-                "\"u\":{\"u1\":{\"u11\":20000}}}";
+        String expected = """
+                {
+                  "#($.a.length())": 3,
+                  "b": "val1",
+                  "x": {
+                    "x1": {
+                      "y11": {
+                        "#($.www)": "lorem1"
+                      }
+                    }
+                  },
+                  "z": [
+                    {
+                      "#($.length())": 1
+                    }
+                  ],
+                  "u": {
+                    "#($.u1)": {
+                      "u11": 20209
+                    }
+                  }
+                }
+                """;
+        String actual = """
+                {
+                  "z": [
+                    2,
+                    3,
+                    4
+                  ],
+                  "x": {
+                    "x2": 290.11,
+                    "x1": {
+                      "x11": null,
+                      "y11": {
+                        "a": "lorem2"
+                      }
+                    }
+                  },
+                  "b": "val2",
+                  "a": [
+                    4,
+                    5
+                  ],
+                  "u": {
+                    "u1": {
+                      "u11": 20000
+                    }
+                  }
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 5 DIFFERENCE.*" +
                 "\\Q$.#($.a.length())\\E.*Expected json path result.*" +
@@ -25,17 +72,82 @@ class JsonPathDiffTests {
                 "\\Qu.#($.u1).u11\\E.*Expected value: 20209 But got: 20000.*Expected json path result.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
 
-        String expected1 = "{\"#($.a.length())\":2,\"b\":\"val2\",\"x\":{\"x1\":{\"y11\":{\"#($.a)\":\"lorem2\"}}}," +
-                "\"u\":{\"#($.u1)\":{\"u11\":20000}}}";
-        String actual1 = "{\"x\":{\"x2\":290.11,\"x1\":{\"x11\":null,\"y11\":{\"a\":\"lorem2\"}}},\"b\":\"val2\",\"a\":[4,5]," +
-                "\"u\":{\"u1\":{\"u11\":20000}}}";
+        String expected1 = """
+                {
+                  "#($.a.length())": 2,
+                  "b": "val2",
+                  "x": {
+                    "x1": {
+                      "y11": {
+                        "#($.a)": "lorem2"
+                      }
+                    }
+                  },
+                  "u": {
+                    "#($.u1)": {
+                      "u11": 20000
+                    }
+                  }
+                }
+                """;
+        String actual1 = """
+                {
+                  "x": {
+                    "x2": 290.11,
+                    "x1": {
+                      "x11": null,
+                      "y11": {
+                        "a": "lorem2"
+                      }
+                    }
+                  },
+                  "b": "val2",
+                  "a": [
+                    4,
+                    5
+                  ],
+                  "u": {
+                    "u1": {
+                      "u11": 20000
+                    }
+                  }
+                }
+                """;
         JSONCompare.compare(expected1, actual1).assertMatches();
     }
 
     @Test
     void checkMultipleJsonPathDifferencesFromArray() {
-        String expected = "[false, {\"#($.length())\":1}, \"b\",{\"x\":{\"#($.length())\":2}}]";
-        String actual = "[\"b\",false,{\"x\":[1,2,5]}, {\"w\":\"yyyy\"}]";
+        String expected = """
+                [
+                  false,
+                  {
+                    "#($.length())": 1
+                  },
+                  "b",
+                  {
+                    "x": {
+                      "#($.length())": 2
+                    }
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  "b",
+                  false,
+                  {
+                    "x": [
+                      1,
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "w": "yyyy"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
                 "\\Q$.#($.length())\\E.*Expected json path result.*" +
@@ -43,23 +155,108 @@ class JsonPathDiffTests {
                 "\\Q$[3]\\E was not found:.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
 
-        String expected1 = "[false, {\"#($.length())\":1}, \"b\",{\"x\":{\"#($.length())\":3}}]";
-        String actual1 = "[\"b\",false,{\"x\":[1,2,5]}, {\"w\":\"yyyy\"}]";
+        String expected1 = """
+                [
+                  false,
+                  {
+                    "#($.length())": 1
+                  },
+                  "b",
+                  {
+                    "x": {
+                      "#($.length())": 3
+                    }
+                  }
+                ]
+                """;
+        String actual1 = """
+                [
+                  "b",
+                  false,
+                  {
+                    "x": [
+                      1,
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "w": "yyyy"
+                  }
+                ]
+                """;
         AssertionError error1 = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).assertMatches());
         assertTrue(error1.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$.#($.length())\\E.*Expected json path result.*" +
                 "1.*But got.*4.*"));
         JSONCompare.compare(expected1, actual1).assertNotMatches();
 
-        String expected2 = "[false, {\"#($.length())\":4}, \"b\",{\"x\":{\"#($.length())\":3}}]";
-        String actual2 = "[\"b\",false,{\"x\":[1,2,5]}, {\"w\":\"yyyy\"}]";
+        String expected2 = """
+                [
+                  false,
+                  {
+                    "#($.length())": 4
+                  },
+                  "b",
+                  {
+                    "x": {
+                      "#($.length())": 3
+                    }
+                  }
+                ]
+                """;
+        String actual2 = """
+                [
+                  "b",
+                  false,
+                  {
+                    "x": [
+                      1,
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "w": "yyyy"
+                  }
+                ]
+                """;
         JSONCompare.compare(expected2, actual2).assertMatches();
     }
 
     @Test
     void checkDoNotMatchAnyAndJsonPathsFromArray() {
-        String expected = "[false, {\"#($.length())\":1}, \"b\",{\"x\":{\"#($.length())\":2}}, \"!.*\"]";
-        String actual = "[\"b\",false,{\"x\":[1,2,5]}, {\"w\":\"yyyy\"}]";
+        String expected = """
+                [
+                  false,
+                  {
+                    "#($.length())": 1
+                  },
+                  "b",
+                  {
+                    "x": {
+                      "#($.length())": 2
+                    }
+                  },
+                  "!.*"
+                ]
+                """;
+        String actual = """
+                [
+                  "b",
+                  false,
+                  {
+                    "x": [
+                      1,
+                      2,
+                      5
+                    ]
+                  },
+                  {
+                    "w": "yyyy"
+                  }
+                ]
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$.#($.length())\\E.*" +
@@ -68,23 +265,72 @@ class JsonPathDiffTests {
                 "\\Q$[4]\\E -> Expected condition \"!.*\" was not met. Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
 
-        String expected1 = "[false, {\"#($.length())\":3}, \"b\",{\"x\":{\"#($.length())\":3}}, \"!.*\"]";
-        String actual1 = "[\"b\",false,{\"x\":[1,2,5]}]";
+        String expected1 = """
+                [
+                  false,
+                  {
+                    "#($.length())": 3
+                  },
+                  "b",
+                  {
+                    "x": {
+                      "#($.length())": 3
+                    }
+                  },
+                  "!.*"
+                ]
+                """;
+        String actual1 = """
+                [
+                  "b",
+                  false,
+                  {
+                    "x": [
+                      1,
+                      2,
+                      5
+                    ]
+                  }
+                ]
+                """;
         JSONCompare.compare(expected1, actual1).assertMatches();
     }
 
     @Test
     void checkDoNotMatchAnyAndJsonPathsFromObject() {
-        String expected = "{\"#($.length())\":2, \"b\":\"val1\", \"!.*\":\".*\"}";
-        String actual = "{\"b\":\"val1\", \"a\":\"val2\"}";
+        String expected = """
+                {
+                  "#($.length())": 2,
+                  "b": "val1",
+                  "!.*": ".*"
+                }
+                """;
+        String actual = """
+                {
+                  "b": "val1",
+                  "a": "val2"
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$.\"!.*\"\\E condition was not met. Actual JSON OBJECT has extra fields.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
 
 
-        String expected1 = "{\"#($.length())\":2, \"b\":\"val1\", \"!name\":\".*\", \"!.*\":\".*\"}";
-        String actual1 = "{\"b\":\"val1\", \"a\":\"val2\"}";
+        String expected1 = """
+                {
+                  "#($.length())": 2,
+                  "b": "val1",
+                  "!name": ".*",
+                  "!.*": ".*"
+                }
+                """;
+        String actual1 = """
+                {
+                  "b": "val1",
+                  "a": "val2"
+                }
+                """;
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
                 "\\Q$.\"!.*\"\\E condition was not met. Actual JSON OBJECT has extra fields.*"));

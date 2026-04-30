@@ -10,8 +10,16 @@ public class JsonValueDiffTests {
 
     @Test
     public void compareNulls() {
-        String expected = "{\"a\":null}";
-        String actual = "{\"a\":\"null\"}";
+        String expected = """
+                {
+                  "a": null
+                }
+                """;
+        String actual = """
+                {
+                  "a": "null"
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*\\Q$.a\\E.*Expected null:  But got: \"null\".*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
@@ -19,8 +27,16 @@ public class JsonValueDiffTests {
 
     @Test
     public void compareBooleans() {
-        String expected = "{\"a\":false}";
-        String actual = "{\"a\":\"false\"}";
+        String expected = """
+                {
+                  "a": false
+                }
+                """;
+        String actual = """
+                {
+                  "a": "false"
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*\\Q$.a\\E.*Expected boolean: false But got: \"false\".*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
@@ -28,8 +44,16 @@ public class JsonValueDiffTests {
 
     @Test
     public void compareNumbers() {
-        String expected = "{\"a\":2}";
-        String actual = "{\"a\":\"2\"}";
+        String expected = """
+                {
+                  "a": 2
+                }
+                """;
+        String actual = """
+                {
+                  "a": "2"
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*\\Q$.a\\E.*Expected number: 2 But got: \"2\".*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
@@ -37,8 +61,28 @@ public class JsonValueDiffTests {
 
     @Test
     public void compareAll() {
-        String expected = "{\"a\":null,\"b\":1,\"c\":false,\"d\":\"false\",\"e\":\"text\",\"f\":13432.543,\"f1\":13432.543}";
-        String actual = "{\"a\":\"null\",\"b\":\"1\",\"c\":\"false\",\"d\":false,\"e\":false,\"f\":13432.543,\"f1\":\"13432.543\"}";
+        String expected = """
+                {
+                  "a": null,
+                  "b": 1,
+                  "c": false,
+                  "d": "false",
+                  "e": "text",
+                  "f": 13432.543,
+                  "f1": 13432.543
+                }
+                """;
+        String actual = """
+                {
+                  "a": "null",
+                  "b": "1",
+                  "c": "false",
+                  "d": false,
+                  "e": false,
+                  "f": 13432.543,
+                  "f1": "13432.543"
+                }
+                """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 5 DIFFERENCE.*" +
                 "\\Q$.a\\E.*Expected null:  But got: \"null\".*" +
@@ -51,8 +95,28 @@ public class JsonValueDiffTests {
 
     @Test
     public void compareAll_positive() {
-        String expected = "{\"a\":null,\"b\":1,\"c\":false,\"d\":\"false\",\"e\":\"text\",\"f\":13432.543,\"f1\":13430.143}";
-        String actual = "{\"a\":null,\"b\":1,\"c\":false,\"d\":false,\"e\":\"text\",\"f\":13432.543,\"f1\":13430.143}";
+        String expected = """
+                {
+                  "a": null,
+                  "b": 1,
+                  "c": false,
+                  "d": "false",
+                  "e": "text",
+                  "f": 13432.543,
+                  "f1": 13430.143
+                }
+                """;
+        String actual = """
+                {
+                  "a": null,
+                  "b": 1,
+                  "c": false,
+                  "d": false,
+                  "e": "text",
+                  "f": 13432.543,
+                  "f1": 13430.143
+                }
+                """;
         JSONCompare.compare(expected, actual).assertMatches();
     }
 }
