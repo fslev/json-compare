@@ -1,5 +1,6 @@
 package io.json.compare.matcher;
 
+import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
@@ -533,5 +534,20 @@ public class JSONUseCaseCompareTests {
                 ]
                 """;
         JSONCompare.compare(expected, actual).assertMatches();
+    }
+
+    @Test
+    public void compareEscapedJsonPathLikeValue() {
+        String expected = """
+                {
+                  "a": "\\\\#(literal)"
+                }
+                """;
+        String actual = """
+                {
+                  "a": "#(literal)"
+                }
+                """;
+        JSONCompare.compare(expected, actual).modes(CompareMode.REGEX_DISABLED).assertMatches();
     }
 }
