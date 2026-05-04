@@ -1,6 +1,6 @@
 # Changelog
 
-## 8.0 (unreleased)
+## 8.0 (2026-05-04)
 - #### Added
   - New fluent builder API: `JSONCompare.compare(expected, actual).modes(...).comparator(...).message(...).assertMatches()`
 - #### Changed
