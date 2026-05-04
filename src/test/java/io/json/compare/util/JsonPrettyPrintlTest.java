@@ -12,9 +12,11 @@ public class JsonPrettyPrintlTest {
 
     @Test
     public void testPrettyPrint() {
-        String expected = "{\n" +
-                "  \"a\" : \"test\"\n" +
-                "}";
+        String expected = """
+                {
+                  "a" : "test"
+                }\
+                """;
         assertEquals(expected, JSONCompare.prettyPrint(new ObjectMapper().createObjectNode().set("a", new TextNode("test"))));
     }
 

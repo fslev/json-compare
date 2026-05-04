@@ -7,181 +7,181 @@ public class JSONMixedCompareTests {
 
     @Test
     public void compareSimple() {
-        String expected = "" +
-                "{\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"c\": [\n" +
-                "    1,\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    \"text\",\n" +
-                "    {\n" +
-                "      \"c1\": \"some text\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"g\": \"\"\n" +
-                "}" +
-                "";
-        String actual = "" +
-                "{\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"c\": [\n" +
-                "    \"text\",\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    1,\n" +
-                "    {\n" +
-                "      \"c2\": \"some other text\",\n" +
-                "      \"c1\": \"some text\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"g\": \"\",\n" +
-                "  \"h\": \"text again\"\n" +
-                "}" +
-                "";
-        JSONCompare.assertMatches(expected, actual);
+        String expected = """
+                {
+                  "a": "val1",
+                  "b": "val2",
+                  "c": [
+                    1,
+                    null,
+                    true,
+                    "text",
+                    {
+                      "c1": "some text"
+                    }
+                  ],
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "g": ""
+                }
+                """;
+        String actual = """
+                {
+                  "b": "val2",
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "c": [
+                    "text",
+                    null,
+                    true,
+                    1,
+                    {
+                      "c2": "some other text",
+                      "c1": "some text"
+                    }
+                  ],
+                  "a": "val1",
+                  "g": "",
+                  "h": "text again"
+                }
+                """;
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void compareSimple_negative() {
-        String expected = "" +
-                "{\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"c\": [\n" +
-                "    1,\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    \"text\",\n" +
-                "    {\n" +
-                "      \"c1\": \"some text\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"g\": \"\"\n" +
-                "}" +
-                "";
-        String actual = "" +
-                "{\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"c\": [\n" +
-                "    \"text\",\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    1,\n" +
-                "    {\n" +
-                "      \"c2\": \"some other text\",\n" +
-                "      \"c1\": \"DIFFERS HERE\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"g\": \"\",\n" +
-                "  \"h\": \"text again\"\n" +
-                "}" +
-                "";
-        JSONCompare.assertNotMatches(expected, actual);
+        String expected = """
+                {
+                  "a": "val1",
+                  "b": "val2",
+                  "c": [
+                    1,
+                    null,
+                    true,
+                    "text",
+                    {
+                      "c1": "some text"
+                    }
+                  ],
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "g": ""
+                }
+                """;
+        String actual = """
+                {
+                  "b": "val2",
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "c": [
+                    "text",
+                    null,
+                    true,
+                    1,
+                    {
+                      "c2": "some other text",
+                      "c1": "DIFFERS HERE"
+                    }
+                  ],
+                  "a": "val1",
+                  "g": "",
+                  "h": "text again"
+                }
+                """;
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
     @Test
     public void compareSimpleViaDoNotFindUseCase() {
-        String expected = "" +
-                "{\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"c\": [\n" +
-                "    1,\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    \"text\",\n" +
-                "    {\n" +
-                "      \"c1\": \"some text\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"!field\": \"DON'T CARE ABOUT THE VALUE HERE\"\n" +
-                "}" +
-                "";
-        String actual = "" +
-                "{\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"c\": [\n" +
-                "    \"text\",\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    1,\n" +
-                "    {\n" +
-                "      \"c2\": \"some other text\",\n" +
-                "      \"c1\": \"some text\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"g\": \"\",\n" +
-                "  \"h\": \"text again\"\n" +
-                "}" +
-                "";
-        JSONCompare.assertMatches(expected, actual);
+        String expected = """
+                {
+                  "a": "val1",
+                  "b": "val2",
+                  "c": [
+                    1,
+                    null,
+                    true,
+                    "text",
+                    {
+                      "c1": "some text"
+                    }
+                  ],
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "!field": "DON'T CARE ABOUT THE VALUE HERE"
+                }
+                """;
+        String actual = """
+                {
+                  "b": "val2",
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "c": [
+                    "text",
+                    null,
+                    true,
+                    1,
+                    {
+                      "c2": "some other text",
+                      "c1": "some text"
+                    }
+                  ],
+                  "a": "val1",
+                  "g": "",
+                  "h": "text again"
+                }
+                """;
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void compareSimpleViaDoNotFindUseCase_negative() {
-        String expected = "" +
-                "{\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"c\": [\n" +
-                "    1,\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    \"text\",\n" +
-                "    {\n" +
-                "      \"c1\": \"some text\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"!h\": \"DON'T CARE ABOUT THE VALUE HERE\"\n" +
-                "}" +
-                "";
-        String actual = "" +
-                "{\n" +
-                "  \"b\": \"val2\",\n" +
-                "  \"d\": true,\n" +
-                "  \"e\": 1024,\n" +
-                "  \"f\": null,\n" +
-                "  \"c\": [\n" +
-                "    \"text\",\n" +
-                "    null,\n" +
-                "    true,\n" +
-                "    1,\n" +
-                "    {\n" +
-                "      \"c2\": \"some other text\",\n" +
-                "      \"c1\": \"some text\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"a\": \"val1\",\n" +
-                "  \"g\": \"\",\n" +
-                "  \"h\": \"text again\"\n" +
-                "}" +
-                "";
-        JSONCompare.assertNotMatches(expected, actual);
+        String expected = """
+                {
+                  "a": "val1",
+                  "b": "val2",
+                  "c": [
+                    1,
+                    null,
+                    true,
+                    "text",
+                    {
+                      "c1": "some text"
+                    }
+                  ],
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "!h": "DON'T CARE ABOUT THE VALUE HERE"
+                }
+                """;
+        String actual = """
+                {
+                  "b": "val2",
+                  "d": true,
+                  "e": 1024,
+                  "f": null,
+                  "c": [
+                    "text",
+                    null,
+                    true,
+                    1,
+                    {
+                      "c2": "some other text",
+                      "c1": "some text"
+                    }
+                  ],
+                  "a": "val1",
+                  "g": "",
+                  "h": "text again"
+                }
+                """;
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 }

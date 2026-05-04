@@ -1,7 +1,5 @@
 package io.json.compare.matcher;
 
-import com.fasterxml.jackson.core.StreamReadConstraints;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
@@ -17,12 +15,7 @@ import java.util.Set;
 
 class JsonPathMatcher extends AbstractJsonMatcher {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper().enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS);
-
-    static {
-        MAPPER.getFactory().setStreamReadConstraints(StreamReadConstraints.builder()
-                .maxNestingDepth(Integer.MAX_VALUE).maxNumberLength(Integer.MAX_VALUE).maxStringLength(Integer.MAX_VALUE).build());
-    }
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final ParseContext PARSE_CONTEXT = JsonPath.using(new Configuration.ConfigurationBuilder()
             .jsonProvider(new JacksonJsonNodeJsonProvider()).build());
@@ -36,12 +29,14 @@ class JsonPathMatcher extends AbstractJsonMatcher {
 
     @Override
     public List<String> match() {
-        List<String> diffs = new ArrayList<>();
         JsonNode result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
         List<String> jsonPathDiffs = new JsonMatcher(expected, result, comparator, compareModes).match();
-        jsonPathDiffs.forEach(diff -> diffs.add(String.format("." + JSON_PATH_EXP_PREFIX + "%s" + JSON_PATH_EXP_SUFFIX + "%s" + System.lineSeparator() + "Expected json path result:" +
-                        System.lineSeparator() + "%s" + System.lineSeparator() + "But got:" + System.lineSeparator() + "%s" + System.lineSeparator(),
-                jsonPath, diff, expected, result)));
+        List<String> diffs = new ArrayList<>(jsonPathDiffs.size());
+        for (String diff : jsonPathDiffs) {
+            diffs.add("." + UseCase.JSON_PATH_EXP_PREFIX + jsonPath + UseCase.JSON_PATH_EXP_SUFFIX + diff
+                    + LS + "Expected json path result:" + LS + expected
+                    + LS + "But got:" + LS + result + LS);
+        }
         return diffs;
     }
 }

@@ -7,16 +7,54 @@ public class Issue9Test {
 
     @Test
     public void testJsonsDoNotMatchNegativelook() {
-        String expected = "{\"records\":[ {\"a\":\".((?!0).)*\"} ]}";
-        String actual = "{\"records\":[ {\"b\":\"2\"}, {\"a\":\"s1s\"} ]}";
-        JSONCompare.assertMatches(expected, actual);
+        String expected = """
+                {
+                  "records": [
+                    {
+                      "a": ".((?!0).)*"
+                    }
+                  ]
+                }
+                """;
+        String actual = """
+                {
+                  "records": [
+                    {
+                      "b": "2"
+                    },
+                    {
+                      "a": "s1s"
+                    }
+                  ]
+                }
+                """;
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 
     @Test
     public void testJsonsDoNotMatchNegativelook_negative() {
-        String expected = "{\"records\":[ {\"a\":\".((?!0).)*\"} ]}";
-        String actual = "{\"records\":[ {\"b\":\"2\"}, {\"a\":\"s0s\"} ]}";
-        JSONCompare.assertNotMatches(expected, actual);
+        String expected = """
+                {
+                  "records": [
+                    {
+                      "a": ".((?!0).)*"
+                    }
+                  ]
+                }
+                """;
+        String actual = """
+                {
+                  "records": [
+                    {
+                      "b": "2"
+                    },
+                    {
+                      "a": "s0s"
+                    }
+                  ]
+                }
+                """;
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
 }

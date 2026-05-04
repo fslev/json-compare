@@ -16,15 +16,29 @@ public class Issue13Test {
     @Test
     // Check for hint message from failed comparison of jsons with unintentional regexes
     public void compareJsonWithUnintentionalRegexAndDefaultComparator() {
-        String expected = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
-        String actual = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
+        String expected = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
         try {
-            JSONCompare.assertMatches(expected, actual);
+            JSONCompare.compare(expected, actual).assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("unintentional regexes"));
         }
         try {
-            JSONCompare.assertMatches(expected, actual, new DefaultJsonComparator(null));
+            JSONCompare.compare(expected, actual).comparator(new DefaultJsonComparator(null)).assertMatches();
         } catch (AssertionError e) {
             assertTrue(e.getMessage().contains("unintentional regexes"));
             assertTrue(e.getMessage().contains("disabling case-sensitivity"));
@@ -34,10 +48,24 @@ public class Issue13Test {
     @Test
     // Check hint message is missing from failed comparison with custom comparator
     public void compareJsonWithUnintentionalRegexAndCustomComparator() {
-        String expected = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
-        String actual = "[{ \"name\" : \"someText (anotherText)\", \"code\" : \"oneMoreText\" }]";
+        String expected = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
+        String actual = """
+                [
+                  {
+                    "name": "someText (anotherText)",
+                    "code": "oneMoreText"
+                  }
+                ]
+                """;
         try {
-            JSONCompare.assertMatches(expected, actual, new CustomComparator(null));
+            JSONCompare.compare(expected, actual).comparator(new CustomComparator(null)).assertMatches();
         } catch (AssertionError e) {
             assertFalse(e.getMessage().contains("unintentional regexes"));
             assertFalse(e.getMessage().contains("disabling case-sensitivity"));
