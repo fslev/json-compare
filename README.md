@@ -12,7 +12,7 @@ order are ignored, scalar values are matched as Java regular expressions, and
 match logic can be tuned with operators (`!`, `!.*`, `.*`, `#(...)`) embedded
 directly inside the expected JSON.
 
-## Features
+## 1. Features
 
 - Fluent builder API: `JSONCompare.compare(expected, actual).modes(...).assertMatches()`
 - Accepts any JSON-convertible input: `JsonNode`, JSON `String`, `Map`, `List`, POJO
@@ -23,11 +23,11 @@ directly inside the expected JSON.
 - Pluggable `JsonComparator` for custom field/value matching strategies
 - Throws `org.opentest4j.AssertionFailedError` — works with JUnit 5, TestNG, and any opentest4j-aware runner
 
-## Requirements
+## 2. Requirements
 
 - Java 17 or later
 
-## Installation
+## 3. Installation
 
 Maven:
 
@@ -45,7 +45,7 @@ Gradle:
 testImplementation 'com.github.fslev:json-compare:<version.from.maven.central>'
 ```
 
-## Quickstart
+## 4. Quickstart
 
 ```java
 String expected = """
@@ -87,7 +87,7 @@ String expected = """
 JSONCompare.compare(expected, actualMap).assertMatches(); // passes
 ```
 
-## API
+## 5. API
 
 The fluent builder is the only entry point. Configuration methods return
 `this`; the comparison runs only when a terminal method is invoked.
@@ -105,7 +105,7 @@ The static `JSONCompare.assertMatches(...)` / `assertNotMatches(...)` /
 `diffs(...)` overloads still work but are deprecated since 8.0; they delegate
 to the builder.
 
-## Compare modes
+## 6. Compare modes
 
 By default, expected JSON only has to be a *subset* of actual — extra fields
 and array elements are tolerated and array order is ignored. The
@@ -136,7 +136,7 @@ JSONCompare.compare(expected, actual)
         .assertNotMatches();                                                            // passes (order differs)
 ```
 
-## Regex matching
+## 7. Regex matching
 
 Expected scalar values and field names are interpreted as Java regular
 expressions (with `DOTALL | MULTILINE`). Patterns that fail to compile fall
@@ -171,7 +171,7 @@ JSONCompare.compare(expected, actual)
         .assertMatches();
 ```
 
-## Embedded match tweaks
+## 8. Embedded match tweaks
 
 Match logic can be embedded directly inside the expected JSON, so assertions
 can express conditions without writing any matcher code:
@@ -183,7 +183,7 @@ can express conditions without writing any matcher code:
 | `.*`           | **MATCH ANY** — actual MUST have at least one extra field/item |
 | `#(<jsonpath>)`| Apply a JSONPath query and match the result against the value  |
 
-### Negation — `!`
+### 8.1 Negation — `!`
 
 ```java
 JSONCompare.compare("""{ "a": "!test" }""", """{ "a": "testing" }""")
@@ -196,7 +196,7 @@ JSONCompare.compare("""{ "!a": "value does not matter" }""", """{ "b": "anything
 When negating a field name, the value side is ignored: it asserts only that
 no actual field with the given name exists at that level.
 
-### Forbid extras — `!.*`
+### 8.2 Forbid extras — `!.*`
 
 ```java
 String expected = """{ "b": "val1", "!.*": ".*" }""";
@@ -210,7 +210,7 @@ String actual   = """[ 4, false, "test", 1 ]""";
 JSONCompare.compare(expected, actual).assertNotMatches();                                // actual has an extra element
 ```
 
-### Require extras — `.*`
+### 8.3 Require extras — `.*`
 
 ```java
 String expected = """{ "b": "val1", ".*": ".*" }""";
@@ -218,7 +218,7 @@ String actual   = """{ "b": "val1" }""";
 JSONCompare.compare(expected, actual).assertNotMatches();                                // actual has NO extra fields
 ```
 
-### JSONPath — `#(...)`
+### 8.4 JSONPath — `#(...)`
 
 A field whose name has the form `#(<jsonpath>)` runs the path against actual
 and matches the result against the field's value:
@@ -236,7 +236,7 @@ JSONCompare.compare(expected, actual).assertMatches();
 The example asserts the store contains exactly two specific ISBNs — the
 trailing `"!.*"` forbids any further results.
 
-## Differences
+## 9. Differences
 
 Matching is soft: every mismatch is collected, then reported together.
 
@@ -268,11 +268,11 @@ $.pain.not_anyone was not found
 Add a custom note with `.message("…")` — it is appended to the failure
 output.
 
-## Related
+## 10. Related
 
 - [JTest-Utils](https://github.com/fslev/jtest-utils) — uses json-compare and
   adds data capture support.
 
-## License
+## 11. License
 
 Released under the [Apache License 2.0](LICENSE).
