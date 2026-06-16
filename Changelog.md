@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.1 (2026-06-16)
+- #### Changed
+  - Replaced `org.opentest4j:opentest4j` with JUnit Jupiter's `AssertionFailureBuilder` for throwing assertion failures; `junit-jupiter-api` is back on the main classpath (no longer test-scoped)
+
 ## 8.0 (2025-05-04)
 - #### Added
   - New fluent builder API: `JSONCompare.compare(expected, actual).modes(...).comparator(...).message(...).assertMatches()`
