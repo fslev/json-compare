@@ -3,7 +3,7 @@ package io.json.compare;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.matcher.JsonMatcher;
 import io.json.compare.util.JsonUtils;
-import org.opentest4j.AssertionFailedError;
+import org.junit.jupiter.api.AssertionFailureBuilder;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -97,7 +97,11 @@ public final class ComparisonBuilder {
         }
         String defaultMessage = buildFailureMessage(diffs);
         String finalMessage = message == null ? defaultMessage : defaultMessage + LS + message;
-        throw new AssertionFailedError(finalMessage, prettyPrint(expectedJson), prettyPrint(actualJson));
+        AssertionFailureBuilder.assertionFailure()
+                .message(finalMessage)
+                .expected(prettyPrint(expectedJson))
+                .actual(prettyPrint(actualJson))
+                .buildAndThrow();
     }
 
     /**
@@ -113,7 +117,11 @@ public final class ComparisonBuilder {
         }
         String defaultMessage = LS + "JSONs are equal";
         String finalMessage = message == null ? defaultMessage : defaultMessage + LS + message;
-        throw new AssertionFailedError(finalMessage, prettyPrint(expectedJson), prettyPrint(actualJson));
+        AssertionFailureBuilder.assertionFailure()
+                .message(finalMessage)
+                .expected(prettyPrint(expectedJson))
+                .actual(prettyPrint(actualJson))
+                .buildAndThrow();
     }
 
     /**
