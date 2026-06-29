@@ -20,6 +20,12 @@ public class JsonUtilsTest {
     }
 
     @Test
+    public void toJsonWithJsonNodeReturnsSameInstance() throws IOException {
+        com.fasterxml.jackson.databind.JsonNode node = JsonUtils.toJson("{\"x\":42}");
+        assertSame(node, JsonUtils.toJson(node));
+    }
+
+    @Test
     public void convertObjectToJson() throws IOException {
         Map<String, Integer> map = new HashMap<>();
         map.put("a", 2);
