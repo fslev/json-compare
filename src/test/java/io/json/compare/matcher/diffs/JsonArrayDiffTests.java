@@ -4,7 +4,9 @@ import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -426,5 +428,153 @@ class JsonArrayDiffTests {
                 "\\Q$[3]\\E.*Different JSON types: expected BooleanNode but got ObjectNode.*" +
                 "\\Q$\\E -> Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertNotMatches();
+    }
+
+    @Test
+    void notFoundObjectShowsClosestUnmatchedElementAndItsDifferences() {
+        String expected = """
+                [
+                  { "id": 3, "name": "Carol", "role": "admin", "active": true }
+                ]
+                """;
+        String actual = """
+                [
+                  { "id": 1, "name": "Alice", "role": "dev", "active": true },
+                  { "id": 2, "name": "Bob", "role": "dev", "active": false },
+                  { "id": 3, "name": "Carol", "role": "dev", "active": true },
+                  { "id": 4, "name": "Dave", "role": "admin", "active": false }
+                ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
+                "\\RClosest unmatched actual element \\[2] differs by:" +
+                "\\R  - \\Q.role\\E" +
+                "\\R    Expected value: \"admin\" But got: \"dev\""), diffs.get(0));
+    }
+
+    @Test
+    void notFoundNestedObjectShowsClosestElementAtEachLevel() {
+        String expected = """
+                [
+                  { "order": 7, "items": [ { "sku": "A-1", "qty": 2 } ] }
+                ]
+                """;
+        String actual = """
+                [
+                  { "order": 5, "items": [ { "sku": "C-3", "qty": 9 } ] },
+                  { "order": 7, "items": [ { "sku": "A-1", "qty": 3 }, { "sku": "B-2", "qty": 1 } ] }
+                ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
+                "\\RClosest unmatched actual element \\[1] differs by:" +
+                "\\R  - \\Q.items[0]\\E was not found:" +
+                "\\R    \\{.*}" +
+                "\\R    Closest unmatched actual element \\[0] differs by:" +
+                "\\R      - \\Q.qty\\E" +
+                "\\R        Expected value: 2 But got: 3"), diffs.get(0));
+    }
+
+    @Test
+    void notFoundScalarHasNoClosestElementHint() {
+        String expected = """
+                [ "a", "c" ]
+                """;
+        String actual = """
+                [ "a", "b", "d" ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("\\Q$[1]\\E was not found:\\R\"c\""), diffs.get(0));
+    }
+
+    @Test
+    void notFoundObjectIgnoresCandidatesOfOtherTypes() {
+        String expected = """
+                [ "x", { "id": 1 } ]
+                """;
+        String actual = """
+                [ "x", "id", 1, [ 1 ] ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("\\Q$[1]\\E was not found:\\R\\{\\R  \"id\" : 1\\R}"), diffs.get(0));
+    }
+
+    @Test
+    void notFoundObjectPrefersLowestIndexWhenCandidatesAreEquallyClose() {
+        String expected = """
+                [ { "a": 1, "b": 2 } ]
+                """;
+        String actual = """
+                [ { "a": 1, "b": 3 }, { "a": 0, "b": 2 } ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
+                "\\RClosest unmatched actual element \\[0] differs by:" +
+                "\\R  - \\Q.b\\E" +
+                "\\R    Expected value: 2 But got: 3"), diffs.get(0));
+    }
+
+    @Test
+    void notFoundObjectAlsoShowsClosestElementMatchedByAnotherExpectedElement() {
+        String expected = """
+                [
+                  { "status": "INACTIVE" },
+                  { "id": ".*" },
+                  { "id": 7, "status": "ACTIVE" }
+                ]
+                """;
+        String actual = """
+                [
+                  { "id": 9, "status": "CLOSED" },
+                  { "id": 7, "status": "INACTIVE" },
+                  { "id": 8, "status": "PENDING" }
+                ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("(?s)\\Q$[2]\\E was not found:.*}" +
+                "\\RClosest unmatched actual element \\[2] differs by:" +
+                "\\R  - \\Q.id\\E" +
+                "\\R    Expected value: 7 But got: 8" +
+                "\\R  - \\Q.status\\E" +
+                "\\R    Expected value: \"ACTIVE\" But got: \"PENDING\"" +
+                "\\RClosest matched actual element \\[1] \\(matched by expected \\[0]\\) differs by:" +
+                "\\R  - \\Q.status\\E" +
+                "\\R    Expected value: \"ACTIVE\" But got: \"INACTIVE\""), diffs.get(0));
+    }
+
+    @Test
+    void notFoundObjectShowsElementAlreadyMatchedByLooserExpectedElementWouldMatch() {
+        String expected = """
+                [ { "id": ".*" }, { "id": 7 } ]
+                """;
+        String actual = """
+                [ { "id": 7 }, { "id": 8 } ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("(?s)\\Q$[1]\\E was not found:.*}" +
+                "\\RClosest unmatched actual element \\[1] differs by:" +
+                "\\R  - \\Q.id\\E" +
+                "\\R    Expected value: 7 But got: 8" +
+                "\\RClosest matched actual element \\[0] \\(matched by expected \\[0]\\) would match"), diffs.get(0));
+    }
+
+    @Test
+    void notFoundObjectInStrictOrderHasNoClosestMatchedElementHint() {
+        String expected = """
+                [ { "a": 1 }, { "a": 1 } ]
+                """;
+        String actual = """
+                [ { "a": 1 } ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_STRICT_ORDER).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("\\Q$[1]\\E was not found:\\R\\{\\R  \"a\" : 1\\R}"), diffs.get(0));
     }
 }

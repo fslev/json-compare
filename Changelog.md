@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.2 (unreleased)
+- #### Changed
+  - When an expected JSON object or array inside an array is not found, the diff now also shows the closest actual elements and their differences: the closest one that is still unmatched, and the closest one already matched by another expected element (reported as `would match` when it has no differences)
+
 ## 8.1 (2026-06-16)
 - #### Changed
   - Replaced `org.opentest4j:opentest4j` with JUnit Jupiter's `AssertionFailureBuilder` for throwing assertion failures; `junit-jupiter-api` is back on the main classpath (no longer test-scoped)

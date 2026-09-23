@@ -265,6 +265,29 @@ _________________________DIFF__________________________
 $.pain.not_anyone was not found
 ```
 
+When an expected object or array inside an array is not found, the diff also
+shows the closest actual elements and how they differ. One is the closest
+element that is still unmatched. The other is the closest element already
+matched by another expected element, since a looser expected element may have
+matched it first:
+
+```
+$[1] was not found:
+{
+  "id" : 42,
+  "name" : "Alice",
+  "zip" : "10115"
+}
+Closest unmatched actual element [1] differs by:
+  - .id
+    Expected value: 42 But got: 43
+  - .name
+    Expected value: "Alice" But got: "Carol"
+Closest matched actual element [0] (matched by expected [0]) differs by:
+  - .zip
+    Expected value: "10115" But got: "10117"
+```
+
 Add a custom note with `.message("…")` — it is appended to the failure
 output.
 
