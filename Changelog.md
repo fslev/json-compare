@@ -1,6 +1,6 @@
 # Changelog
 
-## 8.2 (unreleased)
+## 8.2 (2026-09-23)
 - #### Changed
   - When an expected JSON object or array inside an array is not found, the diff now also shows the closest actual elements and their differences: the closest one that is still unmatched, and the closest one already matched by another expected element (reported as `would match` when it has no differences)
 
