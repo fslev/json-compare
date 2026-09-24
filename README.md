@@ -266,26 +266,28 @@ $.pain.not_anyone was not found
 ```
 
 When an expected object or array inside an array is not found, the diff also
-shows the closest actual elements and how they differ. One is the closest
-element that is still unmatched. The other is the closest element already
-matched by another expected element, since a looser expected element may have
-matched it first:
+shows the closest actual element that no other expected element matched,
+named by its path in the actual JSON, and how it differs:
 
 ```
-$[1] was not found:
+$.users[0] was not found:
 {
   "id" : 42,
   "name" : "Alice",
   "zip" : "10115"
 }
-Closest unmatched actual element [1] differs by:
-  - .id
-    Expected value: 42 But got: 43
-  - .name
-    Expected value: "Alice" But got: "Carol"
-Closest matched actual element [0] (matched by expected [0]) differs by:
+Closest unmatched actual element $.users[1] differs by:
   - .zip
     Expected value: "10115" But got: "10117"
+```
+
+When every actual element is already matched, the diff says the expected
+element might be extra:
+
+```
+$.tags[1] was not found:
+"x"
+No unmatched actual elements left in $.tags, so this expected element might be extra
 ```
 
 Add a custom note with `.message("…")` — it is appended to the failure

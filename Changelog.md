@@ -1,5 +1,12 @@
 # Changelog
 
+## 8.3 (unreleased)
+- #### Changed
+  - The hint for an expected array element that is not found now names the closest unmatched actual element by its path in the actual JSON (e.g. `$.records[1]`). The hint is computed after the whole array has been matched, so it never points at an element that a later expected element matches
+  - When no actual element is left unmatched, the hint says the expected element might be extra
+  - Removed the "closest matched actual element" hint
+  - Comparisons made only to search for a matching array element no longer build diff messages, which makes lenient array matching faster
+
 ## 8.2 (2026-09-23)
 - #### Changed
   - When an expected JSON object or array inside an array is not found, the diff now also shows the closest actual elements and their differences: the closest one that is still unmatched, and the closest one already matched by another expected element (reported as `would match` when it has no differences)

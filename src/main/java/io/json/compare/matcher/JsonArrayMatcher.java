@@ -7,36 +7,42 @@ import io.json.compare.JsonComparator;
 import io.json.compare.util.MessageUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
 
 class JsonArrayMatcher extends AbstractJsonMatcher {
 
-    private static final int UNMATCHED = -1;
-
-    // For each actual element: the position of the expected element it was matched by, or UNMATCHED
-    private final int[] matchedBy;
+    private final BitSet matchedPositions;
+    private final BitSet notFoundPositions;
     private final int expectedDoNotMatchCount;
 
-    JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
-        super(expected, actual, comparator, compareModes);
-        this.matchedBy = new int[actual.size()];
-        Arrays.fill(this.matchedBy, UNMATCHED);
+    JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes,
+                     String actualPath) {
+        super(expected, actual, comparator, compareModes, actualPath);
+        this.matchedPositions = new BitSet(actual.size());
+        this.notFoundPositions = new BitSet(expected.size());
         this.expectedDoNotMatchCount = UseCase.countDoNotMatchEntries(expected);
     }
 
     @Override
     public List<String> match() {
-        List<String> diffs = new ArrayList<>();
         int expectedSize = expected.size();
-
+        List<List<String>> elementDiffs = new ArrayList<>(expectedSize);
         for (int i = 0; i < expectedSize; i++) {
             JsonNode expElement = expected.get(i);
             if (NodeInspect.isJsonPathNode(expElement)) {
-                diffs.addAll(new JsonMatcher(expElement, actual, comparator, compareModes).match());
+                elementDiffs.add(matchChild(expElement, actual, ""));
             } else {
-                diffs.addAll(matchWithJsonArray(i, expElement, UseCase.of(expElement), actual));
+                elementDiffs.add(matchWithJsonArray(i, expElement, UseCase.of(expElement), actual));
+            }
+        }
+        // Not-found elements are described only now, when it is final which actual elements are left unmatched
+        List<String> diffs = new ArrayList<>();
+        for (int i = 0; i < expectedSize; i++) {
+            diffs.addAll(elementDiffs.get(i));
+            if (notFoundPositions.get(i)) {
+                diffs.add(notFoundDiff(i, expected.get(i)));
             }
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
@@ -50,10 +56,9 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         List<String> diffs = new ArrayList<>();
         boolean strictOrder = compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER);
         int actualSize = actualArray.size();
-        Candidate closestUnmatched = null;
 
         for (int j = 0; j < actualSize; j++) {
-            if (matchedBy[j] != UNMATCHED) {
+            if (matchedPositions.get(j)) {
                 continue;
             }
             if (strictOrder) {
@@ -63,9 +68,11 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
             switch (useCase) {
                 case MATCH -> {
                     JsonNode actElement = actualArray.get(j);
-                    List<String> elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
+                    List<String> elementDiffs = strictOrder
+                            ? matchChild(expElement, actElement, "[" + j + "]")
+                            : probeChild(expElement, actElement);
                     if (elementDiffs.isEmpty()) {
-                        matchedBy[j] = expPosition;
+                        matchedPositions.set(j);
                         return List.of();
                     }
                     if (strictOrder) {
@@ -74,18 +81,15 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                         }
                         return diffs;
                     }
-                    if (isHintCandidate(expElement, actElement)) {
-                        closestUnmatched = Candidate.closer(closestUnmatched, new Candidate(j, elementDiffs));
-                    }
                 }
                 case MATCH_ANY -> {
-                    matchedBy[j] = expPosition;
+                    matchedPositions.set(j);
                     return List.of();
                 }
                 case DO_NOT_MATCH -> {
                     JsonNode actElement = actualArray.get(j);
                     if (NodeInspect.areOfSameType(expElement, actElement)) {
-                        List<String> elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
+                        List<String> elementDiffs = probeChild(expElement, actElement);
                         if (!elementDiffs.isEmpty()) {
                             diffs.add("[" + expPosition + "] was found:" + LS
                                     + MessageUtil.cropL(JSONCompare.prettyPrint(expElement)));
@@ -103,10 +107,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
             }
         }
         if (useCase == UseCase.MATCH) {
-            diffs.add("[" + expPosition + "] was not found:" + LS
-                    + MessageUtil.cropL(JSONCompare.prettyPrint(expElement))
-                    + hint(closestUnmatched)
-                    + (strictOrder ? "" : hint(closestMatched(expElement, actualArray))));
+            notFoundPositions.set(expPosition);
         } else if (useCase == UseCase.MATCH_ANY) {
             diffs.add("[" + expPosition + "] -> Expected condition " + expElement
                     + " was not met. Actual JSON ARRAY has no extra elements");
@@ -114,49 +115,49 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         return diffs;
     }
 
-    // Only objects and arrays can partially match an element of the same type; scalars simply differ
-    private static boolean isHintCandidate(JsonNode expElement, JsonNode actElement) {
-        return expElement.isContainerNode() && NodeInspect.areOfSameType(expElement, actElement);
-    }
-
-    private Candidate closestMatched(JsonNode expElement, JsonNode actualArray) {
-        Candidate closest = null;
-        for (int j = 0; j < actualArray.size() && (closest == null || !closest.diffs().isEmpty()); j++) {
-            JsonNode actElement = actualArray.get(j);
-            if (matchedBy[j] != UNMATCHED && isHintCandidate(expElement, actElement)) {
-                List<String> elementDiffs = new JsonMatcher(expElement, actElement, comparator, compareModes).match();
-                closest = Candidate.closer(closest, new Candidate(j, elementDiffs));
-            }
+    private String notFoundDiff(int expPosition, JsonNode expElement) {
+        if (isProbe()) {
+            return "[" + expPosition + "] was not found";
         }
-        return closest;
+        String diff = "[" + expPosition + "] was not found:" + LS + MessageUtil.cropL(JSONCompare.prettyPrint(expElement));
+        return compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) ? diff : diff + hint(expElement);
     }
 
-    private String hint(Candidate candidate) {
-        if (candidate == null) {
+    private String hint(JsonNode expElement) {
+        if (matchedPositions.cardinality() == actual.size()) {
+            return LS + "No unmatched actual elements left in " + actualPath + ", so this expected element might be extra";
+        }
+        int closest = closestUnmatched(expElement);
+        if (closest < 0) {
             return "";
         }
-        int matchedByPosition = matchedBy[candidate.index()];
-        StringBuilder sb = new StringBuilder(LS).append("Closest ")
-                .append(matchedByPosition == UNMATCHED ? "unmatched" : "matched")
-                .append(" actual element [").append(candidate.index()).append(']');
-        if (matchedByPosition != UNMATCHED) {
-            sb.append(" (matched by expected [").append(matchedByPosition).append("])");
-        }
-        if (candidate.diffs().isEmpty()) {
-            return sb.append(" would match").toString();
-        }
-        sb.append(" differs by:");
-        for (String diff : candidate.diffs()) {
+        String segment = "[" + closest + "]";
+        StringBuilder sb = new StringBuilder(LS).append("Closest unmatched actual element ")
+                .append(actualPath).append(segment).append(" differs by:");
+        for (String diff : matchChild(expElement, actual.get(closest), segment)) {
             sb.append(LS).append("  - ").append(diff.stripLeading().replace(LS, LS + "    "));
         }
         return MessageUtil.cropL(sb.toString());
     }
 
-    private record Candidate(int index, List<String> diffs) {
-
-        // Fewer diffs wins; on a tie the earlier candidate is kept
-        static Candidate closer(Candidate current, Candidate other) {
-            return current == null || other.diffs.size() < current.diffs.size() ? other : current;
+    // The unmatched element of the same type with the fewest diffs (the lowest index on a tie), or -1.
+    // Objects and arrays only: a scalar either matches or it doesn't, so a closest one tells nothing.
+    private int closestUnmatched(JsonNode expElement) {
+        int closest = -1;
+        if (!expElement.isContainerNode()) {
+            return closest;
         }
+        int fewestDiffs = Integer.MAX_VALUE;
+        for (int j = matchedPositions.nextClearBit(0); j < actual.size(); j = matchedPositions.nextClearBit(j + 1)) {
+            JsonNode actElement = actual.get(j);
+            if (NodeInspect.areOfSameType(expElement, actElement)) {
+                int diffCount = probeChild(expElement, actElement).size();
+                if (diffCount < fewestDiffs) {
+                    closest = j;
+                    fewestDiffs = diffCount;
+                }
+            }
+        }
+        return closest;
     }
 }

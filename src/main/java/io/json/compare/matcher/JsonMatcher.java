@@ -17,22 +17,27 @@ import java.util.Set;
 public class JsonMatcher extends AbstractJsonMatcher {
 
     public JsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
-        super(expected, actual, comparator, compareModes);
+        this(expected, actual, comparator, compareModes, "$");
+    }
+
+    JsonMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes,
+                String actualPath) {
+        super(expected, actual, comparator, compareModes, actualPath);
     }
 
     @Override
     public List<String> match() {
         if (NodeInspect.isJsonObject(expected) && NodeInspect.isJsonObject(actual)) {
-            return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonObjectMatcher(expected, actual, comparator, compareModes, actualPath).match();
         }
         if (NodeInspect.isJsonArray(expected) && NodeInspect.isJsonArray(actual)) {
-            return new JsonArrayMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonArrayMatcher(expected, actual, comparator, compareModes, actualPath).match();
         }
         if (NodeInspect.isValueNode(expected) && NodeInspect.isValueNode(actual)) {
-            return new JsonValueMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonValueMatcher(expected, actual, comparator, compareModes, actualPath).match();
         }
         if (NodeInspect.isJsonPathNode(expected)) {
-            return new JsonObjectMatcher(expected, actual, comparator, compareModes).match();
+            return new JsonObjectMatcher(expected, actual, comparator, compareModes, actualPath).match();
         }
         if (NodeInspect.isMissingNode(expected) && NodeInspect.isMissingNode(actual)) {
             return List.of();

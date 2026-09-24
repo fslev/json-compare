@@ -19,8 +19,9 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
     private final int expectedDoNotMatchCount;
     private final boolean canUseLiteralLookup;
 
-    JsonObjectMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
-        super(expected, actual, comparator, compareModes);
+    JsonObjectMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes,
+                      String actualPath) {
+        super(expected, actual, comparator, compareModes, actualPath);
         this.expectedDoNotMatchCount = UseCase.countDoNotMatchEntries(expected);
         this.canUseLiteralLookup = this.comparator.getClass() == DefaultJsonComparator.class;
     }
@@ -40,7 +41,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                 case MATCH_ANY, MATCH -> {
                     if (jsonPathExpression.isPresent()) {
                         try {
-                            diffs.addAll(new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match());
+                            diffs.addAll(new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes, actualPath).match());
                         } catch (PathNotFoundException e) {
                             diffs.add("." + UseCase.JSON_PATH_EXP_PREFIX + jsonPathExpression.get() + UseCase.JSON_PATH_EXP_SUFFIX
                                     + " -> Json path -> " + e.getMessage());
@@ -63,7 +64,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                     if (jsonPathExpression.isPresent()) {
                         boolean pathFound;
                         try {
-                            new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes).match();
+                            new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes, null).match();
                             pathFound = true;
                         } catch (PathNotFoundException e) {
                             pathFound = false;
@@ -100,7 +101,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
             }
 
             JsonNode candidateValue = candidateEntry.getValue();
-            List<String> candidateDiffs = new JsonMatcher(expectedValue, candidateValue, comparator, compareModes).match();
+            List<String> candidateDiffs = matchChild(expectedValue, candidateValue, "." + candidateField);
             if (candidateDiffs.isEmpty()) {
                 matchedFieldNames.add(candidateField);
                 return List.of();

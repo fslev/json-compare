@@ -9,8 +9,9 @@ import java.util.Set;
 
 class JsonValueMatcher extends AbstractJsonMatcher {
 
-    JsonValueMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes) {
-        super(expected, actual, comparator, compareModes);
+    JsonValueMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes,
+                     String actualPath) {
+        super(expected, actual, comparator, compareModes, actualPath);
     }
 
     @Override

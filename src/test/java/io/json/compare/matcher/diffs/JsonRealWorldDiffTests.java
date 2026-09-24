@@ -50,27 +50,25 @@ class JsonRealWorldDiffTests {
     }
 
     @Test
-    void compareJsonArraysAndCheckForClosestElementsOfNotFoundObject() {
+    void compareJsonArraysAndCheckForClosestUnmatchedElementOfNotFoundObject() {
         String expected = """
-                [
-                  { "id": ".*", "name": "Alice" },
-                  { "id": 42, "name": "Alice", "zip": "10115" }
-                ]
+                {
+                  "users": [ { "id": 42, "name": "Alice", "zip": "10115" } ]
+                }
                 """;
         String actual = """
-                [
-                  { "id": 42, "name": "Alice", "zip": "10117" },
-                  { "id": 43, "name": "Carol", "zip": "10115" }
-                ]
+                {
+                  "users": [
+                    { "id": 43, "name": "Carol", "zip": "10115" },
+                    { "id": 42, "name": "Alice", "zip": "10117" }
+                  ]
+                }
                 """;
 
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "\\Q$[1]\\E was not found.*" +
-                "Closest unmatched actual element \\[1] differs by:.*" +
-                "\\Q.id\\E.*Expected value: 42 But got: 43.*" +
-                "\\Q.name\\E.*Expected value: \"Alice\" But got: \"Carol\".*" +
-                "Closest matched actual element \\[0] \\(matched by expected \\[0]\\) differs by:.*" +
+                "\\Q$.users[0]\\E was not found.*" +
+                "Closest unmatched actual element \\Q$.users[1]\\E differs by:.*" +
                 "\\Q.zip\\E.*Expected value: \"10115\" But got: \"10117\".*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
