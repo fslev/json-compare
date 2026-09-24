@@ -1,6 +1,6 @@
 # Changelog
 
-## 8.3 (unreleased)
+## 8.3 (2026-09-24)
 - #### Changed
   - The hint for an expected array element that is not found now names the closest unmatched actual element by its path in the actual JSON (e.g. `$.records[1]`). The hint is computed after the whole array has been matched, so it never points at an element that a later expected element matches
   - When no actual element is left unmatched, the hint says the expected element might be extra
