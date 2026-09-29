@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>JSON Compare</name>
-    <description>Java library for comparing JSONs</description>
+    <description>Java library for comparing and matching JSONs, with regex and JSONPath support</description>
     <url>http://github.com/fslev/json-compare</url>
     <developers>
         <developer>

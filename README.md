@@ -296,7 +296,9 @@ output.
 ## 10. Related
 
 - [JTest-Utils](https://github.com/fslev/jtest-utils) — uses json-compare and
-  adds data capture support.
+  adds XML, plain text and HTTP response matching, plus data capture support.
+- [Cucumber JUtils](https://github.com/fslev/cucumber-jutils) — Cucumber for Java extension
+  with scenario variables and JSON/XML assertion steps built on JTest-Utils.
 
 ## 11. License
 
