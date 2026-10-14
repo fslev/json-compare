@@ -1,5 +1,10 @@
 # Changelog
 
+## 8.4 (2026-10-14)
+- #### Changed
+  - Diff paths in assertion messages are labelled `EXPECTED` (e.g. `EXPECTED $.records[1] was not found`), and the closest-element hint labels its element `ACTUAL`, so it is clear which JSON each path refers to
+  - The closest-element hint now shows full expected paths for nested differences (e.g. `EXPECTED $.records[1].templates[1].providerId` instead of `.providerId`)
+
 ## 8.3 (2026-09-24)
 - #### Changed
   - The hint for an expected array element that is not found now names the closest unmatched actual element by its path in the actual JSON (e.g. `$.records[1]`). The hint is computed after the whole array has been matched, so it never points at an element that a later expected element matches
