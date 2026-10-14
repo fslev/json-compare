@@ -67,9 +67,93 @@ class JsonRealWorldDiffTests {
 
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "\\Q$.users[0]\\E was not found.*" +
-                "Closest unmatched actual element \\Q$.users[1]\\E differs by:.*" +
-                "\\Q.zip\\E.*Expected value: \"10115\" But got: \"10117\".*"));
+                "EXPECTED \\Q$.users[0]\\E was not found.*" +
+                "Closest unmatched ACTUAL element \\Q$.users[1]\\E differs by:.*" +
+                "EXPECTED \\Q$.users[0].zip\\E.*Expected value: \"10115\" But got: \"10117\".*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
+    }
+
+    @Test
+    void compareJsonArraysAndCheckForClosestUnmatchedElementNesterArrays() {
+        String expected = """
+                {
+                   "zone": "test-zone.com",
+                   "records": [
+                     {
+                       "name": "test-zone.com",
+                       "type": "MX",
+                       "content": "mail-server1.com",
+                       "templates": [
+                         {
+                           "serviceId": "O365",
+                           "providerId": "abc.com"
+                         },
+                         {
+                           "serviceId": "Microsoft_Exchange",
+                           "providerId": "microsoft.com"
+                         }
+                       ]
+                     },
+                     {
+                       "name": "www.test-zone.com",
+                       "type": "A",
+                       "content": "2.2.2.2",
+                       "templates": [
+                         {
+                           "serviceId": "IP",
+                           "providerId": "abc.com"
+                         },
+                         {
+                           "serviceId": "Microsoft_Exchange",
+                           "providerId": "microsoft.com"
+                         }
+                       ]
+                     }
+                   ]
+                 }
+                """;
+        String actual = """
+                {
+                   "zone": "test-zone.com",
+                   "records": [
+                     {
+                       "name": "www.test-zone.com",
+                       "type": "A",
+                       "content": "2.2.2.2",
+                       "templates": [
+                         {
+                           "serviceId": "Microsoft_Exchange",
+                           "providerId": "microsoft-updated.com"
+                         }, 
+                         {
+                           "serviceId": "IP",
+                           "providerId": "abc.com"
+                         },
+                         {
+                           "serviceId": "zzz",
+                           "providerId": "zzz.com"
+                         }                         
+                       ]
+                     }, 
+                     {
+                       "name": "test-zone.com",
+                       "type": "MX",
+                       "content": "mail-server1.com",
+                       "templates": [
+                         {
+                           "serviceId": "O365",
+                           "providerId": "abc.com"
+                         },
+                         {
+                           "serviceId": "Microsoft_Exchange",
+                           "providerId": "microsoft.com"
+                         }
+                       ]
+                     }                     
+                   ]
+                 }
+                """;
+
+        JSONCompare.compare(expected, actual).assertMatches();
     }
 }

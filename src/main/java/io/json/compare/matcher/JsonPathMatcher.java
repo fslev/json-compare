@@ -23,8 +23,8 @@ class JsonPathMatcher extends AbstractJsonMatcher {
     private final String jsonPath;
 
     JsonPathMatcher(String jsonPath, JsonNode expectedValue, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes,
-                    String actualPath) {
-        super(expectedValue, actual, comparator, compareModes, actualPath);
+                    String expectedPath, String actualPath) {
+        super(expectedValue, actual, comparator, compareModes, expectedPath, actualPath);
         this.jsonPath = jsonPath;
     }
 
@@ -32,7 +32,7 @@ class JsonPathMatcher extends AbstractJsonMatcher {
     public List<String> match() {
         JsonNode result = MAPPER.convertValue(PARSE_CONTEXT.parse(actual).read(jsonPath), JsonNode.class);
         String jsonPathSegment = "." + UseCase.JSON_PATH_EXP_PREFIX + jsonPath + UseCase.JSON_PATH_EXP_SUFFIX;
-        List<String> jsonPathDiffs = matchChild(expected, result, jsonPathSegment);
+        List<String> jsonPathDiffs = matchChild(expected, result, jsonPathSegment, jsonPathSegment);
         List<String> diffs = new ArrayList<>(jsonPathDiffs.size());
         for (String diff : jsonPathDiffs) {
             diffs.add(jsonPathSegment + diff

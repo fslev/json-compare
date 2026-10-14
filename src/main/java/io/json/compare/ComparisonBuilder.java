@@ -3,6 +3,7 @@ package io.json.compare;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.matcher.JsonMatcher;
 import io.json.compare.util.JsonUtils;
+import io.json.compare.util.MessageUtil;
 import org.junit.jupiter.api.AssertionFailureBuilder;
 
 import java.io.IOException;
@@ -144,7 +145,7 @@ public final class ComparisonBuilder {
         StringBuilder sb = new StringBuilder(128 + diffs.size() * 64);
         sb.append("FOUND ").append(diffs.size()).append(" DIFFERENCE(S):").append(LS);
         for (String diff : diffs) {
-            sb.append(LS).append(LS).append(DIFF_DIVIDER).append(LS).append('$').append(diff);
+            sb.append(LS).append(LS).append(DIFF_DIVIDER).append(LS).append(MessageUtil.labelExpected("$", diff));
         }
         sb.append(LS);
         if (comparator == null || comparator.getClass() == DefaultJsonComparator.class) {

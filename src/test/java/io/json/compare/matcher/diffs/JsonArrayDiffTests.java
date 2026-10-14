@@ -448,8 +448,8 @@ class JsonArrayDiffTests {
         List<String> diffs = JSONCompare.compare(expected, actual).diffs();
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
-                "\\RClosest unmatched actual element \\Q$[2]\\E differs by:" +
-                "\\R  - \\Q.role\\E" +
+                "\\RClosest unmatched ACTUAL element \\Q$[2]\\E differs by:" +
+                "\\R  - EXPECTED \\Q$[0].role\\E" +
                 "\\R    Expected value: \"admin\" But got: \"dev\""), diffs.get(0));
     }
 
@@ -469,11 +469,11 @@ class JsonArrayDiffTests {
         List<String> diffs = JSONCompare.compare(expected, actual).diffs();
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
-                "\\RClosest unmatched actual element \\Q$[1]\\E differs by:" +
-                "\\R  - \\Q.items[0]\\E was not found:" +
+                "\\RClosest unmatched ACTUAL element \\Q$[1]\\E differs by:" +
+                "\\R  - EXPECTED \\Q$[0].items[0]\\E was not found:" +
                 "\\R    \\{.*}" +
-                "\\R    Closest unmatched actual element \\Q$[1].items[0]\\E differs by:" +
-                "\\R      - \\Q.qty\\E" +
+                "\\R    Closest unmatched ACTUAL element \\Q$[1].items[0]\\E differs by:" +
+                "\\R      - EXPECTED \\Q$[0].items[0].qty\\E" +
                 "\\R        Expected value: 2 But got: 3"), diffs.get(0));
     }
 
@@ -514,8 +514,8 @@ class JsonArrayDiffTests {
         List<String> diffs = JSONCompare.compare(expected, actual).diffs();
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
-                "\\RClosest unmatched actual element \\Q$[0]\\E differs by:" +
-                "\\R  - \\Q.b\\E" +
+                "\\RClosest unmatched ACTUAL element \\Q$[0]\\E differs by:" +
+                "\\R  - EXPECTED \\Q$[0].b\\E" +
                 "\\R    Expected value: 2 But got: 3"), diffs.get(0));
     }
 
@@ -530,10 +530,10 @@ class JsonArrayDiffTests {
         List<String> diffs = JSONCompare.compare(expected, actual).diffs();
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
-                "\\RClosest unmatched actual element \\Q$[1]\\E differs by:" +
-                "\\R  - \\Q.id\\E" +
+                "\\RClosest unmatched ACTUAL element \\Q$[1]\\E differs by:" +
+                "\\R  - EXPECTED \\Q$[0].id\\E" +
                 "\\R    Expected value: 7 But got: 8" +
-                "\\R  - \\Q.status\\E" +
+                "\\R  - EXPECTED \\Q$[0].status\\E" +
                 "\\R    Expected value: \"ACTIVE\" But got: \"PENDING\""), diffs.get(0));
     }
 
@@ -548,9 +548,26 @@ class JsonArrayDiffTests {
         List<String> diffs = JSONCompare.compare(expected, actual).diffs();
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$.rec.*[0]\\E was not found:.*}" +
-                "\\RClosest unmatched actual element \\Q$.records[1]\\E differs by:" +
-                "\\R  - \\Q.v\\E" +
+                "\\RClosest unmatched ACTUAL element \\Q$.records[1]\\E differs by:" +
+                "\\R  - EXPECTED \\Q$.rec.*[0].v\\E" +
                 "\\R    Expected value: \"a\" But got: \"c\""), diffs.get(0));
+    }
+
+    @Test
+    void notFoundObjectHintShowsFullExpectedPathsOfNestedObjectDiffs() {
+        String expected = """
+                [ { "user": { "name": "Ann", "age": 30 } } ]
+                """;
+        String actual = """
+                [ { "user": { "name": "Ann", "age": 31, "extra": true } } ]
+                """;
+        List<String> diffs = JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).diffs();
+        assertEquals(1, diffs.size());
+        assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
+                "\\RClosest unmatched ACTUAL element \\Q$[0]\\E differs by:" +
+                "\\R  - EXPECTED \\Q$[0].user.age\\E" +
+                "\\R    Expected value: 30 But got: 31" +
+                "\\R  - EXPECTED \\Q$[0].user\\E -> Actual JSON OBJECT has extra fields"), diffs.get(0));
     }
 
     @Test

@@ -18,8 +18,8 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
     private final int expectedDoNotMatchCount;
 
     JsonArrayMatcher(JsonNode expected, JsonNode actual, JsonComparator comparator, Set<CompareMode> compareModes,
-                     String actualPath) {
-        super(expected, actual, comparator, compareModes, actualPath);
+                     String expectedPath, String actualPath) {
+        super(expected, actual, comparator, compareModes, expectedPath, actualPath);
         this.matchedPositions = new BitSet(actual.size());
         this.notFoundPositions = new BitSet(expected.size());
         this.expectedDoNotMatchCount = UseCase.countDoNotMatchEntries(expected);
@@ -32,7 +32,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         for (int i = 0; i < expectedSize; i++) {
             JsonNode expElement = expected.get(i);
             if (NodeInspect.isJsonPathNode(expElement)) {
-                elementDiffs.add(matchChild(expElement, actual, ""));
+                elementDiffs.add(matchChild(expElement, actual, "", ""));
             } else {
                 elementDiffs.add(matchWithJsonArray(i, expElement, UseCase.of(expElement), actual));
             }
@@ -69,7 +69,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                 case MATCH -> {
                     JsonNode actElement = actualArray.get(j);
                     List<String> elementDiffs = strictOrder
-                            ? matchChild(expElement, actElement, "[" + j + "]")
+                            ? matchChild(expElement, actElement, "[" + expPosition + "]", "[" + j + "]")
                             : probeChild(expElement, actElement);
                     if (elementDiffs.isEmpty()) {
                         matchedPositions.set(j);
@@ -120,10 +120,10 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
             return "[" + expPosition + "] was not found";
         }
         String diff = "[" + expPosition + "] was not found:" + LS + MessageUtil.cropL(JSONCompare.prettyPrint(expElement));
-        return compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) ? diff : diff + hint(expElement);
+        return compareModes.contains(CompareMode.JSON_ARRAY_STRICT_ORDER) ? diff : diff + hint(expPosition, expElement);
     }
 
-    private String hint(JsonNode expElement) {
+    private String hint(int expPosition, JsonNode expElement) {
         if (matchedPositions.cardinality() == actual.size()) {
             return LS + "No unmatched actual elements left in " + actualPath + ", so this expected element might be extra";
         }
@@ -131,11 +131,13 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         if (closest < 0) {
             return "";
         }
-        String segment = "[" + closest + "]";
-        StringBuilder sb = new StringBuilder(LS).append("Closest unmatched actual element ")
-                .append(actualPath).append(segment).append(" differs by:");
-        for (String diff : matchChild(expElement, actual.get(closest), segment)) {
-            sb.append(LS).append("  - ").append(diff.stripLeading().replace(LS, LS + "    "));
+        String expSegment = "[" + expPosition + "]";
+        String actSegment = "[" + closest + "]";
+        StringBuilder sb = new StringBuilder(LS).append("Closest unmatched ACTUAL element ")
+                .append(actualPath).append(actSegment).append(" differs by:");
+        for (String diff : matchChild(expElement, actual.get(closest), expSegment, actSegment)) {
+            String line = MessageUtil.labelExpected(expectedPath + expSegment, diff);
+            sb.append(LS).append("  - ").append(line.replace(LS, LS + "    "));
         }
         return MessageUtil.cropL(sb.toString());
     }
