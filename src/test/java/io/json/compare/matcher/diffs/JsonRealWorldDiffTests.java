@@ -74,7 +74,7 @@ class JsonRealWorldDiffTests {
     }
 
     @Test
-    void compareJsonArraysAndCheckForClosestUnmatchedElementNesterArrays() {
+    void compareJsonArraysAndCheckForClosestUnmatchedElementNestedArrays() {
         String expected = """
                 {
                    "zone": "test-zone.com",
@@ -154,6 +154,14 @@ class JsonRealWorldDiffTests {
                  }
                 """;
 
-        JSONCompare.compare(expected, actual).assertMatches();
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
+        assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
+                "\\REXPECTED \\Q$.records[1]\\E was not found:.*\"www.test-zone.com\".*" +
+                "\\RClosest unmatched ACTUAL element \\Q$.records[0]\\E differs by:" +
+                "\\R  - EXPECTED \\Q$.records[1].templates[1]\\E was not found:.*\"Microsoft_Exchange\".*" +
+                "\\R    Closest unmatched ACTUAL element \\Q$.records[0].templates[0]\\E differs by:" +
+                "\\R      - EXPECTED \\Q$.records[1].templates[1].providerId\\E" +
+                "\\R        Expected value: \"microsoft.com\" But got: \"microsoft-updated.com\"\\R.*"), error.getMessage());
+        JSONCompare.compare(expected, actual).assertNotMatches();
     }
 }
