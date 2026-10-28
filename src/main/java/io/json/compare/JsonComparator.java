@@ -1,5 +1,7 @@
 package io.json.compare;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 /**
  * Strategy for deciding whether an expected and actual value (or field name)
  * should be considered a match.
@@ -27,4 +29,15 @@ public interface JsonComparator {
      * {@code expected}.
      */
     boolean compareFields(String expected, String actual);
+
+    /**
+     * Called when the expected value is a string but the actual value is a JSON
+     * object or array.
+     *
+     * @return {@code true} to accept {@code actual} as a match for
+     * {@code expected}. Default: no match.
+     */
+    default boolean compareValueToNode(String expected, JsonNode actual) {
+        return false;
+    }
 }

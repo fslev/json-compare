@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.5 (2026-10-28)
+- #### Added
+  - `JsonComparator.compareValueToNode(String expected, JsonNode actual)`: lets a custom comparator accept an actual JSON object or array where the expected JSON has a string. The default returns `false`, so matching is unchanged unless a comparator overrides it
+
 ## 8.4 (2026-10-14)
 - #### Changed
   - Diff paths in assertion messages are labelled `EXPECTED` (e.g. `EXPECTED $.records[1] was not found`), and the closest-element hint labels its element `ACTUAL`, so it is clear which JSON each path refers to

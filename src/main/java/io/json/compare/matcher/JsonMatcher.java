@@ -42,6 +42,9 @@ public class JsonMatcher extends AbstractJsonMatcher {
         if (NodeInspect.isMissingNode(expected) && NodeInspect.isMissingNode(actual)) {
             return List.of();
         }
+        if (expected.isTextual() && actual.isContainerNode() && comparator.compareValueToNode(expected.asText(), actual)) {
+            return List.of();
+        }
         return List.of(" -> Different JSON types: expected "
                 + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
     }

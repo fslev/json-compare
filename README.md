@@ -171,6 +171,9 @@ JSONCompare.compare(expected, actual)
         .assertMatches();
 ```
 
+Apart from `.*`, an expected string never matches an actual object or array. A custom comparator can accept one by
+overriding `compareValueToNode(String expected, JsonNode actual)`.
+
 ## 8. Embedded match tweaks
 
 Match logic can be embedded directly inside the expected JSON, so assertions
