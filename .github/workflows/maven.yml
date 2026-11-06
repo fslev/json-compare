@@ -27,6 +27,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Build with Maven
-      env:
-        COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
-      run: mvn clean test -B -Pcoveralls jacoco:report coveralls:report -Djacoco=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      run: mvn clean test -B -Pcoveralls -Djacoco=true -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+    - name: Upload coverage to Coveralls
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        file: target/site/jacoco/jacoco.xml
+        format: jacoco
