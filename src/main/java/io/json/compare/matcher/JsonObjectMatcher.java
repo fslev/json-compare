@@ -5,6 +5,7 @@ import com.jayway.jsonpath.PathNotFoundException;
 import io.json.compare.CompareMode;
 import io.json.compare.DefaultJsonComparator;
 import io.json.compare.JsonComparator;
+import io.json.compare.util.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,7 +45,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                             diffs.addAll(new JsonPathMatcher(jsonPathExpression.get(), expectedValue, actual, comparator, compareModes, expectedPath, actualPath).match());
                         } catch (PathNotFoundException e) {
                             diffs.add("." + UseCase.JSON_PATH_EXP_PREFIX + jsonPathExpression.get() + UseCase.JSON_PATH_EXP_SUFFIX
-                                    + " -> Json path -> " + e.getMessage());
+                                    + MessageUtil.SEP + "Json path" + MessageUtil.SEP + e.getMessage());
                         }
                     } else {
                         List<Map.Entry<String, JsonNode>> candidateEntries = searchCandidatesByField(fieldUseCase, expectedSanitizedField, actual);
@@ -70,7 +71,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
                             pathFound = false;
                         }
                         if (pathFound) {
-                            diffs.add("." + expectedField + " -> Json path was found");
+                            diffs.add("." + expectedField + MessageUtil.SEP + "Json path was found");
                         }
                     } else {
                         List<Map.Entry<String, JsonNode>> candidateEntries = searchCandidatesByField(fieldUseCase, expectedSanitizedField, actual);
@@ -83,7 +84,7 @@ class JsonObjectMatcher extends AbstractJsonMatcher {
         }
         if (compareModes.contains(CompareMode.JSON_OBJECT_NON_EXTENSIBLE)
                 && expected.size() - expectedDoNotMatchCount < actual.size()) {
-            diffs.add(" -> Actual JSON OBJECT has extra fields");
+            diffs.add(MessageUtil.SEP + "Actual JSON OBJECT has extra fields");
         }
         return diffs;
     }

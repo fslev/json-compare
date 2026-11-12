@@ -36,7 +36,6 @@ import java.util.Set;
 public final class ComparisonBuilder {
 
     private static final String LS = System.lineSeparator();
-    private static final String DIFF_DIVIDER = "_________________________DIFF__________________________";
     private static final String ASSERTION_ERROR_HINT_MESSAGE =
             "Json matching is by default case-sensitive and uses regular expressions." + LS
                     + "In case expected json contains any unintentional regexes, then quote them between \\Q and \\E delimiters.\n"
@@ -96,13 +95,7 @@ public final class ComparisonBuilder {
         if (diffs.isEmpty()) {
             return;
         }
-        String defaultMessage = buildFailureMessage(diffs);
-        String finalMessage = message == null ? defaultMessage : defaultMessage + LS + message;
-        AssertionFailureBuilder.assertionFailure()
-                .message(finalMessage)
-                .expected(prettyPrint(expectedJson))
-                .actual(prettyPrint(actualJson))
-                .buildAndThrow();
+        fail(buildFailureMessage(diffs), expectedJson, actualJson);
     }
 
     /**
@@ -116,12 +109,22 @@ public final class ComparisonBuilder {
         if (!diffs.isEmpty()) {
             return;
         }
-        String defaultMessage = LS + "JSONs are equal";
-        String finalMessage = message == null ? defaultMessage : defaultMessage + LS + message;
+        fail(LS + "JSONs are equal", expectedJson, actualJson);
+    }
+
+    // JUnit's own " ==> expected: <...> but was: <...>" suffix is turned off, as < and > are Markdown syntax.
+    // Both JSONs are appended under plain labels instead; IDEs still get them for their diff view.
+    private void fail(String defaultMessage, JsonNode expectedJson, JsonNode actualJson) {
+        String expectedText = prettyPrint(expectedJson);
+        String actualText = prettyPrint(actualJson);
+        String finalMessage = (message == null ? defaultMessage : defaultMessage + LS + message)
+                + LS + LS + "EXPECTED JSON:" + LS + expectedText
+                + LS + LS + "ACTUAL JSON:" + LS + actualText;
         AssertionFailureBuilder.assertionFailure()
                 .message(finalMessage)
-                .expected(prettyPrint(expectedJson))
-                .actual(prettyPrint(actualJson))
+                .expected(expectedText)
+                .actual(actualText)
+                .includeValuesInMessage(false)
                 .buildAndThrow();
     }
 
@@ -144,8 +147,9 @@ public final class ComparisonBuilder {
     private String buildFailureMessage(List<String> diffs) {
         StringBuilder sb = new StringBuilder(128 + diffs.size() * 64);
         sb.append("FOUND ").append(diffs.size()).append(" DIFFERENCE(S):").append(LS);
-        for (String diff : diffs) {
-            sb.append(LS).append(LS).append(DIFF_DIVIDER).append(LS).append(MessageUtil.labelExpected("$", diff));
+        for (int i = 0; i < diffs.size(); i++) {
+            sb.append(LS).append(LS).append(MessageUtil.divider(i + 1, diffs.size()))
+                    .append(LS).append(MessageUtil.labelExpected("$", diffs.get(i)));
         }
         sb.append(LS);
         if (comparator == null || comparator.getClass() == DefaultJsonComparator.class) {

@@ -47,7 +47,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         }
         if (compareModes.contains(CompareMode.JSON_ARRAY_NON_EXTENSIBLE)
                 && expectedSize - expectedDoNotMatchCount < actual.size()) {
-            diffs.add(" -> Actual JSON ARRAY has extra elements");
+            diffs.add(MessageUtil.SEP + "Actual JSON ARRAY has extra elements");
         }
         return diffs;
     }
@@ -99,7 +99,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                 }
                 case DO_NOT_MATCH_ANY -> {
                     if (expected.size() - expectedDoNotMatchCount < actual.size()) {
-                        diffs.add("[" + expPosition + "] -> Expected condition " + expElement
+                        diffs.add("[" + expPosition + "]" + MessageUtil.SEP + "Expected condition " + expElement
                                 + " was not met. Actual JSON ARRAY has extra elements");
                     }
                     return diffs;
@@ -109,7 +109,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
         if (useCase == UseCase.MATCH) {
             notFoundPositions.set(expPosition);
         } else if (useCase == UseCase.MATCH_ANY) {
-            diffs.add("[" + expPosition + "] -> Expected condition " + expElement
+            diffs.add("[" + expPosition + "]" + MessageUtil.SEP + "Expected condition " + expElement
                     + " was not met. Actual JSON ARRAY has no extra elements");
         }
         return diffs;
@@ -137,7 +137,7 @@ class JsonArrayMatcher extends AbstractJsonMatcher {
                 .append(actualPath).append(actSegment).append(" differs by:");
         for (String diff : matchChild(expElement, actual.get(closest), expSegment, actSegment)) {
             String line = MessageUtil.labelExpected(expectedPath + expSegment, diff);
-            sb.append(LS).append("  - ").append(line.replace(LS, LS + "    "));
+            sb.append(LS).append("  ").append(line.replace(LS, LS + "    "));
         }
         return MessageUtil.cropL(sb.toString());
     }

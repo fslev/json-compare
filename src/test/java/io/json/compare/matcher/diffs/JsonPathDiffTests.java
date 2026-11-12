@@ -262,7 +262,7 @@ class JsonPathDiffTests {
                 "\\Q$.#($.length())\\E.*" +
                 "1.*But got.*4.*" +
                 "\\Q$[3]\\E was not found:.*" +
-                "\\Q$[4]\\E -> Expected condition \"!.*\" was not met. Actual JSON ARRAY has extra elements.*"));
+                "\\Q$[4]\\E: Expected condition \"!.*\" was not met. Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
 
         String expected1 = """

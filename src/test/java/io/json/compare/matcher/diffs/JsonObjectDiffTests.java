@@ -351,7 +351,7 @@ class JsonObjectDiffTests {
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$.a\\E.*Expected value: 0 But got: 1.*" +
-                "\\Q$.c\\E -> Actual JSON OBJECT has extra fields.*" +
+                "\\Q$.c\\E: Actual JSON OBJECT has extra fields.*" +
                 "Actual JSON OBJECT has extra fields.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
@@ -391,8 +391,8 @@ class JsonObjectDiffTests {
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "\\Q$.a\\E.*Expected value: 0 But got: 1.*" +
-                "\\Q$.c\\E -> Actual JSON OBJECT has extra fields.*" +
-                "\\Q$.u[2]\\E -> Expected condition \"!.*\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$.c\\E: Actual JSON OBJECT has extra fields.*" +
+                "\\Q$.u[2]\\E: Expected condition \"!.*\" was not met. Actual JSON ARRAY has extra elements.*" +
                 "Actual JSON OBJECT has extra fields.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
 
@@ -692,9 +692,9 @@ class JsonObjectDiffTests {
                 "\\Q$..*\\E.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q$..*\\E.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q$..*\\E.*Expected value: \"test\" But got: \"record\".*" +
-                "\\Q$.records[3]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$.records[3]\\E:.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
                 "\\Q$.otherRecords[0]\\E was not found.*4.*" +
-                "\\Q$.otherRecords[1]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$.otherRecords[1]\\E:.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
                 "\\Q$.\"!.*\"\\E condition was not met. Actual JSON OBJECT has extra fields.*"));
 
         String expected2 = """
@@ -734,8 +734,8 @@ class JsonObjectDiffTests {
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected2, actual2).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$.name\\E was not found.*" +
-                "\\Q$.records[4]\\E ->.*Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
-                "\\Q$.otherRecords[1]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
+                "\\Q$.records[4]\\E:.*Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
+                "\\Q$.otherRecords[1]\\E:.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
 
         String expected3 = """
                 {

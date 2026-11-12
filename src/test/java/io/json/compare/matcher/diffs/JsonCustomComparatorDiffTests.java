@@ -120,8 +120,8 @@ class JsonCustomComparatorDiffTests {
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
                 "\\Q$.records[0]\\E.*Expected value: 2 But got: 1.*" +
                 "\\Qrecords[1]\\E.*Expected value: 1 But got: 2.*" +
-                "\\Qrecords\\E -> Actual JSON ARRAY has extra elements.*" +
-                "\\Q$\\E -> Actual JSON OBJECT has extra fields.*"));
+                "\\Qrecords\\E: Actual JSON ARRAY has extra elements.*" +
+                "\\Q$\\E: Actual JSON OBJECT has extra fields.*"));
 
         String expected2 = """
                 {
@@ -147,8 +147,8 @@ class JsonCustomComparatorDiffTests {
                 """;
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected2, actual2).comparator(new CustomComparator()).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "\\Q$.records\\E -> Actual JSON ARRAY has extra elements.*" +
-                "\\Q$\\E -> Actual JSON OBJECT has extra fields.*"));
+                "\\Q$.records\\E: Actual JSON ARRAY has extra elements.*" +
+                "\\Q$\\E: Actual JSON OBJECT has extra fields.*"));
 
         String expected3 = """
                 {
@@ -175,7 +175,7 @@ class JsonCustomComparatorDiffTests {
                 """;
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected3, actual3).comparator(new CustomComparator()).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "\\Q$\\E -> Actual JSON OBJECT has extra fields.*"));
+                "\\Q$\\E: Actual JSON OBJECT has extra fields.*"));
     }
 
     @Test
@@ -256,9 +256,9 @@ class JsonCustomComparatorDiffTests {
                 "\\Q$..*\\E.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q$..*\\E.*Different JSON types: expected TextNode but got ArrayNode.*" +
                 "\\Q$..*\\E.*Expected value: \"test\" But got: \"record\".*" +
-                "\\Q$.records[3]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$.records[3]\\E:.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
                 "\\Q$.otherRecords[0]\\E was not found.*4.*" +
-                "\\Q$.otherRecords[1]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$.otherRecords[1]\\E:.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
                 "\\Q$.\"!.*\"\\E condition was not met. Actual JSON OBJECT has extra fields.*"));
 
         String expected2 = """
@@ -298,8 +298,8 @@ class JsonCustomComparatorDiffTests {
         error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected2, actual2).comparator(new CustomComparator()).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$.name\\E was not found.*" +
-                "\\Q$.records[4]\\E ->.*Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
-                "\\Q$.otherRecords[1]\\E ->.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
+                "\\Q$.records[4]\\E:.*Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
+                "\\Q$.otherRecords[1]\\E:.*Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
 
         String expected3 = """
                 {

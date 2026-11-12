@@ -3,6 +3,7 @@ package io.json.compare.matcher;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.json.compare.CompareMode;
 import io.json.compare.JsonComparator;
+import io.json.compare.util.MessageUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class JsonMatcher extends AbstractJsonMatcher {
         if (expected.isTextual() && actual.isContainerNode() && comparator.compareValueToNode(expected.asText(), actual)) {
             return List.of();
         }
-        return List.of(" -> Different JSON types: expected "
+        return List.of(MessageUtil.SEP + "Different JSON types: expected "
                 + expected.getClass().getSimpleName() + " but got " + actual.getClass().getSimpleName());
     }
 }

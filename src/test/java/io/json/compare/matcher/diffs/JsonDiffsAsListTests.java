@@ -107,7 +107,7 @@ class JsonDiffsAsListTests {
                 """;
         List<String> diffs = JSONCompare.compare(expected, actual).diffs();
         assertEquals(1, diffs.size());
-        assertTrue(diffs.get(0).matches("(?s).*\\Q$[4]\\E -> Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*"));
+        assertTrue(diffs.get(0).matches("(?s).*\\Q$[4]\\E: Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*"));
     }
 
     @Test
@@ -133,7 +133,7 @@ class JsonDiffsAsListTests {
                 """;
         List<String> diffs = JSONCompare.compare(expected, actual).diffs();
         assertEquals(1, diffs.size());
-        assertTrue(diffs.get(0).matches("(?s).*\\Q$[2]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
+        assertTrue(diffs.get(0).matches("(?s).*\\Q$[2]\\E: Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
     }
 
     @Test
@@ -161,11 +161,11 @@ class JsonDiffsAsListTests {
                 """;
         List<String> diffs = JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).diffs();
         assertEquals(5, diffs.size());
-        assertTrue(diffs.get(0).matches("(?s).*\\Q$[0]\\E -> Different JSON types: expected ObjectNode but got TextNode.*"));
+        assertTrue(diffs.get(0).matches("(?s).*\\Q$[0]\\E: Different JSON types: expected ObjectNode but got TextNode.*"));
         assertTrue(diffs.get(1).matches("(?s).*\\Q$[1]\\E.*Expected value: \"c\" But got: true.*"));
         assertTrue(diffs.get(2).matches("(?s).*\\Q$[2]\\E was found.*\"!1\".*"));
-        assertTrue(diffs.get(3).matches("(?s).*\\Q$[3]\\E -> Different JSON types: expected BooleanNode but got ObjectNode.*"));
-        assertTrue(diffs.get(4).matches("(?s).*\\Q$\\E -> Actual JSON ARRAY has extra elements.*"));
+        assertTrue(diffs.get(3).matches("(?s).*\\Q$[3]\\E: Different JSON types: expected BooleanNode but got ObjectNode.*"));
+        assertTrue(diffs.get(4).matches("(?s).*\\Q$\\E: Actual JSON ARRAY has extra elements.*"));
     }
 
     @Test
@@ -289,7 +289,7 @@ class JsonDiffsAsListTests {
         assertTrue(diffs.get(0).matches("(?s).*\\Q$.#($.a.length())\\E.*Expected json path result.*" +
                 "3.*But got.*2.*"));
         assertTrue(diffs.get(1).matches("(?s).*\\Q$.b\\E.*Expected value: \"val1\" But got: \"val2\".*"));
-        assertTrue(diffs.get(2).matches("(?s).*\\Q$.x.x1.y11.#($.www)\\E -> Json path -> No results for path.*"));
+        assertTrue(diffs.get(2).matches("(?s).*\\Q$.x.x1.y11.#($.www)\\E: Json path: No results for path.*"));
         assertTrue(diffs.get(3).matches("(?s).*\\Q$.z.#($.length())\\E.*Expected json path result.*1.*But got.*3.*"));
         assertTrue(diffs.get(4).matches("(?s).*\\Q$.u.#($.u1).u11\\E.*Expected value: 20209 But got: 20000" +
                 ".*Expected json path result.*u11.*20209.*20000.*"));
@@ -323,8 +323,8 @@ class JsonDiffsAsListTests {
         List<String> diffs = JSONCompare.compare(expected, actual).comparator(new JsonCustomComparatorDiffTests.CustomComparator()).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE).diffs();
         assertEquals(3, diffs.size());
         assertTrue(diffs.get(0).matches("(?s).*\\Q$.name\\E.*Expected value: \".*test\" But got: \"test\".*"));
-        assertTrue(diffs.get(1).matches("(?s).*\\Q$.records\\E ->.*Actual JSON ARRAY has extra elements.*"));
-        assertTrue(diffs.get(2).matches("(?s).*\\Q$\\E -> Actual JSON OBJECT has extra fields.*"));
+        assertTrue(diffs.get(1).matches("(?s).*\\Q$.records\\E:.*Actual JSON ARRAY has extra elements.*"));
+        assertTrue(diffs.get(2).matches("(?s).*\\Q$\\E: Actual JSON OBJECT has extra fields.*"));
     }
 
     @Test

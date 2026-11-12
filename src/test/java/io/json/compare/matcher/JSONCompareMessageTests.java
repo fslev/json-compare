@@ -5,6 +5,7 @@ import io.json.compare.JSONCompare;
 import org.junit.jupiter.api.Test;
 
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -161,9 +162,43 @@ public class JSONCompareMessageTests {
 
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "\\Q$.@.instanceId2\\E -> Actual JSON OBJECT has extra fields.*" +
+                "\\Q$.@.instanceId2\\E: Actual JSON OBJECT has extra fields.*" +
                 "\\Q$.@.version\\E was not found.*"));
         JSONCompare.compare(expected, actual).modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE).assertNotMatches();
+    }
+
+    @Test
+    public void failureMessageHasNoMarkdownSyntax() {
+        String expected = """
+                {
+                  "type": {"x": 1},
+                  "missing": 1,
+                  "value": "abc",
+                  "#($.nopath)": 1,
+                  "users": [{"id": 1, "name": "Alice"}],
+                  "tags": ["a", ".*"],
+                  "nums": [1]
+                }
+                """;
+        String actual = """
+                {
+                  "type": [1],
+                  "value": "xyz",
+                  "users": [{"id": 1, "name": "Bob"}],
+                  "tags": ["a"],
+                  "nums": [1, 2],
+                  "extra": true
+                }
+                """;
+        AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual)
+                .modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertMatches());
+        String message = error.getMessage();
+        assertTrue(message.contains("==== DIFF 1 OF "), message);
+        assertTrue(message.contains("EXPECTED JSON:") && message.contains("ACTUAL JSON:"), message);
+        assertTrue(message.contains("Closest unmatched ACTUAL element"), message);
+        for (String token : new String[]{"->", "__", "  - ", "<", ">"}) {
+            assertFalse(message.contains(token), "Markdown token '" + token + "' in:\n" + message);
+        }
     }
 
 }

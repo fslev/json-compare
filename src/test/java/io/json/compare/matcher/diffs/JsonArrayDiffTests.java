@@ -109,7 +109,7 @@ class JsonArrayDiffTests {
                 """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "\\Q$[4]\\E -> Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*"));
+                "\\Q$[4]\\E: Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
@@ -137,8 +137,8 @@ class JsonArrayDiffTests {
                 """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 2 DIFFERENCE.*" +
-                "\\Q$[4]\\E -> Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
-                "\\Q$[5]\\E -> Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*"));
+                "\\Q$[4]\\E: Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*" +
+                "\\Q$[5]\\E: Expected condition \"\\Q.*\\E\" was not met. Actual JSON ARRAY has no extra elements.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
 
         // empty actual json array
@@ -158,11 +158,11 @@ class JsonArrayDiffTests {
         AssertionError error1 = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected1, actual1).assertMatches());
         assertTrue(error1.getMessage().matches("(?s).*FOUND 6 DIFFERENCE.*" +
                 "\\Q$[0]\\E was not found.*\"a\".*" +
-                "\\Q$[1]\\E -> Expected condition \".*\" was not met. Actual JSON ARRAY has no extra elements.*" +
+                "\\Q$[1]\\E: Expected condition \".*\" was not met. Actual JSON ARRAY has no extra elements.*" +
                 "\\Q$[2]\\E was not found.*1.*" +
                 "\\Q$[3]\\E was not found.*\"\\Q.*test\\E\".*" +
-                "\\Q$[4]\\E -> Expected condition \".*\" was not met. Actual JSON ARRAY has no extra elements.*" +
-                "\\Q$[5]\\E -> Expected condition \".*\" was not met. Actual JSON ARRAY has no extra elements.*"));
+                "\\Q$[4]\\E: Expected condition \".*\" was not met. Actual JSON ARRAY has no extra elements.*" +
+                "\\Q$[5]\\E: Expected condition \".*\" was not met. Actual JSON ARRAY has no extra elements.*"));
         JSONCompare.compare(expected1, actual1).assertNotMatches();
     }
 
@@ -244,7 +244,7 @@ class JsonArrayDiffTests {
                 """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 1 DIFFERENCE.*" +
-                "\\Q$[2]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
+                "\\Q$[2]\\E: Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
@@ -273,9 +273,9 @@ class JsonArrayDiffTests {
                 """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
-                "\\Q$[1]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
-                "\\Q$[3]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
-                "\\Q$[4]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
+                "\\Q$[1]\\E: Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$[3]\\E: Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$[4]\\E: Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
     }
 
@@ -306,8 +306,8 @@ class JsonArrayDiffTests {
                 """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 4 DIFFERENCE.*" +
-                "\\Q$[0]\\E -> Different JSON types: expected ObjectNode but got TextNode.*" +
-                "\\Q$[1]\\E -> Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
+                "\\Q$[0]\\E: Different JSON types: expected ObjectNode but got TextNode.*" +
+                "\\Q$[1]\\E: Expected condition \"\\Q!.*\\E\" was not met. Actual JSON ARRAY has extra elements.*" +
                 "\\Q$[3].lorem2\\E.*Expected value: \"ipsum2\" But got: \"ipsum-updated\".*" +
                 "\\Q$[3].lorem3\\E was not found.*"));
         JSONCompare.compare(expected, actual).assertNotMatches();
@@ -365,7 +365,7 @@ class JsonArrayDiffTests {
         assertTrue(error.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$[1]\\E was not found.*\"c\".*" +
                 "\\Q$[2]\\E was found.*\"!1\".*" +
-                "\\Q$\\E -> Actual JSON ARRAY has extra elements.*"));
+                "\\Q$\\E: Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertNotMatches();
 
         String expected1 = """
@@ -393,7 +393,7 @@ class JsonArrayDiffTests {
         assertTrue(error1.getMessage().matches("(?s).*FOUND 3 DIFFERENCE.*" +
                 "\\Q$[1]\\E was not found.*\"c\".*" +
                 "\\Q$[2]\\E was found.*\"!1\".*" +
-                "\\Q$\\E -> Actual JSON ARRAY has extra elements.*"));
+                "\\Q$\\E: Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected1, actual1).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertNotMatches();
     }
 
@@ -422,11 +422,11 @@ class JsonArrayDiffTests {
                 """;
         AssertionError error = assertThrows(AssertionError.class, () -> JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertMatches());
         assertTrue(error.getMessage().matches("(?s).*FOUND 5 DIFFERENCE.*" +
-                "\\Q$[0]\\E -> Different JSON types: expected ObjectNode but got TextNode.*" +
+                "\\Q$[0]\\E: Different JSON types: expected ObjectNode but got TextNode.*" +
                 "\\Q$[1]\\E.*Expected value: \"c\" But got: true.*" +
                 "\\Q$[2]\\E was found.*\"!1\".*" +
                 "\\Q$[3]\\E.*Different JSON types: expected BooleanNode but got ObjectNode.*" +
-                "\\Q$\\E -> Actual JSON ARRAY has extra elements.*"));
+                "\\Q$\\E: Actual JSON ARRAY has extra elements.*"));
         JSONCompare.compare(expected, actual).modes(CompareMode.JSON_ARRAY_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_STRICT_ORDER).assertNotMatches();
     }
 
@@ -449,7 +449,7 @@ class JsonArrayDiffTests {
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
                 "\\RClosest unmatched ACTUAL element \\Q$[2]\\E differs by:" +
-                "\\R  - EXPECTED \\Q$[0].role\\E" +
+                "\\R  EXPECTED \\Q$[0].role\\E" +
                 "\\R    Expected value: \"admin\" But got: \"dev\""), diffs.get(0));
     }
 
@@ -470,10 +470,10 @@ class JsonArrayDiffTests {
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
                 "\\RClosest unmatched ACTUAL element \\Q$[1]\\E differs by:" +
-                "\\R  - EXPECTED \\Q$[0].items[0]\\E was not found:" +
+                "\\R  EXPECTED \\Q$[0].items[0]\\E was not found:" +
                 "\\R    \\{.*}" +
                 "\\R    Closest unmatched ACTUAL element \\Q$[1].items[0]\\E differs by:" +
-                "\\R      - EXPECTED \\Q$[0].items[0].qty\\E" +
+                "\\R      EXPECTED \\Q$[0].items[0].qty\\E" +
                 "\\R        Expected value: 2 But got: 3"), diffs.get(0));
     }
 
@@ -515,7 +515,7 @@ class JsonArrayDiffTests {
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
                 "\\RClosest unmatched ACTUAL element \\Q$[0]\\E differs by:" +
-                "\\R  - EXPECTED \\Q$[0].b\\E" +
+                "\\R  EXPECTED \\Q$[0].b\\E" +
                 "\\R    Expected value: 2 But got: 3"), diffs.get(0));
     }
 
@@ -531,9 +531,9 @@ class JsonArrayDiffTests {
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
                 "\\RClosest unmatched ACTUAL element \\Q$[1]\\E differs by:" +
-                "\\R  - EXPECTED \\Q$[0].id\\E" +
+                "\\R  EXPECTED \\Q$[0].id\\E" +
                 "\\R    Expected value: 7 But got: 8" +
-                "\\R  - EXPECTED \\Q$[0].status\\E" +
+                "\\R  EXPECTED \\Q$[0].status\\E" +
                 "\\R    Expected value: \"ACTIVE\" But got: \"PENDING\""), diffs.get(0));
     }
 
@@ -549,7 +549,7 @@ class JsonArrayDiffTests {
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$.rec.*[0]\\E was not found:.*}" +
                 "\\RClosest unmatched ACTUAL element \\Q$.records[1]\\E differs by:" +
-                "\\R  - EXPECTED \\Q$.rec.*[0].v\\E" +
+                "\\R  EXPECTED \\Q$.rec.*[0].v\\E" +
                 "\\R    Expected value: \"a\" But got: \"c\""), diffs.get(0));
     }
 
@@ -565,9 +565,9 @@ class JsonArrayDiffTests {
         assertEquals(1, diffs.size());
         assertTrue(diffs.get(0).matches("(?s)\\Q$[0]\\E was not found:.*}" +
                 "\\RClosest unmatched ACTUAL element \\Q$[0]\\E differs by:" +
-                "\\R  - EXPECTED \\Q$[0].user.age\\E" +
+                "\\R  EXPECTED \\Q$[0].user.age\\E" +
                 "\\R    Expected value: 30 But got: 31" +
-                "\\R  - EXPECTED \\Q$[0].user\\E -> Actual JSON OBJECT has extra fields"), diffs.get(0));
+                "\\R  EXPECTED \\Q$[0].user\\E: Actual JSON OBJECT has extra fields"), diffs.get(0));
     }
 
     @Test

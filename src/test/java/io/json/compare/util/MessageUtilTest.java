@@ -36,5 +36,6 @@ public class MessageUtilTest {
         StringBuilder sb2 = new StringBuilder();
         IntStream.range(0, 165536).forEach(i -> sb2.append("a"));
         assertEquals(2075, MessageUtil.cropL(sb2.toString()).length());
+        assertTrue(MessageUtil.cropL(sb2.toString()).contains("... cropped content ..."));
     }
 }

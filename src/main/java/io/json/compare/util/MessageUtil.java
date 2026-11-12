@@ -12,10 +12,23 @@ public final class MessageUtil {
     private static final int SMALL_LIMIT = 4096;
     private static final int MEDIUM_LIMIT = 8192;
     private static final int LARGE_LIMIT = 65535;
-    private static final String ELLIPSIS = LS + LS + "<...cropped content...>" + LS + LS;
+    private static final String ELLIPSIS = LS + LS + "... cropped content ..." + LS + LS;
     private static final String EXPECTED_LABEL = "EXPECTED ";
 
+    /**
+     * Separates a path from its difference. Messages avoid Markdown syntax characters, so they stay readable
+     * when pasted into Markdown (PR comments, chat, issue trackers).
+     */
+    public static final String SEP = ": ";
+
     private MessageUtil() {
+    }
+
+    /**
+     * Header placed before each difference, e.g. {@code ==== DIFF 1 OF 4 ====}.
+     */
+    public static String divider(int index, int total) {
+        return "==== DIFF " + index + " OF " + total + " ====";
     }
 
     public static String cropS(String msg) {

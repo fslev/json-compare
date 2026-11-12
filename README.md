@@ -252,20 +252,26 @@ List<String> diffs = JSONCompare.compare(expected, actual).diffs(); // empty on 
 ```
 org.opentest4j.AssertionFailedError: FOUND 4 DIFFERENCE(S):
 
-_________________________DIFF__________________________
+==== DIFF 1 OF 4 ====
 $.caught
 Expected value: false But got: true
 
-_________________________DIFF__________________________
+==== DIFF 2 OF 4 ====
 $.pain.range[1] was not found:
 "blue"
 
-_________________________DIFF__________________________
+==== DIFF 3 OF 4 ====
 $.pain.range[2] was not found:
 -2059921070
 
-_________________________DIFF__________________________
+==== DIFF 4 OF 4 ====
 $.pain.not_anyone was not found
+
+EXPECTED JSON:
+{ ... }
+
+ACTUAL JSON:
+{ ... }
 ```
 
 When an expected object or array inside an array is not found, the diff also
@@ -280,7 +286,7 @@ $.users[0] was not found:
   "zip" : "10115"
 }
 Closest unmatched actual element $.users[1] differs by:
-  - .zip
+  EXPECTED $.users[0].zip
     Expected value: "10115" But got: "10117"
 ```
 

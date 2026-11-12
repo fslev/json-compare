@@ -80,10 +80,10 @@ public class JSONCompareDeprecatedApiTest {
         assertTrue(diffs.isEmpty());
 
         diffs = JSONCompare.diffs(MATCHING_EXPECTED, MATCHING_ACTUAL, NON_EXTENSIBLE);
-        assertTrue(diffs.contains("$ -> Actual JSON OBJECT has extra fields"));
+        assertTrue(diffs.contains("$: Actual JSON OBJECT has extra fields"));
 
         diffs = JSONCompare.diffs(MATCHING_EXPECTED, MATCHING_ACTUAL, EQUALS_COMPARATOR, NON_EXTENSIBLE);
-        assertTrue(diffs.contains("$ -> Actual JSON OBJECT has extra fields"));
+        assertTrue(diffs.contains("$: Actual JSON OBJECT has extra fields"));
     }
 
     @Test

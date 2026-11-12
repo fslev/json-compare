@@ -1,5 +1,14 @@
 # Changelog
 
+## 8.6 (2026-11-12)
+- #### Changed
+  - Diff messages are Markdown safe, so they read correctly when pasted into PR comments, issues or chat: no `-`, `_`, `<` or `>` in the library's own text
+  - A path and its difference are separated by `: ` instead of ` -> ` (e.g. `$.a: Different JSON types`). This also changes the strings returned by `diffs()`
+  - Differences are headed `==== DIFF 1 OF 4 ====` instead of an underscore line
+  - Closest element hint lines are indented, without a `-` bullet
+  - The crop marker reads `... cropped content ...`
+  - JUnit's `==> expected: <...> but was: <...>` suffix is replaced by `EXPECTED JSON:` and `ACTUAL JSON:` sections; IDE diff views still get both JSONs
+
 ## 8.5 (2026-10-28)
 - #### Added
   - `JsonComparator.compareValueToNode(String expected, JsonNode actual)`: lets a custom comparator accept an actual JSON object or array where the expected JSON has a string. The default returns `false`, so matching is unchanged unless a comparator overrides it
