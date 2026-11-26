@@ -113,16 +113,17 @@ public final class ComparisonBuilder {
     }
 
     // JUnit's own " ==> expected: <...> but was: <...>" suffix is turned off, as < and > are Markdown syntax.
-    // Both JSONs are appended as "EXPECTED: ..." and "BUT WAS: ..." instead. Some IDE runners, such as IntelliJ's
-    // Cucumber runner, build their diff link only from the message text, by matching
-    // "expected: (.*)\s+but was: (.*)" (case-insensitive). So each JSON starts on its label's line, the JSONs come
-    // last, and the message ends with a line break so that both captured JSONs end the same way.
+    // Both JSONs are appended as "EXPECTED: ..." and, on the next line, " BUT WAS: ..." instead: IDEs that run
+    // Cucumber 7+ get the diff link from Cucumber's TeamCity formatter, which reads only the message text and
+    // matches "expected: (.*)(?:\r\n|\r|\n) but was: (.*)$" on it (case-insensitive, message trimmed). So each
+    // JSON starts on its label's line, exactly one line break and one space come before "BUT WAS", and the JSONs
+    // come last. The final line break keeps both values ending the same way for IntelliJ's own patterns.
     private void fail(String defaultMessage, JsonNode expectedJson, JsonNode actualJson) {
         String expectedText = prettyPrint(expectedJson);
         String actualText = prettyPrint(actualJson);
         String finalMessage = (message == null ? defaultMessage : defaultMessage + LS + message)
                 + LS + LS + "EXPECTED: " + expectedText
-                + LS + LS + "BUT WAS: " + actualText + LS;
+                + LS + " BUT WAS: " + actualText + LS;
         AssertionFailureBuilder.assertionFailure()
                 .message(finalMessage)
                 .expected(expectedText)

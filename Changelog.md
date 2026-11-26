@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.8 (2026-11-26)
+- #### Changed
+  - `BUT WAS: ` now follows the expected JSON on the next line, indented by one space, without a blank line in between. IntelliJ runs Cucumber 7+ scenarios through Cucumber's TeamCity formatter, which offers the "Click to see difference" link only when the message ends with `expected: <json>`, one line break and ` but was: <json>`. The 8.7 layout matched only IntelliJ's own patterns, so Cucumber scenarios still showed no link
+
 ## 8.7 (2026-11-26)
 - #### Changed
   - The JSONs at the end of an assertion message are labelled `EXPECTED: ` and `BUT WAS: `, each starting on its label's line, instead of `EXPECTED JSON:` and `ACTUAL JSON:`. IntelliJ's Cucumber runner builds its "Click to see difference" link only from the message text, by matching `expected: ... but was: ...`, so it showed no link with the 8.6 labels

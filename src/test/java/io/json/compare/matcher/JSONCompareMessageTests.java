@@ -208,8 +208,14 @@ public class JSONCompareMessageTests {
     }
 
     /**
-     * IntelliJ's Cucumber runner reads only the message text to offer its "Click to see difference" link,
-     * using this pattern (case-insensitive, DOTALL, find).
+     * Cucumber's TeamCity formatter (io.cucumber:teamcity-formatter, used by IntelliJ for Cucumber 7+) gives the
+     * IDE its "Click to see difference" link only when the trimmed message matches this pattern (find).
+     */
+    private static final Pattern CUCUMBER_TEAMCITY_EXPECTED_BUT_WAS =
+            Pattern.compile("expected: (.*)(?:\r\n|\r|\n) but was: (.*)$", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
+    /**
+     * IntelliJ's own pattern, used by its JUnit and older Cucumber runners (case-insensitive, DOTALL, find).
      */
     private static final Pattern INTELLIJ_EXPECTED_BUT_WAS =
             Pattern.compile("expected: (.*)\\s+but was: (.*)", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
@@ -221,13 +227,18 @@ public class JSONCompareMessageTests {
         AssertionError error = assertThrows(AssertionError.class,
                 () -> JSONCompare.compare(expected, actual).message("Custom message").assertMatches());
         String message = error.getMessage();
-        Matcher matcher = INTELLIJ_EXPECTED_BUT_WAS.matcher(message);
-        assertTrue(matcher.find(), message);
-        assertEquals(JSONCompare.prettyPrint(JsonUtils.toJson(expected)), matcher.group(1).stripTrailing());
-        assertEquals(JSONCompare.prettyPrint(JsonUtils.toJson(actual)), matcher.group(2).stripTrailing());
-        assertEquals(matcher.group(1).length() - matcher.group(1).stripTrailing().length(),
-                matcher.group(2).length() - matcher.group(2).stripTrailing().length(),
-                "Both values must end the same way, or the IDE diff shows a false difference on the last line");
+        String expectedText = JSONCompare.prettyPrint(JsonUtils.toJson(expected));
+        String actualText = JSONCompare.prettyPrint(JsonUtils.toJson(actual));
+
+        Matcher cucumber = CUCUMBER_TEAMCITY_EXPECTED_BUT_WAS.matcher(message.trim());
+        assertTrue(cucumber.find(), message);
+        assertEquals(expectedText, cucumber.group(1));
+        assertEquals(actualText, cucumber.group(2));
+
+        Matcher intellij = INTELLIJ_EXPECTED_BUT_WAS.matcher(message);
+        assertTrue(intellij.find(), message);
+        assertEquals(expectedText + System.lineSeparator(), intellij.group(1));
+        assertEquals(actualText + System.lineSeparator(), intellij.group(2));
     }
 
 }
