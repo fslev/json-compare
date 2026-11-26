@@ -267,9 +267,12 @@ $.pain.range[2] was not found:
 ==== DIFF 4 OF 4 ====
 $.pain.not_anyone was not found
 
-EXPECTED: { ... }
- BUT WAS: { ... }
+...
+ ==> expected: <{ ... }> but was: <{ ... }>
 ```
+
+The message ends with JUnit's ` ==> expected: <...> but was: <...>` suffix, which IDEs use for their
+"Click to see difference" link (IntelliJ reads it from the message text when it runs Cucumber scenarios).
 
 When an expected object or array inside an array is not found, the diff also
 shows the closest actual element that no other expected element matched,

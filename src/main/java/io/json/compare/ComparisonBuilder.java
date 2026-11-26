@@ -112,23 +112,14 @@ public final class ComparisonBuilder {
         fail(LS + "JSONs are equal", expectedJson, actualJson);
     }
 
-    // JUnit's own " ==> expected: <...> but was: <...>" suffix is turned off, as < and > are Markdown syntax.
-    // Both JSONs are appended as "EXPECTED: ..." and, on the next line, " BUT WAS: ..." instead: IDEs that run
-    // Cucumber 7+ get the diff link from Cucumber's TeamCity formatter, which reads only the message text and
-    // matches "expected: (.*)(?:\r\n|\r|\n) but was: (.*)$" on it (case-insensitive, message trimmed). So each
-    // JSON starts on its label's line, exactly one line break and one space come before "BUT WAS", and the JSONs
-    // come last. The final line break keeps both values ending the same way for IntelliJ's own patterns.
+    // JUnit's AssertionFailureBuilder appends " ==> expected: <...> but was: <...>" to the message. Keep it:
+    // IDEs that run Cucumber 7+ get the diff link from Cucumber's TeamCity formatter, which reads only the message
+    // text and recognizes this JUnit layout. It is the one place where the message contains Markdown syntax (< >).
     private void fail(String defaultMessage, JsonNode expectedJson, JsonNode actualJson) {
-        String expectedText = prettyPrint(expectedJson);
-        String actualText = prettyPrint(actualJson);
-        String finalMessage = (message == null ? defaultMessage : defaultMessage + LS + message)
-                + LS + LS + "EXPECTED: " + expectedText
-                + LS + " BUT WAS: " + actualText + LS;
         AssertionFailureBuilder.assertionFailure()
-                .message(finalMessage)
-                .expected(expectedText)
-                .actual(actualText)
-                .includeValuesInMessage(false)
+                .message(message == null ? defaultMessage : defaultMessage + LS + message)
+                .expected(prettyPrint(expectedJson))
+                .actual(prettyPrint(actualJson))
                 .buildAndThrow();
     }
 

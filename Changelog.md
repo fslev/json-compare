@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.9 (2026-11-26)
+- #### Changed
+  - Assertion messages end with JUnit's ` ==> expected: <...> but was: <...>` suffix again, instead of the `EXPECTED:` / `BUT WAS:` labels of 8.6 to 8.8. IntelliJ runs Cucumber 7+ scenarios through Cucumber's TeamCity formatter, which gives the "Click to see difference" link only from the message text, and this is the layout it is built for. It is the one part of the message that is not Markdown safe
+
 ## 8.8 (2026-11-26)
 - #### Changed
   - `BUT WAS: ` now follows the expected JSON on the next line, indented by one space, without a blank line in between. IntelliJ runs Cucumber 7+ scenarios through Cucumber's TeamCity formatter, which offers the "Click to see difference" link only when the message ends with `expected: <json>`, one line break and ` but was: <json>`. The 8.7 layout matched only IntelliJ's own patterns, so Cucumber scenarios still showed no link
