@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.7 (2026-11-26)
+- #### Changed
+  - The JSONs at the end of an assertion message are labelled `EXPECTED: ` and `BUT WAS: `, each starting on its label's line, instead of `EXPECTED JSON:` and `ACTUAL JSON:`. IntelliJ's Cucumber runner builds its "Click to see difference" link only from the message text, by matching `expected: ... but was: ...`, so it showed no link with the 8.6 labels
+
 ## 8.6 (2026-11-12)
 - #### Changed
   - Diff messages are Markdown safe, so they read correctly when pasted into PR comments, issues or chat: no `-`, `_`, `<` or `>` in the library's own text

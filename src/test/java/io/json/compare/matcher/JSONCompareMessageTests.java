@@ -2,9 +2,15 @@ package io.json.compare.matcher;
 
 import io.json.compare.CompareMode;
 import io.json.compare.JSONCompare;
+import io.json.compare.util.JsonUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -194,11 +200,34 @@ public class JSONCompareMessageTests {
                 .modes(CompareMode.JSON_OBJECT_NON_EXTENSIBLE, CompareMode.JSON_ARRAY_NON_EXTENSIBLE).assertMatches());
         String message = error.getMessage();
         assertTrue(message.contains("==== DIFF 1 OF "), message);
-        assertTrue(message.contains("EXPECTED JSON:") && message.contains("ACTUAL JSON:"), message);
+        assertTrue(message.contains("EXPECTED: {") && message.contains("BUT WAS: {"), message);
         assertTrue(message.contains("Closest unmatched ACTUAL element"), message);
         for (String token : new String[]{"->", "__", "  - ", "<", ">"}) {
             assertFalse(message.contains(token), "Markdown token '" + token + "' in:\n" + message);
         }
+    }
+
+    /**
+     * IntelliJ's Cucumber runner reads only the message text to offer its "Click to see difference" link,
+     * using this pattern (case-insensitive, DOTALL, find).
+     */
+    private static final Pattern INTELLIJ_EXPECTED_BUT_WAS =
+            Pattern.compile("expected: (.*)\\s+but was: (.*)", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
+    @Test
+    public void checkMessageGivesBothJsonsToIdeDiffPatterns() throws IOException {
+        String expected = "{\"a\": 1, \"b\": [\"x\"]}";
+        String actual = "{\"a\": 2, \"b\": [\"y\"]}";
+        AssertionError error = assertThrows(AssertionError.class,
+                () -> JSONCompare.compare(expected, actual).message("Custom message").assertMatches());
+        String message = error.getMessage();
+        Matcher matcher = INTELLIJ_EXPECTED_BUT_WAS.matcher(message);
+        assertTrue(matcher.find(), message);
+        assertEquals(JSONCompare.prettyPrint(JsonUtils.toJson(expected)), matcher.group(1).stripTrailing());
+        assertEquals(JSONCompare.prettyPrint(JsonUtils.toJson(actual)), matcher.group(2).stripTrailing());
+        assertEquals(matcher.group(1).length() - matcher.group(1).stripTrailing().length(),
+                matcher.group(2).length() - matcher.group(2).stripTrailing().length(),
+                "Both values must end the same way, or the IDE diff shows a false difference on the last line");
     }
 
 }

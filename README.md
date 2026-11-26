@@ -267,11 +267,9 @@ $.pain.range[2] was not found:
 ==== DIFF 4 OF 4 ====
 $.pain.not_anyone was not found
 
-EXPECTED JSON:
-{ ... }
+EXPECTED: { ... }
 
-ACTUAL JSON:
-{ ... }
+BUT WAS: { ... }
 ```
 
 When an expected object or array inside an array is not found, the diff also
